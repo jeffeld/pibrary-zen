@@ -1,0 +1,17 @@
+extends ../user-layout
+
+block head
+  title Login
+  link(rel="stylesheet" href="styles/login.css")
+  link(rel="stylesheet" href="styles/nav-dark.css")
+
+block body
+  form.form-signin(role="form")
+    h2.form-signin-heading Please sign in
+    input.form-control(type="text", placeholder="Your email address or membership no.", required, autofocus)
+    input.form-control(type="password", placeholder="Password", required)
+    label.checkbox Remember me
+      input(type="checkbox", value="rememberme")
+    button.btn.btn-lg.btn-primary.btn-block(type="submit") Sign in
+    hr
+    a(href="#") Forgotten your password?

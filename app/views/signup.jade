@@ -1,0 +1,37 @@
+extends user-layout
+
+block head
+  title Sign Up
+  link(rel="stylesheet", href="styles/signup.css")
+
+block body
+  div(ng-controller="SignUpController")
+
+    form.form-signin(role="form" name="SignUpForm")
+      h2.form-signin-heading Please sign up
+      input.form-control(type="text", placeholder="Your first name", ng-model="FirstName", required, autofocus)
+      input.form-control(type="text", placeholder="Your last name", ng-model="LastName", required)
+      hr
+      input.form-control(type="email", placeholder="Email address", ng-model="Email1", required)
+      input.form-control(type="email", placeholder="Confirm email address", ng-model="Email2", required)
+      hr
+      input.form-control(type="password", placeholder="Password", ng-model="Password1", required)
+      input.form-control(type="password", placeholder="Confirm password", ng-model="Password2", required)
+      hr
+      label I am&nbsp;
+        select(ng-model="Type", ng-options="o.option for o in Types")
+          option -- Please select --
+      label(ng-show="Type.value==='st'") &nbsp;in class&nbsp;
+        select(ng-model="Class", ng-options="class.name for class in Classes")
+          option -- Please select --
+      span(ng-show="Type.value==='na'") &nbsp;&nbsp;
+        input(type="text", placeholder="Please describe", ng-model="Other")
+      hr
+      label.checkbox &nbsp;I have read and agree to the &nbsp;
+        a Terms & Conditions
+        input.checkbox-inline(type="checkbox", ng-checked="AgreeTnC" ng-model="AgreeTnC")
+      hr
+      button.btn.btn-lg.btn-primary.btn-block(type="submit" ng-disabled="SignUpForm.$invalid || !CanSubmit()" ngClick="OnSubmit()") Register now
+
+block scripts
+  script(src="scripts/controllers/signup.js")

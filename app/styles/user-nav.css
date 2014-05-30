@@ -1,0 +1,8 @@
+@media screen and (min-width: 768px) {
+    .user-header {
+        padding-bottom: 12px;
+        /*border-bottom-color: rgb(16,16,16);*/
+        /*border-bottom-style: solid;*/
+        /*border-bottom-width: 1px;*/
+    }
+}

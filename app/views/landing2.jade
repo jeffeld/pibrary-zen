@@ -1,0 +1,24 @@
+extends landing-layout
+
+block head
+  title #{brand}
+  link(rel="stylesheet" href="styles/landingpage.css")
+
+block background
+  img.img-responsive(ng-src="images/landingpage/default.jpg", style="position: fixed")
+
+block body
+
+  div(ng-controller="LandingController")
+    div.inner.cover
+      h1.cover-heading Welcome to The Library
+      p.lead Located in X20, the library is open every lunchtime. Come in and join up, or start searching for books right away
+      p.lead
+        a.btn.btn-lg.btn-success(href="/home") Learn More
+
+    div.mastfoot
+      blockquote &quot;{{Quote.quote}}&quot;
+        footer {{Quote.who}}
+
+block scripts
+  script(src='scripts/landing-app.js')

@@ -1,0 +1,16 @@
+body {
+    padding-top: 50px;
+}
+
+.searchbar-inverse {
+    background-color: #202020;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(16,16,16);
+}
+
+/* Override bootstrap*/
+
+.navbar-inverse, .navbar-collapse, .navcbar-form {
+    border-bottom-style: none;
+}

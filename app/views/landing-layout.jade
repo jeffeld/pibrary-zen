@@ -1,0 +1,49 @@
+doctype html
+html(ng-app="LandingApp")
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
+    link(rel='stylesheet', href='styles/user-layout.css')
+    block head
+  body
+
+    block background
+
+    div.container
+      div.site-wrapper(style="position: fixed; z-index: 10;")
+        div.site-wrapper-inner
+          div.cover-container
+            div.masthead.clearfix
+              div.inner
+                h2.masthead-brand #{brand}
+                ul.nav.masthead-nav
+                  li
+                    a(href="/home") Home
+                  li
+                    a(href="/signup") Sign Up
+                  li
+                    a(href="/login") Login
+
+
+            block body
+
+    script.
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src='//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+
+
+  script(src='bower_components/jquery/dist/jquery.js')
+  script(src='bower_components/angular/angular.js')
+  script(src='bower_components/bootstrap/dist/js/bootstrap.js')
+  script(src='bower_components/angular-resource/angular-resource.js')
+  script(src='bower_components/angular-cookies/angular-cookies.js')
+  script(src='bower_components/angular-sanitize/angular-sanitize.js')
+  script(src='bower_components/angular-route/angular-route.js')
+  script(src='bower_components/underscore/underscore.js')
+  script(src='bower_components/moment/moment.js')
+
+  block scripts
