@@ -1,0 +1,21 @@
+extends ../email-layout
+block head
+  title Your Library SignUp Request
+
+block body
+  div.saluation
+    p Dear #{locals.firstname},
+  div.emailbody
+    p Thank you for signing up to The Library.
+    p Your request has been recevied and will be processed soon. When it has been processed you will receive
+    | an email detailing what you need to do next.
+    p If you believe you have received this email by mistake, please accept our apologies.
+    | You need do nothing as the request will automatically expire in 14 days.
+  div.signoff
+    p Regards,
+      br
+      | The Library Team
+  br
+  p Regards,
+  p The Library Team
+
