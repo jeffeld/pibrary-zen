@@ -7,6 +7,11 @@ html
     link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
     link(rel='stylesheet', href='styles/user-nav.css')
     link(rel='stylesheet', href='styles/navbar.css')
+    link(rel='stylesheet', href='styles/app.css')
+    style
+      | [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      |  display: none !important;
+      | }
     block head
 
   body(ng-app='#{angularAppName}')
@@ -61,8 +66,11 @@ html
   script(src='bower_components/angular-cookies/angular-cookies.js')
   script(src='bower_components/angular-sanitize/angular-sanitize.js')
   script(src='bower_components/angular-route/angular-route.js')
+  script(src="bower_components/angular-strap/dist/angular-strap.min.js")
+  script(src="bower_components/angular-strap/dist/angular-strap.tpl.min.js")
   script(src='bower_components/underscore/underscore.js')
   script(src='bower_components/moment/moment.js')
+  script(src='scripts/ritsservices.js')
   script(src='#{scriptPath}')
   block scripts
 

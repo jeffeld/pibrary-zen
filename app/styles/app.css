@@ -1,0 +1,24 @@
+.toolbar > .form-control {
+    width: auto;
+}
+
+th > a > .glyphicon {
+    margin-bottom: 10px;
+}
+
+.overflow-ellipsis {
+    overflow: hidden;
+}
+
+.top-field {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+}
+
+.bottom-field {
+
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

@@ -1,3 +1,50 @@
-//
-   Created by jeff on 11/06/14.
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    style
+      | body {
+      |   font-family: Helvetica Neue, Helvetica, Arial;
+      |   font-size: 11pt;
+      |   color: #333333;
+      |   background-color: #eeeeee;
+      | }
+      | .salutation {
+      |   margin-bottom: 30px;
+      |   font-weight: bold;
+      |   font-size: 1.1em;
+      | }
+      | .name {
+      |   text-transform: capitalize;
+      | }
+      | .emailbody {
+      | }
+      | .signoff {
+      |   margin-top: 30px;
+      | }
+      | .footer {
+      |  margin-top: 40px;
+      |  border-top: solid 1px;
+      |  font-size: 0.8em;
+      |  font-weight: lighter;
+      |  color: #777777;
+      | }
+    block head
 
+  body
+    div.saluation
+    if locals.firstname !== ''
+      p Dear&nbsp;
+        span.name #{locals.firstname},
+    else
+      p Hi,
+    div.emailbody
+      block body
+    div.signoff
+      p Regards,
+        | The Library Team
+    div.footer
+      p Do not reply to this email; it has been sent from an unmonitored account.
+    block footer

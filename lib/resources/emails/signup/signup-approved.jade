@@ -3,19 +3,19 @@ block head
   title Your Library SignUp Request
 
 block body
-  div.saluation
-    p Dear #{locals.firstname},
   div.emailbody
-    p Thank you for signing up to The Library.
-    p Your request has been recevied and will be processed soon. When it has been processed you will receive
-    | an email detailing what you need to do next.
-    p If you believe you have received this email by mistake, please accept our apologies.
-    | You need do nothing as the request will automatically expire in 14 days.
-  div.signoff
-    p Regards,
-      br
-      | The Library Team
-  br
-  p Regards,
-  p The Library Team
+    p Your request to join The Library has been approved!
+    p Now all you need to do is visit the library bring with you proof of Id. After having your photo taken,
+      | you will be issued with your library card. You will need to bring this with you whenever you want to
+      | take something out from the library.
+    case locals.role.value
+      when 'st'
+        p As you are a student, please bring your journal as proof of Id.
+      when 'ts'
+        p As you are on staff, please bring your union card as proof of Id.
+      default
+        p Please bring photographic Id, such as your driving licence or passport, as proof of Id.
+    p Just a reminder, as per the Terms and Coniditions you agreed to, this data may be shared with our partners.
+
+
 

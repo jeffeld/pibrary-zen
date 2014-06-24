@@ -1,3 +1,87 @@
-//
-   Created by jeff on 11/06/14.
+extends user-layout
+block head
+  title Emails
+block body
+  div(ng-controller="AdminEmailController")
+    h3 Emails
+    form
+      div.toolbar
+        select.pull-right.form-control(ng-model="SortOrder")
+          option(value="to") To: A to Z
+          option(value="-to") To: Z to A
+          option(value="subject") Subject: A to Z
+          option(value="-subject") Subject: Z to A
+          option(value="submitted") Date submitted: Newest to Oldest
+          option(value="-submitted") Date submitted: Oldest to Newest
+          option(value="lastupdated") Last updated: Newest to Oldest
+          option(value="-lastupdated") Last updated: Oldest to Newest
+        br(ng-show="AtLeastOneError")
+        br(ng-show="AtLeastOneError")
 
+    div.alert.alert-danger(ng-show="AtLeastOneError")
+      strong Please note:
+      span &nbsp;It has not been possible to process some of your requests.
+        | This problem may only be temporary. Please try again shortly.
+
+    form
+      table.table.table-responsive.table-hover
+        thead
+          tr
+            th
+              input(type="checkbox", ng-model="SelectAll" ng-click="OnSelectAll()")
+            th To
+            th Subject
+            th.text-center Status
+            th Submitted
+            th Last Updated
+          tr
+            th &nbsp;
+            th
+              input.form-control(type="text", ng-model="Spec.to" ng-change="SetFilter('to', Spec.to)")
+            th
+              input.form-control(type="text", ng-model="Spec.subject")
+            th.text-center
+              select.form-control(ng-model="Spec.status" ng-change="OnStatusChanged()")
+                option(value="failed") Failed
+                option(value="pending") Pending
+                option(value="sending") Sending
+                option(value="sent") Sent
+            th
+              input.form-control(type="text", ng-model="Spec.submitted", bs-datepicker, data-date-Format="MMM dd yyyy", data-max-Date="today", data-autoclose="true", data-use-Native="true")
+            th
+              input.form-control(type="text", ng-model="Spec.lastupdated", bs-datepicker, data-date-Format="MMM dd yyyy", data-max-Date="today", data-autoclose="true", data-use-Native="true")
+            th
+              a(ng-click="OnReset()")
+                span.glyphicon.glyphicon-remove
+        tbody
+          tr(ng-repeat="Email in Emails | orderBy:SortOrder", ng-class="{danger : Email.status==='failed', success : Email.status==='sent', warning: Email.status==='pending'}")
+            td
+              input(type="checkbox", ng-model="Email.selected")
+            td
+              a(ng-click="SetFilter('to', Email.to)") {{Email.to | lowercase}}
+            td.overflow-ellipsis
+              a(ng-click="SetFilter('subject', Email.subject)") {{Email.subject}}
+            td.text-center
+              a(ng-click="SetFilter('status', Email.status)") {{Email.status | titlecase }}
+            td
+              a(ng-click="SetFilter('submitted', Email.submitted)") {{Email.submitted | date:'MMM dd yyyy'}}
+              span.text-muted &nbsp;{{Email.submitted | date:'HH:mm'}}
+            td
+              a(ng-click="SetFilter('lastupdated', LastUpdated(Email))") {{LastUpdated(Email) | date:'MMM dd yyyy'}}
+              span.text-muted &nbsp;{{LastUpdated(Email) | date:'HH:mm'}}
+            td
+              a(href="/api/emails/{{Email._id}}" target="_blank")
+                span.glyphicon.glyphicon-eye-open
+
+      button.btn.btn-lg.btn-primary(ng-click="OnResend()", ng-disabled="! AtLeastOneSelected()") Resend
+      button.btn.btn-lg.btn-danger.pull-right(ng-click="OnDelete()", ng-disabled="! AtLeastOneSelected()") Delete
+
+
+
+
+
+
+
+
+block scripts
+  script(src="scripts/controllers/admin-emails.js")

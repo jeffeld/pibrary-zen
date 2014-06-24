@@ -1,3 +1,63 @@
-//
-   Created by jeff on 09/06/14.
+extends user-layout
 
+block head
+  title Sign Ups
+
+block body
+  div(ng-controller="AdminSignUpController" ng-cloak)
+    h3 Pending Sign Ups
+
+    div(ng-show="SignUps.length == 0")
+      p.alert.alert-success There are no pending sign ups
+
+    div(ng-show="SignUps.length > 0")
+      form
+        select.pull-right(ng-model="SortOrder" value="0")
+          option(value="datetime") Date: Oldest to Newest
+          option(value="-datetime") Date: Newest to Oldest
+          option(value="firstname") First name: A to Z
+          option(value="-firstname") First name: Z to A
+          option(value="lastname") Last name: A to Z
+          option(value="-lastname") Last name: Z to A
+          option(value='email') Email address: A to Z
+          option(value='-email') Email address: Z to A
+        label.pull-right Sort by:&nbsp;
+        br(ng-show="AtLeastOneError")
+        br(ng-show="AtLeastOneError")
+
+        div.alert.alert-danger(ng-show="AtLeastOneError")
+          strong Please note:
+          span &nbsp;It has not been possible to process some of your requests.
+            | This problem may only be temporary. Please try again shortly.
+
+        table.table.table-striped.table-responsive
+          thead
+            tr
+              th
+                input(type="checkbox", ng-model="SelectAll" ng-click="OnSelectAll()")
+              th Name
+              th &nbsp;
+              th.text-center Email Address
+              th.text-center Date
+              th.text-center IP
+          tbody
+            tr(ng-repeat="SignUp in SignUps | orderBy:SortOrder | filter:{processed:'false'}" ng-class="{danger: SignUp.error}")
+              td
+                input(type="checkbox", ng-model="SignUp.selected")
+              td {{SignUp.firstname | titlecase}} {{SignUp.lastname | titlecase}}
+              td
+                span(ng-switch on="SignUp.role.value")
+                  span(ng-switch-when="st") Class {{SignUp.role.misc.name}}
+                  span(ng-switch-when="na") Other - {{SignUp.role.misc | titlecase}}
+                  span(ng-switch-default) {{SignUp.role.option | titlecase}}
+              td.text-center
+                a(href='mailto:{{SignUp.email}}?Subject=Library Sign Up Request') {{SignUp.email | lowercase}}
+              td.text-center {{SignUp.datetime | date:'MMM dd yyyy HH:mm'}}
+              td.text-center {{SignUp.ip}}
+        br
+        button.btn.btn-lg.btn-success(ng-click="OnApprove()" ng-disabled="!CanAct()") Approve
+        button.btn.btn-lg.btn-danger.pull-right(ng-click="OnReject()" ng-disabled="!CanAct()") Reject
+
+
+block scripts
+  script(src="scripts/controllers/admin-signups.js")

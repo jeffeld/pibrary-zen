@@ -5,15 +5,16 @@ block head
   link(rel="stylesheet" href="../styles/login.css")
 
 block body
-  div(ng-controller="LogInController")
-  form.form-signin(role="form", name="LogInForm")
-    h2.form-signin-heading Please sign in
-    input.form-control(type="text", placeholder="Your email address or membership no.", required, autofocus)
-    input.form-control(type="password", placeholder="Password", required)
-    label.checkbox Remember me
-      input(type="checkbox", value="rememberme")
-    button.btn.btn-lg.btn-primary.btn-block(type="submit", ng-disabled="LogInForm.$invalid") Sign in
-    hr
-    a(href="#") Forgotten your password?
+  div(ng-controller="LoginController")
+    form.form-signin(role="form", name="LogInForm", ng-submit="OnSubmit()")
+      h2.form-signin-heading Please sign in
+      input.form-control.top-field(type="text", ng-model="Username" placeholder="Your email address or membership no.", required, autofocus)
+      input.form-control.bottom-field(type="password", ng-model="Password" placeholder="Password", required)
+      label.checkbox Remember me
+        input(type="checkbox", value="rememberme")
+      button.btn.btn-lg.btn-primary.btn-block(type="submit", ng-disabled="! CanSubmit()") Sign in
+      hr
+      a(href="#") Forgotten your password?
 
 block scripts
+  script(src="scripts/controllers/login.js")

@@ -2,9 +2,56 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Sample Email</title>
+
+    <style>
+        body{
+            font-family: Helvetica Neue, Helvetica, Arial;
+            font-size: 11pt;
+            color: #333333;
+            background-color: #eeeeee;
+        }
+        .salutation {
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .name {
+            text-transform: capitalize;
+        }
+        .emailbody {
+
+        }
+        .signoff {
+            margin-top: 30px;
+        }
+        .footer {
+            margin-top: 40px;
+            border-top: solid 1px;
+            font-size: 0.8em;
+            font-weight: lighter;
+            color: #777777;
+
+        }
+    </style>
+
 </head>
 <body>
+    <div class="salutation">
+        <p class="salutation">Dear <span class="name">name</span>,
+    </div>
+    <div class="emailbody">
+        <p>Thank you for signing up to The Library.
+        <p>You request has been received and will be processed soon. When it has been processed you will receive an email detailing what you need to do next.</p>
+        <p>If you believe you have received this email by mistake, you need do nothing. Please accept our apologies. The request will automatically expire after 14 days.</p>
+    </div>
+
+    <div class="signoff">
+        <p>Regards,<br>The Library Team.
+    </div>
+    <div class="footer">
+        <p>Do not reply to this email; it has been sent from an unmonitored account.</p>
+    </div>
 
 </body>
 </html>

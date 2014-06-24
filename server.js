@@ -6,7 +6,10 @@ var express = require('express'),
     monogodb = require('mongodb'),
     mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;
+    SALT_WORK_FACTOR = 10,
+    mongojs = require ('mongojs')
+;
+
 
 /**
  * Main application file
@@ -16,7 +19,11 @@ var express = require('express'),
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Application Config
-var config = require('./lib/config/config');
+var config = require('./lib/config/config'),
+    db = mongojs.connect(config.database, ["signups"]);
+
+db.signups.ensureIndex({email : 1}, {unique : true});
+
 
 mongoose.connect('localhost', 'test');
 var db = mongoose.connection;
@@ -110,6 +117,9 @@ require('./lib/config/express')(app);
 
 // Routing
 require('./lib/routes')(app, config);
+
+// Application Event Management
+require('./lib/appevents');
 
 // Start server
 app.listen(config.port, function () {

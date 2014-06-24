@@ -5,33 +5,73 @@ block head
   link(rel="stylesheet", href="styles/signup.css")
 
 block body
-  div(ng-controller="SignUpController")
+  div(ng-controller="SignUpController" ng-cloak)
 
-    form.form-signin(role="form" name="SignUpForm")
-      h2.form-signin-heading Please sign up
-      input.form-control(type="text", placeholder="Your first name", ng-model="FirstName", required, autofocus)
-      input.form-control(type="text", placeholder="Your last name", ng-model="LastName", required)
-      hr
-      input.form-control(type="email", placeholder="Email address", ng-model="Email1", required)
-      input.form-control(type="email", placeholder="Confirm email address", ng-model="Email2", required)
-      hr
-      input.form-control(type="password", placeholder="Password", ng-model="Password1", required)
-      input.form-control(type="password", placeholder="Confirm password", ng-model="Password2", required)
-      hr
-      label I am&nbsp;
-        select(ng-model="Type", ng-options="o.option for o in Types")
-          option -- Please select --
-      label(ng-show="Type.value==='st'") &nbsp;in class&nbsp;
-        select(ng-model="Class", ng-options="class.name for class in Classes")
-          option -- Please select --
-      span(ng-show="Type.value==='na'") &nbsp;&nbsp;
-        input(type="text", placeholder="Please describe", ng-model="Other")
-      hr
-      label.checkbox &nbsp;I have read and agree to the &nbsp;
-        a Terms & Conditions
-        input.checkbox-inline(type="checkbox", ng-checked="AgreeTnC" ng-model="AgreeTnC")
-      hr
-      button.btn.btn-lg.btn-primary.btn-block(type="submit" ng-disabled="SignUpForm.$invalid || !CanSubmit()" ngClick="OnSubmit()") Register now
+    div#error-email.modal.fade
+      div.modal-dialog
+        div.modal-content
+          div.modal-header
+            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+            h4.modal-title Sorry {{FirstName | titlecase}}, there's a problem
+          div.modal-body
+            p
+              | The email address&nbsp;
+              strong {{Email1 | lowercase}}
+              | &nbsp;has already been used.
+            p Please supply a different email address and try again.
+          div.modal-footer
+            button.btn.btn-primary(type="button" ng-click="OnContinueAfterEmailError()") Continue...
+
+    div#error.modal.fade
+      div.modal-dialog
+        div.modal-content
+          div.modal-header
+            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+            h4.modal-title Sorry {{FirstName | titlecase}}, there seems to be a problem
+          div.modal-body
+            p Your request to sign up couldn't be processed right now. The problem may only be temporary.
+            p Please try again later.
+          div.modal-footer
+            button.btn.btn-primary(type="button" ng-click="OnTryAgain()") Continue...
+
+    div#success.modal.fade
+      div.modal-dialog
+        div.modal-content
+          div.modal-header
+            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+            h4.modal-title Thank you {{FirstName | titlecase}}
+          div.modal-body
+            p Your request to join has been received and will be reviewed.
+            p Once it has been approved, you will receive an email at {{Email1}} with further instructions.
+          div.modal-footer
+            button.btn.btn-primary(type="button" ng-click="OnSuccess()") Continue...
+
+    div
+      form.form-signin(role="form" name="SignUpForm" ng-submit="OnSubmit()")
+        h2.form-signin-heading Please sign up
+        input#firstname.form-control.top-field(type="text", placeholder="Your first name", ng-model="FirstName", maxlength="50", required, autofocus)
+        input#lastname.form-control.bottom-field(type="text", placeholder="Your last name", ng-model="LastName", maxlength="50", required)
+        hr
+        input#email1.form-control.top-field(type="email", placeholder="Email address", ng-model="Email1", required)
+        input#email2.form-control.bottom-field(type="email", placeholder="Confirm email address", ng-model="Email2", required)
+        hr
+        input#password1.form-control.top-field(type="password", placeholder="Password (min 8, max 20 characters)", ng-model="Password1", maxlength="20", minlength="8", required)
+        input#password2.form-control.bottom-field(type="password", placeholder="Confirm password", ng-model="Password2", required)
+        hr
+        label I am&nbsp;
+          select#type(ng-model="Type", ng-options="o.option for o in Types")
+            option -- Please select --
+        label(ng-show="Type.value==='st'") &nbsp;in class&nbsp;
+          select#classes(ng-model="Class", ng-options="class.name for class in Classes")
+            option -- Please select --
+        span(ng-show="Type.value==='na'") &nbsp;&nbsp;
+          input#other(type="text", placeholder="Please describe", ng-model="Other")
+        hr
+        label.checkbox &nbsp;I have read and agree to the &nbsp;
+          a Terms & Conditions
+          input#agreetnc.checkbox-inline(type="checkbox", ng-checked="AgreeTnC" ng-model="AgreeTnC")
+        hr
+        button#submit.btn.btn-lg.btn-primary.btn-block(type="submit" ng-disabled="!CanSubmit()") Register now
 
 block scripts
   script(src="scripts/controllers/signup.js")

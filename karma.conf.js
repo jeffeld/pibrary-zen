@@ -17,7 +17,13 @@ module.exports = function(config) {
       'app/bower_components/angular-cookies/angular-cookies.js',
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/angular-route/angular-route.js',
-      'app/scripts/*.js',
+      'app/bower_components/underscore/underscore.js',
+      'app/bower_components/moment/moment.js',
+      'app/scripts/user-app.js',
+      'app/scripts/ritsservices.js',
+      'app/scripts/controllers/signup.js',
+
+//      'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
