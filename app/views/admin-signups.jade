@@ -52,7 +52,10 @@ block body
                   span(ng-switch-default) {{SignUp.role.option | titlecase}}
               td.text-center
                 a(href='mailto:{{SignUp.email}}?Subject=Library Sign Up Request') {{SignUp.email | lowercase}}
-              td.text-center {{SignUp.datetime | date:'MMM dd yyyy HH:mm'}}
+              td.text-center
+                span(bs-tooltip='SignUp.datetime | stdDateTime', data-placement='left') {{SignUp.datetime | fromNow}}
+              //td.text-center {{SignUp.datetime | stdDateTime}}
+              //td.text-center {{SignUp.datetime | date:'MMM dd yyyy HH:mm'}}
               td.text-center {{SignUp.ip}}
         br
         button.btn.btn-lg.btn-success(ng-click="OnApprove()" ng-disabled="!CanAct()") Approve

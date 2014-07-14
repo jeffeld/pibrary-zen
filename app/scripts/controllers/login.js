@@ -19,7 +19,7 @@ userControllers.controller('LoginController', ['$scope', '$timeout', '$window', 
         };
 
         $scope.OnSubmit = function () {
-            alert ("Boo!");
+
         };
     }
 ]);

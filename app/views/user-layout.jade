@@ -28,32 +28,43 @@ html
             a.navbar-brand(href='#{home}') #{brand}
           div.collapse.navbar-collapse
 
+            if (userlevel >= 100)
+              ul.nav.navbar-nav
+                li
+                  a(href="/admin") Admin
+
             ul.nav.navbar-nav.navbar-right
               if (isLoggedIn)
                 li
-                  a(href='/account') My Account
+                  a(href='/myaccount') #{firstname}'s Account
                 li
-                  a(href='/signout') Log out
+                  a(href='/logout') Log out
               else
                 li
-                  a(href='/home/signin') Log In
+                  a(href='/login') Log In
                 li
                   a(href='/signup') Sign Up
-              if (isAdmin)
-                li
-                  a(href='/admin') Admin
+
               li
                 a(href='/help') Help
 
+      //- Search bar
+        Note the hidden submit button. This allows us to hit return in the entry
+        field and have the search execute.
+
       div#searchbar.container-fluid(class=isUserApp === false ? "searchbar-inverse" : "", ng-controller="SearchController")
-        div.input-group
-          div.input-group-btn
-            button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown') {{SearchScope.title}} &nbsp;
-              span.caret
-            ul.dropdown-menu
-              li(ng-repeat="Search in SearchScopes")
-                a(ng-click="onSearchScope($index)") {{Search.title}}
-          input.form-control(type='text', placeholder='{{SearchScope.prompt}}')
+        form(ng-submit="OnSearch()")
+          input(type="submit", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
+          div.input-group
+            div.input-group-btn
+              button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown') {{SearchScope.title}} &nbsp;
+                span.caret
+              ul.dropdown-menu
+                li(ng-repeat="Search in SearchScopes")
+                  a(ng-click="onSearchScope($index)") {{Search.title}}
+            input.form-control(type='text', placeholder='{{SearchScope.prompt}}' ng-model="Spec")
+
+
 
     div.container-fluid
       block body
@@ -71,6 +82,7 @@ html
   script(src='bower_components/underscore/underscore.js')
   script(src='bower_components/moment/moment.js')
   script(src='scripts/ritsservices.js')
+  script(src='scripts/zenservice.js')
   script(src='#{scriptPath}')
   block scripts
 

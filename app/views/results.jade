@@ -1,0 +1,31 @@
+extends user-layout
+
+block head
+  title Search Results
+  link(rel="stylesheet", href="styles/search.css")
+
+block body
+
+  script.
+    var ___q = '#{q}',
+        ___idx = '#{idx}';
+
+
+  div.container-fluid(ng-controller="ResultsController")
+    div.row
+      h4 Showing results for&nbsp;
+        i.text-primary {{Search.q}}
+        span(ng-show="Search.idx !== 'all'") &nbsp;in
+          i {{Search.idx | titlecase}}
+    div.search-block
+      div.row(ng-repeat="r in Results")
+        div.col-md-12
+          //img(src="http://placehold.it/85x120&text=No Image", alt="No Image")
+          img(src="images/No%20Image-85x120.gif", alt="No Image")
+          div
+            h4 {{r.title}}&nbsp;
+              small {{r.author}}
+
+block scripts
+  script(src="scripts/controllers/results.js")
+

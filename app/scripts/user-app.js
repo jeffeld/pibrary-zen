@@ -5,9 +5,51 @@ var userApp = angular.module ("UserApp",[
     'ngRoute',
     'UserControllers',
     'RITS.services',
+    'Zen.services',
     'mgcrea.ngStrap'
 ]);
 
+userApp.config(['$locationProvider', function ($locationProvider) {
+
+    // $locationProvider.html5Mode(true);
+
+}
+]);
+
+userApp.config(['$tooltipProvider', function ($tooltipProvider) {
+
+    angular.extend ($tooltipProvider.defaults, {
+       animation : 'am-flip-x',
+       trigger : 'hover',
+       delay : {
+           show : 500,
+           hide : 100
+       }
+    });
+
+}
+]);
+
+userApp.filter ('stdDate', function () {
+   return function (v) {
+       var m = moment (v);
+       return m.format('Do MMM YYYY');
+   }
+});
+
+userApp.filter ('stdDateTime', function () {
+    return function (v) {
+        var m = moment (v);
+        return m.format('Do MMM YYYY HH:mm');
+    }
+});
+
+userApp.filter ('fromNow', function () {
+    return function (v) {
+        var m = moment (v);
+        return m.fromNow();
+    }
+});
 
 userApp.filter ('titlecase', function () {
    return function (v) {
@@ -70,14 +112,14 @@ userApp.service ('Members', function () {
 var userControllers = angular.module ('UserControllers', []);
 
 
-userControllers.controller('SearchController', ['$scope',
-    function ($scope) {
+userControllers.controller('SearchController', ['$scope', '$window', '$location',
+    function ($scope, $window, $location) {
 
         $scope.SearchScopes = [
-            {
-                title : "All",
-                prompt: "Search all indexes..."
-            },
+//            {
+//                title : "All",
+//                prompt: "Search all indexes..."
+//            },
             {
                 title: "Title",
                 prompt: "Search by title only"
@@ -98,8 +140,22 @@ userControllers.controller('SearchController', ['$scope',
 
         $scope.SearchScope = $scope.SearchScopes[0];
 
+        $scope.Spec = $location.search.q;
+
+
+
         $scope.onSearchScope = function(v) {
             $scope.SearchScope = $scope.SearchScopes[v];
+        }
+
+        $scope.OnSearch = function () {
+
+            if ($scope.Spec.length === 0) {
+                return;
+            }
+
+            $window.location.href ='/search?idx=' + $scope.SearchScope.title.toLowerCase() + '&q=' + $scope.Spec;
+
         }
 
     }

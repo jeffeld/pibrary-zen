@@ -1,13 +1,18 @@
 'use strict';
 
+// Set default node environment to development
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 var express = require('express'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    monogodb = require('mongodb'),
-    mongoose = require('mongoose'),
+    _ = require ('./app/bower_components/underscore'),
+//    monogodb = require('mongodb'),
+//    mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10,
-    mongojs = require ('mongojs')
+    mongojs = require ('mongojs'),
+    membersdb = require('./lib/modules/membersdb')
 ;
 
 
@@ -15,65 +20,64 @@ var express = require('express'),
  * Main application file
  */
 
-// Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
 // Application Config
-var config = require('./lib/config/config'),
-    db = mongojs.connect(config.database, ["signups"]);
 
+var config = require('./lib/config/config');
+
+// Ensure all the required indexes are created
+var db = mongojs.connect(config.database, ["signups"]);
 db.signups.ensureIndex({email : 1}, {unique : true});
 
 
-mongoose.connect('localhost', 'test');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback() {
-    console.log('Connected to DB');
-});
-
-// User Schema
-var userSchema = mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true},
-});
-
-// Bcrypt middleware
-userSchema.pre('save', function(next) {
-    var user = this;
-
-    if(!user.isModified('password')) return next();
-
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if(err) return next(err);
-
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if(err) return next(err);
-            user.password = hash;
-            next();
-        });
-    });
-});
-
-// Password verification
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if(err) return cb(err);
-        cb(null, isMatch);
-    });
-};
-
-// Seed a user
-var User = mongoose.model('User', userSchema);
-var user = new User({ username: 'ensor', email: 'ensor@orac.com', password: 'tarial' });
-user.save(function(err) {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log('user: ' + user.username + " saved.");
-    }
-});
+//// Bcrypt middleware
+//userSchema.pre('save', function(next) {
+//    var user = this;
+//
+//    if(!user.isModified('password')) return next();
+//
+//    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+//        if(err) return next(err);
+//
+//        bcrypt.hash(user.password, salt, function(err, hash) {
+//            if(err) return next(err);
+//            user.password = hash;
+//            next();
+//        });
+//    });
+//});
+//
+//// Password verification
+//userSchema.methods.comparePassword = function(candidatePassword, cb) {
+//    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+//        if(err) return cb(err);
+//        cb(null, isMatch);
+//    });
+//};
+//
+//// Seed a user
+//var User = mongoose.model('User', userSchema);
+//
+//var user = new User({ username: 'ensor', email: 'ensor@orac.com', password: 'tarial' });
+//mongoose.connect('localhost', 'test');
+//var db = mongoose.connection;
+//db.on('error', console.error.bind(console, 'connection error:'));
+//db.once('open', function callback() {
+//    console.log('Connected to DB');
+//});
+//
+//// User Schema
+//var userSchema = mongoose.Schema({
+//    username: { type: String, required: true, unique: true },
+//    email: { type: String, required: true, unique: true },
+//    password: { type: String, required: true},
+//});
+//user.save(function(err) {
+//    if(err) {
+//        console.log(err);
+//    } else {
+//        console.log('user: ' + user.username + " saved.");
+//    }
+//});
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -81,33 +85,75 @@ user.save(function(err) {
 //   this will be as simple as storing the user ID when serializing, and finding
 //   the user by ID when deserializing.
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user.email);
 });
 
 passport.deserializeUser(function(id, done) {
-    User.findById(id, function (err, user) {
-        done(err, user);
+
+    membersdb.FindByEmail (id, function (data) {
+
+        var user = _.omit (data[0], ['_id', 'password']);
+        user.userlevel = user.userlevel || 0;
+        done (null, user);
+
+    }, function (err) {
+
+       done (err, id);
+
     });
+
+
+
 });
 
 // Use the LocalStrategy within Passport.
 //   Strategies in passport require a `verify` function, which accept
 //   credentials (in this case, a username and password), and invoke a callback
-//   with a user object.  In the real world, this would query a database;
-//   however, in this example we are using a baked-in set of users.
+//   with a user object.
 passport.use(new LocalStrategy(function(username, password, done) {
-    User.findOne({ username: username }, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-        user.comparePassword(password, function(err, isMatch) {
-            if (err) return done(err);
-            if(isMatch) {
-                return done(null, user);
-            } else {
-                return done(null, false, { message: 'Invalid password' });
+
+    membersdb.FindByEmail (username, function (data){
+
+
+        if (_.isObject(data) && _.isEmpty(data)) {
+            return done (null, false, {
+                message : 'Unknown username or password'
+            });
+        }
+
+        var user = data[0];
+
+        membersdb.ComparePassword (user._id.toString(), password, function (isSame) {
+            if (isSame) {
+                return done (null, user);
             }
-        });
+
+            return done (null, false, {
+                message : 'Unknown username or password'
+            });
+
+        }, function () {
+            return done (err);
+        })
+
+    }, function (err) {
+        return done (err);
     });
+
+
+
+//    User.findOne({ username: username }, function(err, user) {
+//        if (err) { return done(err); }
+//        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
+//        user.comparePassword(password, function(err, isMatch) {
+//            if (err) return done(err);
+//            if(isMatch) {
+//                return done(null, user);
+//            } else {
+//                return done(null, false, { message: 'Invalid password' });
+//            }
+//        });
+//    });
 }));
 
 var app = express();
