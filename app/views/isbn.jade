@@ -1,10 +1,49 @@
 extends user-layout
 block head
   title ISBN Details
-  link(rel="stylesheet", href="styles/isbn.css")
+  link(rel="stylesheet", href="styles/items.css")
+
+  script.
+    var ___isbn13 = '#{isbndetails.isbn13}';
 
 block body
-  h1 ISBN Details
+  div(ng-controller="ISBNController")
+    div.row.item-block
+      div.col-md-12
+        img(src="http://placehold.it/227x327&text=No Image Available", alt="No Image")
+        div
+          // h3 {{Details.title | titlecase}} &nbsp;
+          h3(ng-bind-html="Details.title | titlecase")
+          p(ng-show="Details.author !== ''") by&nbsp;
+            a(href="http://news.bbc.co.uk") {{Details.author}}
+          p {{Details.publisher}}
+            span(ng-show="Details.edition !== ''")
+              small &nbsp;- {{Details.edition}}
+            span(ng-show="Details.edition ==='' && Details.physical !== ''")
+              small &nbsp;- {{Details.physical}}
+          p
+            small ISBN-13: {{Details.isbn13}}
+              br
+              | ISBN-10: {{Details.isbn10}}
+          p
+            small {{Details.stock.length}} copies in library
+          //div(ng-show="Details.summary !== ''")
+          //  h4 Summary
+          //  p(ng-bind-html="Details.summary")
+
+          if (userlevel > 100)
+            p
+              small
+                a(ng-href="/api/search/isbn/{{Details.isbn13}}", target="_Blank") View raw data
+
+    div.row
+      div.col-md-12
+        div(ng-show="Details.summary !== ''")
+          h4 Summary
+          p(ng-bind-html="Details.summary")
+
+
+
 
 block scripts
   script(src="scripts/controllers/isbn.js")

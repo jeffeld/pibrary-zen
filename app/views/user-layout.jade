@@ -6,7 +6,6 @@ html
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
     link(rel='stylesheet', href='styles/user-nav.css')
-    //link(rel='stylesheet', href='styles/navbar.css')
     link(rel='stylesheet', href='styles/app.css')
     style.
       [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -52,7 +51,7 @@ html
         Note the hidden submit button. This allows us to hit return in the entry
         field and have the search execute.
 
-      div#searchbar.container-fluid(class=isUserApp === false ? "searchbar-inverse" : "", ng-controller="SearchController")
+      div#searchbar.container-fluid(class=isUserApp === false ? "searchbar-inverse" : "", ng-controller="SearchController", ng-cloak)
         form(ng-submit="OnSearch()")
           input(type="submit", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
           div.input-group
@@ -62,11 +61,11 @@ html
               ul.dropdown-menu
                 li(ng-repeat="Search in SearchScopes")
                   a(ng-click="onSearchScope($index)") {{Search.title}}
-            input.form-control(type='text', placeholder='{{SearchScope.prompt}}' ng-model="Spec")
+            input.form-control(type='text', placeholder='{{SearchScope.prompt}}' ng-model="Spec" autofocus)
 
 
 
-    div.container-fluid
+    div.container-fluid(ng-cloak)
       block body
 
 

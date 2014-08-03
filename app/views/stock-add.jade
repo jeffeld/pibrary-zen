@@ -1,0 +1,51 @@
+extends user-layout
+
+block head
+  title Add Stock Item
+  script.
+    var ___id = '#{stockid}';
+
+block body
+  div(ng-controller="StockAddController", ng-cloak)
+    div.row
+      div.col-md-12
+        h3 Add Stock Item {{StockCode}}
+    div.row(ng-show="Details === null")
+      div.col-md-12
+        form(role="form", name="ISBNCapture" ng-submit="OnISBN()")
+          div.form-group
+            input(type="submit", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
+            label(for="isbnNumber") ISBN Number
+              input#isbnNumber.form-control(type="text" ng-model="ISBN" placeholder="Scan/type the ISBN number")
+
+    div.row(ng-show="Details !== null" ng-cloak)
+      div.col-lg-12
+        div(ng-show="Details.title === ''")
+          h4 Details for this item could not be found
+          p Please enter the details for&nbsp;
+            strong {{ISBN}}
+            | &nbsp;below
+        div(ng-show="Details.title !== ''")
+          h4 Please verify the details for {{ISBN | uppercase}}
+
+        form(role="form", name="DetailCapture", ng-submit="OnDetails()")
+          div.form-group
+            label(for="title") Title
+              input#title.form-control(type="text", ng-model="Details.title", placeholder="The item's title")
+          div.form-group
+            label(for="author") Author
+              input#author.form-control(type="text", ng-model="Details.author", placeholder="The author's name")
+          div.form-group
+            label(for="publisher") Publisher
+              input#publisher.form-control(type="text", ng-model="Details.publisher", placeholder="The publisher")
+          div.form-group
+            label(for="summary") Summary
+              input#summary.form-control(type="multiline", ng-model="Details.summary", placeholder="Optional summary text for the item")
+          div
+            button.btn.btn-lg.btn-success(ng-click="OnAddItem()" ng-disabled="!CanSubmit()") Add Stock Item
+            button.btn.btn-lg.btn-danger(ng-click="OnCancel()" ng-disabled="!CanSubmit()") Cancel
+
+
+
+block scripts
+  script(src='scripts/controllers/stock-add.js')

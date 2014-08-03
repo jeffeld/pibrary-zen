@@ -6,30 +6,29 @@ block head
 block body
 
   div(ng-controller="MyAccountController" ng-cloak)
-    div.container-fluid
 
-      h3 My Details
-      div.row
-        div.col-md-12
-          a(href="#") Change my password
+    div.row
+      div.col-md-12
+        h3 My Details
+        a(href="#") Change my password
 
-      h3 Items on loan to me
-      div.search-block
-        div.row(ng-repeat="loan in User.loans ")
-          div.col-md-12
-            img(src="http://placehold.it/85x120&text=No Image", alt="No Image")
-            div
-              h4 {{loan.title}}&nbsp;
-                small {{loan.author}}
-              p Loaned on {{loan.checkedout | stdDate}}
-                span(ng-show="! loan.isOverdue") , due for return {{loan.due | stdDate}}
-                span.text-danger(ng-show="loan.isOverdue") &nbsp;and became overdue&nbsp;
-                  b {{loan.due | fromNow}}
+        h3 Items on loan to me
+        div.search-block
+          div.row(ng-repeat="loan in User.loans")
+            div.col-md-12
+              img(src="http://placehold.it/85x120&text=No Image", alt="No Image")
+              div
+                h4 {{loan.title}}&nbsp;
+                  small {{loan.author}}
+                p Loaned on {{loan.checkedout | stdDate}}
+                  span(ng-show="! loan.isOverdue") , due for return {{loan.due | stdDate}}
+                  span.text-danger(ng-show="loan.isOverdue") &nbsp;and became overdue&nbsp;
+                    b {{loan.due | fromNow}}
 
-              button.btn.btn-primary(ng-show="loan.renewed < 2") Renew
-              p.text-warning(ng-show="loan.renewed >= 2")
-                small This book cannot be renewed
-              hr
+                button.btn.btn-primary(ng-show="loan.renewed < 2") Renew
+                p.text-warning(ng-show="loan.renewed >= 2")
+                  small This book cannot be renewed
+                hr
 
 
 block scripts

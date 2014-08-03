@@ -11,19 +11,20 @@ block body
         ___idx = '#{idx}';
 
 
-  div.container-fluid(ng-controller="ResultsController")
+  div(ng-controller="ResultsController")
     div.row
-      h4 Showing results for&nbsp;
-        i.text-primary {{Search.q}}
-        span(ng-show="Search.idx !== 'all'") &nbsp;in
-          i {{Search.idx | titlecase}}
+      div.col-md-12
+        h4 Showing results for&nbsp;
+          i.text-primary {{Search.q}}
+          span(ng-show="Search.idx !== 'all'") &nbsp;in&nbsp;
+            i {{Search.idx | titlecase}}
     div.search-block
       div.row(ng-repeat="r in Results")
         div.col-md-12
           //img(src="http://placehold.it/85x120&text=No Image", alt="No Image")
           img(src="images/No%20Image-85x120.gif", alt="No Image")
           div
-            h4 {{r.title}}&nbsp;
+            h4 {{r.title | titlecase}}&nbsp;
               small {{r.author}}
 
 block scripts

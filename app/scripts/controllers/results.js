@@ -4,8 +4,8 @@ userApp.factory ('Search', ['$resource', function ($resource) {
 }]);
 
 
-userControllers.controller('ResultsController', ['$scope', '$location', 'Search', 'Codes',
-    function ($scope, $location, Search, Codes) {
+userControllers.controller('ResultsController', ['$scope', '$window', 'Search', 'Codes', 'Links',
+    function ($scope, $window, Search, Codes, Links) {
 
         // $scope.Search = $location.search();
         $scope.Search = {
@@ -14,17 +14,17 @@ userControllers.controller('ResultsController', ['$scope', '$location', 'Search'
         };
 
 
-        if (Codes.isISBN(Search.q)) {
+        if (Codes.isISBN($scope.Search.q)) {
 
-            $window.location.href = '/isbn/' + Search.q;
+            $window.location.href = Links.make('/isbn', $scope.Search.q);
 
-        } else if (Codes.isStockCode(Search.q)) {
+        } else if (Codes.isStockCode($scope.Search.q)) {
 
-            $window.location.href = '/stock/' + Search.q;
+            $window.location.href = Links.make('/stock', $scope.Search.q);
 
-        } else if (Codes.isMembershipCode(Search.q)) {
+        } else if (Codes.isMembershipCode($scope.Search.q)) {
 
-            $window.location.href= '/member/' + Search.q;
+            $window.location.href= Links.make('/member', $scope.Search.q);
 
         } else {
 
