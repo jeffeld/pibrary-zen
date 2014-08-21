@@ -19,7 +19,8 @@ userControllers.controller('ISBNController', ['$scope', '$sce', 'Codes', 'ISBN',
                     summary : (i.summary || i.notes) || '',
                     isbn10: i.isbn10 || 'n/a',
                     isbn13: i.isbn13 || 'n/a',
-                    stock_codes : j.stock_codes
+                    stock_codes : j.stock_codes,
+                    added : j.added
                 };
 
 
