@@ -15,7 +15,7 @@ block body
           // h3 {{Details.title | titlecase}} &nbsp;
           h3(ng-bind-html="Details.title | titlecase")
           p(ng-show="Details.author !== ''") by&nbsp;
-            a(href="http://news.bbc.co.uk") {{Details.author}}
+            a(ng-href="/search?q={{Details.author}}") {{Details.author}}
           p {{Details.publisher}}
             span(ng-show="Details.edition !== ''")
               small &nbsp;- {{Details.edition}}
@@ -29,7 +29,7 @@ block body
           p(ng-show="Details.stock_codes.length > 1")
             small.text-info {{Details.stock_codes.length}} copies in library
           p(ng-show="Details.stock_codes.length === 0")
-            small.text-warning The library does not have any copies of this item
+            small.text-warning The library does not possess any copies of this item
 
           p
             small(bs-tooltip='Details.added | stdDateTime', data-placement='bottom') Details add to library {{Details.added | fromNow}}
