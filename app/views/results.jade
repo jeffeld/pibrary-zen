@@ -11,21 +11,31 @@ block body
         ___idx = '#{idx}';
 
 
-  div(ng-controller="ResultsController")
-    div.row
-      div.col-md-12
-        h4 Showing results for&nbsp;
-          i.text-primary {{Search.q}}
-          span(ng-show="Search.idx !== 'all'") &nbsp;in&nbsp;
-            i {{Search.idx | titlecase}}
-    div.search-block
-      div.row(ng-repeat="r in Results")
+  div(ng-controller="ResultsController" ng-cloak)
+    div(ng-show="Results.length > 0")
+      div.row
         div.col-md-12
-          //img(src="http://placehold.it/85x120&text=No Image", alt="No Image")
-          img(src="images/No%20Image-85x120.gif", alt="No Image")
-          div
-            h4 {{r.title | titlecase}}&nbsp;
-              small {{r.author}}
+          h4 Showing results for&nbsp;
+            i.text-primary {{Search.q}}
+            //span(ng-show="Search.idx !== 'all'") &nbsp;in&nbsp;
+            //  i {{Search.idx | titlecase}}
+      div.search-block
+        div.row(ng-repeat="r in Results")
+          div.col-md-12
+            div
+              img(src="images/No%20Image-85x120.gif", alt="No Image")
+            div
+              a(href="/isbn?sid={{r.isbn}}")
+                h4 {{r.data[0].title | titlecase}}&nbsp;
+                  small {{r.data[0].author_data[0].name}}
+              p(ng-show="r.data[0].summary.length > 0") {{r.data[0].summary | limitTo : 150}}
+                span(ng-show="r.data[0].summary.length > 150") ...
+
+    div(ng-show="Results.length === 0")
+      div.row
+        div.col-md-12
+          h4 There are no results for your search&nbsp;
+            i.text-primary {{Search.q}}
 
 block scripts
   script(src="scripts/controllers/results.js")

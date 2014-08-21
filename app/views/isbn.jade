@@ -25,11 +25,18 @@ block body
             small ISBN-13: {{Details.isbn13}}
               br
               | ISBN-10: {{Details.isbn10}}
+
+          p(ng-show="Details.stock_codes.length > 1")
+            small.text-info {{Details.stock_codes.length}} copies in library
+          p(ng-show="Details.stock_codes.length === 0")
+            small.text-warning The library does not have any copies of this item
+
           p
-            small {{Details.stock.length}} copies in library
-          //div(ng-show="Details.summary !== ''")
-          //  h4 Summary
-          //  p(ng-bind-html="Details.summary")
+            small(bs-tooltip='Details.added | stdDateTime', data-placement='bottom') Details add to library {{Details.added | fromNow}}
+
+          //-
+          //- Useful admin only function to look at the raw data used to format this page
+          //-
 
           if (userlevel > 100)
             p
