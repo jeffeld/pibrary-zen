@@ -14,17 +14,18 @@ block body
         div.col-md-12
           h4 Recently added to the library
 
-      div.row(ng-switch="RecentlyAdded.length === 0")
-        div(ng-switch-when="true")
-          div.col.md-3
-            img.center-block(src="images/loader.gif")
-        div(ng-switch-when="false")
-          div.col-md-3(ng-repeat="item in RecentlyAdded | limitTo : 4")
-            div
-              a(ng-href="/isbn?sid={{item.isbn}}")
-                img.center-block(src="images/No%20Image-85x120.gif", alt="No Image")
-                h5 {{item.search_title | titlecase}}
-                  small &nbsp;{{item.search_author}}
+      div.row
+        div.col.md-3
+          div(ng-switch="RecentlyAdded.length === 0")
+            div.switch-item(ng-switch-when="true")
+              loading.center-block
+            div.switch-item(ng-switch-when="false")
+              div.col-md-3(ng-repeat="item in RecentlyAdded | limitTo : 4")
+                div
+                  a(ng-href="/isbn?sid={{item.isbn}}")
+                    img.center-block(src="images/No%20Image-85x120.gif", alt="No Image")
+                    h5 {{item.search_title | titlecase}}
+                      small &nbsp;{{item.search_author}}
 
 block scripts
   script(src='scripts/controllers/homepage.js')

@@ -3,6 +3,7 @@ var userApp = angular.module ("UserApp",[
     'ngResource',
     'ngSanitize',
     'ngRoute',
+    'ngAnimate',
     'UserControllers',
     'RITS.services',
     'Zen.services',
@@ -101,6 +102,22 @@ userApp.factory('ISBN', ['$resource', function ($resource) {
             }
         });
 }]);
+
+userApp.directive('loading', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        transclude: true,
+        scope: {
+        },
+
+        template: "<img src='images/loader.gif' alt='Loading'>",
+
+        controller: function ($scope, $rootScope) {
+            // $scope.loader = $rootScope.sitePath("Fixtures/loader.gif");
+        }
+    }
+})
 
 var userControllers = angular.module ('UserControllers', []);
 
