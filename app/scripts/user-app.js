@@ -19,13 +19,13 @@ userApp.config(['$locationProvider', function ($locationProvider) {
 
 userApp.config(['$tooltipProvider', function ($tooltipProvider) {
 
-    angular.extend ($tooltipProvider.defaults, {
-       animation : 'am-flip-x',
-       trigger : 'hover',
-       delay : {
-           show : 500,
-           hide : 100
-       }
+    angular.extend($tooltipProvider.defaults, {
+        animation: 'am-fade',
+        trigger: 'hover',
+        delay: {
+            show: 500,
+            hide: 100
+        }
     });
 
 }
@@ -88,17 +88,92 @@ userApp.service ('Members', function () {
 });
 
 userApp.factory('ISBN', ['$resource', function ($resource) {
-    return $resource('/api/search/isbn/:isbn', {
+    return $resource('/api/isbn/:isbn', {
             isbn: '@isbn'
         },
         {
-            search: {
+            add : {
+                method: 'PUT'
+            }
+        });
+}]);
+
+userApp.factory('Search', ['$resource', function ($resource) {
+
+    var transformISBNResponse = function (data, headers) {
+
+        var j = angular.fromJson(data),
+            i = {},
+            o = {};
+
+        if (angular.isDefined(j.data)) {
+            i=j.data[0];
+            o = {
+                book : {
+                    title : j.search_title || 'Unknown',
+                    author : j.search_author || '',
+                    publisher : (i.publisher_name || i.publisher_text) || 'Unknown Publisher',
+                    edition :  (i.edition_info || '') + ' ' + (i.physical_description_text || '') + ' ' + i.notes,
+                    summary : i.summary || '',
+                    isbn10: i.isbn10 || 'n/a',
+                    isbn13: i.isbn13 || 'n/a',
+                    stock_codes : j.stock_codes || [],
+                    added : j.added
+                },
+
+                raw : j
+            };
+        }
+
+
+        return o;
+    };
+
+
+    return $resource('/api/search/:index/:item', {
+            index: '@index',
+            item: '@item'
+        },
+        {
+            isbn: {
+                method: 'GET',
+                isArray: false,
+                params: {
+                    index: 'isbn'
+                },
+                transformResponse : transformISBNResponse
+            },
+            isbnFromExternal: {
                 method: 'POST',
                 isArray: false,
                 params: {
-
-                    isbn: '@isbn'
+                    index: 'isbn'
+                },
+                transformResponse : transformISBNResponse
+            },
+            stock: {
+                method: 'GET',
+                isArray: false,
+                params: {
+                    index: 'stock'
+                },
+                transformResponse : function (data, headers) {
+                    var o = angular.fromJson(data);
+                    return o;
                 }
+            }
+        });
+}]);
+
+userApp.factory('Stock', ['$resource', function ($resource) {
+    return $resource('/api/stock/:stockid/:isbn', {
+            stockid: '@stockid',
+            isbn: '@isbn'
+        },
+        {
+            add: {
+                method: 'PUT',
+                isArray: false
             }
         });
 }]);
@@ -114,7 +189,6 @@ userApp.directive('loading', function () {
         template: "<img src='images/loader.gif' alt='Loading'>",
 
         controller: function ($scope, $rootScope) {
-            // $scope.loader = $rootScope.sitePath("Fixtures/loader.gif");
         }
     }
 })

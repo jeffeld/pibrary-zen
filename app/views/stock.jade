@@ -1,10 +1,47 @@
 extends user-layout
-
 block head
+  title Stock Details
+  link(rel="stylesheet", href="styles/items.css")
+  script.
+    var ___isbn13 = '#{details.isbn13}',
+        ___stockCode = '#{details.stockCode}';
 
 block body
-  h1 TEST
-  if found
-    p Book was found
-  else
-    p Book was not found
+  div(ng-controller="StockController")
+    div.row.item-block
+      div.col-md-12
+        img(src="http://placehold.it/227x327&text=No Image Available", alt="No Image")
+        div
+          // h3 {{Details.title | titlecase}} &nbsp;
+          h2 \#{{StockCode}}
+          h3(ng-bind-html="Details.title | titlecase")
+          p(ng-show="Details.author !== ''") by&nbsp;
+            a(ng-href="/search?q={{Details.author}}") {{Details.author}}
+          p
+            small
+              strong ISBN-13:&nbsp;
+              a(ng-href="/isbn?sid={{Details.isbn13}}") {{Details.isbn13}}
+          p
+
+
+
+          //p(ng-show="Details.stock_codes.length > 1")
+          //  small.label.label-info {{Details.stock_codes.length}} copies in library
+          //p(ng-show="Details.stock_codes.length === 1")
+          //  small.label.label-info 1 copy in library
+          //p(ng-show="Details.stock_codes.length === 0")
+          //  small.label.label-danger The library does not own this item
+
+          p
+            small(bs-tooltip='Details.added | stdDateTime', data-placement='bottom') Item add to library {{Details.added | fromNow}}
+
+          //-
+          //- Useful admin only function to look at the raw data used to format this page
+          //-
+          if (userlevel > 100)
+            p
+              small
+                a(ng-href="/api/search/isbn/{{Details.isbn13}}", target="_Blank") View raw data
+
+block scripts
+  script(src="scripts/controllers/stock.js")

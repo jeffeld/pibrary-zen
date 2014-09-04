@@ -1,23 +1,38 @@
 
-userControllers.controller('StockAddController', ['$scope', 'Codes', 'ISBN', 'formService', 'Links',
-    function ($scope, Codes, ISBN, formService, Links) {
+userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes', 'ISBN', 'Stock', 'formService', 'Links', 'Search',
+    function ($scope, $q, $log, Codes, ISBN, Stock, formService, Links, Search) {
 
         $scope.StockCode = ___id;
         $scope.Details = null;
 
-        $scope.OnAddItem = function () {
+        $scope.OnAddItem = function (manualEntry) {
+
+            var addStockItem = function () {
+                Stock.add({stockid: $scope.StockCode, isbn: $scope.ISBN}).$promise.then(function () {
+                    Links.goHome();
+                }, function () {
+                    Links.go('/500');
+                });
+            };
+
+            if (manualEntry) {
+
+                ISBN.add({isbn: $scope.ISBN, book: $scope.Details}).$promise.then(function () {
+                    addStockItem();
+                }, function () {
+                    Links.go('/500');
+                });
+
+            } else {
+                addStockItem();
+            }
 
 
-
-
-
-        }
+        };
 
         $scope.OnCancel = function () {
-
-            Links.go ('/home', {text : 'Adding of stock code ' + $scope.StockCode + ' cancelled', type: 'warning'})
-
-        }
+            Links.goHome();
+        };
 
         $scope.CanSubmit = function () {
 
@@ -25,14 +40,14 @@ userControllers.controller('StockAddController', ['$scope', 'Codes', 'ISBN', 'fo
                 return false;
             }
 
-            var mustHaveLengths  = [$scope.Details.title, $scope.Details.author, $scope.Details.publisher];
-            if (! formService.hasNonZeroLength(mustHaveLengths)) {
+            var mandatoryFields  = [$scope.Details.title, $scope.Details.author, $scope.Details.publisher_name];
+            if (! formService.hasNonZeroLength(mandatoryFields)) {
                 return false;
             }
 
             return true;
 
-        }
+        };
 
         $scope.OnISBN = function () {
 
@@ -40,50 +55,52 @@ userControllers.controller('StockAddController', ['$scope', 'Codes', 'ISBN', 'fo
                 return;
             }
 
-            ISBN.get({ isbn: $scope.ISBN}).
+            // First we see if Orac has the ISBN details cached...
+
+            Search.isbn({item: $scope.ISBN}).
                 $promise.then(function (result) {
 
-                if (result.hasOwnProperty('index_searched')) {
-                    var d = result.data[0];
-                    $scope.Details = {
-                        title : d.title || d. title_latin || d.title_long,
-                        author : d.author_data[0].name || '',
-                        publisher : d.publisher_name || d.publisher_text || '',
-                        summary : d.summary || '',
-                        isbn10 : d.isbn10 || '',
-                        isbn13 : d.isbn13 || '',
-                        edition : d.edition_info
-                    }
-                } else {
-                    $scope.Details = ISBN.search({ isbn: $scope.ISBN}).
-                        $promise.then(function (result2) {
-                            var d = result2.data[0];
+                if (result.hasOwnProperty('book')) {
 
-                            $scope.Details = {
-                                title : d.title || d. title_latin || d.title_long,
-                                author : d.author_data[0].name || '',
-                                publisher : d.publisher_name || d.publisher_text || '',
-                                summary : d.summary || '',
-                                isbn10 : d.isbn10 || '',
-                                isbn13 : d.isbn13 || '',
-                                edition : d.edition_info
-                            }
+                    // Orac did have the details
+
+                    $scope.Details = result.book;
+                    $scope.OnAddItem(false);
+
+                } else {
+
+                    // Orac didn't have the details, so direct it to look at it's
+                    // external sources of information.
+
+                    Search.isbnFromExternal({key: $scope.ISBN}).
+                        $promise.then(function (result2) {
+
+                            // Orac found the results from one of its external sources.
+                            // They are now cached in its database, and have been returned
+                            // to use here.
+
+                            $scope.Details = result2.book;
+                            $scope.OnAddItem(false);
 
                         }, function () {
+
+                            // Orac didn't find it externally, so set the Details
+                            // object to empty. This will trigger manual entry
+                            // by the user.
+
                             $scope.Details = {};
                         });
                 }
 
             }, function () {
-                // Failure, so just supply an empty object
+
+                // Failure, so just supply an empty object triggering manual entry
+
                 $scope.Details = {};
             });
 
 
         }
-
-
-
 
     }
 ]);

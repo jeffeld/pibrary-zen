@@ -22,20 +22,27 @@ block body
             span(ng-show="Details.edition ==='' && Details.physical !== ''")
               small &nbsp;- {{Details.physical}}
           p
-            small ISBN-13: {{Details.isbn13}}
+            small
+              strong ISBN-13:&nbsp;
+              span {{Details.isbn13}}
               br
-              | ISBN-10: {{Details.isbn10}}
+              strong ISBN-10:&nbsp;
+              span {{Details.isbn10}}
 
           p(ng-show="Details.stock_codes.length > 1")
-            small.text-info {{Details.stock_codes.length}} copies in library
+            small.label.label-info {{Details.stock_codes.length}} copies in library
+          p(ng-show="Details.stock_codes.length === 1")
+            small.label.label-info 1 copy in library
           p(ng-show="Details.stock_codes.length === 0")
-            small.text-warning The library does not possess any copies of this item
+            small.label.label-danger The library does not own this item
 
           p
             small(bs-tooltip='Details.added | stdDateTime', data-placement='bottom') Details add to library {{Details.added | fromNow}}
 
           //-
           //- Useful admin only function to look at the raw data used to format this page
+          //- Note that the browser will display the data from the /api/search/isbn/:isbn path,
+          //- and not any client side transformations that MAY have been carried out
           //-
 
           if (userlevel > 100)
