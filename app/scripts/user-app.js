@@ -156,10 +156,6 @@ userApp.factory('Search', ['$resource', function ($resource) {
                 isArray: false,
                 params: {
                     index: 'stock'
-                },
-                transformResponse : function (data, headers) {
-                    var o = angular.fromJson(data);
-                    return o;
                 }
             }
         });
