@@ -174,6 +174,38 @@ userApp.factory('Stock', ['$resource', function ($resource) {
         });
 }]);
 
+userApp.factory('Actions', ['$resource', function ($resource) {
+    return $resource('/api/:action/:stockid/:membershipcode', {
+            action: '@action',
+            stockid: '@stockid',
+            membershipcode: '@membershipcode'
+        },
+        {
+            Lend: {
+                method: 'PUT',
+                isArray: false,
+                params: {
+                    action: 'lend'
+                }
+            },
+            Return: {
+                method: 'PUT',
+                isArray: false,
+                params: {
+                    action: 'return'
+                }
+            },
+            Renew: {
+                method: 'PUT',
+                isArray: false,
+                params: {
+                    action: 'renew'
+                }
+            }
+        });
+}]);
+
+
 userApp.directive('loading', function () {
     return {
         restrict: 'E',

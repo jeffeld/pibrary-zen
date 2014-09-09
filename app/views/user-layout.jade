@@ -10,6 +10,7 @@ html
     link(rel='stylesheet', href='styles/animations.css')
     link(rel='stylesheet', href='styles/user-nav.css')
     link(rel='stylesheet', href='styles/app.css')
+    link(rel='stylesheet', href='styles/app2.css')
     style.
       [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
@@ -72,7 +73,7 @@ html
 
       div#searchbar.container-fluid(class=isUserApp === false ? "searchbar-inverse" : "", ng-controller="SearchController", ng-cloak)
         form(ng-submit="OnSearch()")
-          input(type="submit", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
+          input(type="submit", name="search", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
           div.input-group
             div.input-group-btn
               button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown') {{SearchScope.title}} &nbsp;
@@ -103,5 +104,7 @@ html
   script(src='scripts/ritsservices.js')
   script(src='scripts/zenservice.js')
   script(src='#{scriptPath}')
+  if (userlevel > 100)
+    script(src='scripts/adminservices.js')
   block scripts
 

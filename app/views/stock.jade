@@ -2,9 +2,26 @@ extends user-layout
 block head
   title Stock Details
   link(rel="stylesheet", href="styles/items.css")
+  style.
+    #return {
+      margin-top: 5px;
+      margin-bottom: 20px;
+      height: 80px;
+
+    }
+    #renew {
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    #memberid {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
   script.
     var ___isbn13 = '#{details.isbn13}',
-        ___stockCode = '#{details.stockCode}';
+        ___stockCode = '#{details.stockCode}',
+        ___returnDate = '#{details.returnDate}';
 
 block body
   div(ng-controller="StockController")
@@ -32,5 +49,50 @@ block body
               small
                 a(ng-href="/api/search/isbn/{{Details.isbn13}}", target="_Blank") View raw data
 
+
+      //-
+      //- Only show on the admin pages.
+      //-
+
+      if (userlevel > 100)
+        div(ng-controller="LendingController")
+          if (!details.onLoan)
+
+            //
+            //- The item can be loaned out
+            //
+
+            div.col-md-4
+              div.side-bar.side-bar-lending
+                div.input-group
+                  form
+                    span
+                      h3 To lend this item
+                      span Scan or enter the membership ID
+                      input#memberid.form-control(type="text", placeholder="Membership ID", ng-model="MembershipId", ng-change="OnLend()")
+                    p
+                      small Item will be due back&nbsp;
+                        b {{ReturnDate | stdDate}}
+
+          else
+
+            //
+            //- The item is on loan and can either be returned or renewed
+            //
+
+            div.col-md-4
+              div.side-bar.side-bar-returning
+                h3 To return this item
+                span Touch or click the Return button
+                button#return.btn.btn-primary.form-control(type="button", ng-click="OnReturn()") Return
+                h3 To renew this item
+                span Touch or click the Renew button
+                button#renew.btn.btn-info.form-control(type="button", ng-click="OnRenew()") Renew
+                span
+                  small Item will be due back&nbsp;
+                    b {{ReturnDate | stdDate}}
+
 block scripts
   script(src="scripts/controllers/stock.js")
+  if (userlevel > 100)
+    script(src="scripts/controllers/lending.js")
