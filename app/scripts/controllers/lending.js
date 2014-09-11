@@ -2,25 +2,24 @@ userControllers.controller('LendingController', ['$scope', 'Codes', 'Links', 'Ac
     function ($scope, Codes, Links, Actions) {
 
         $scope.ReturnDate = ___returnDate;
+        $scope.StockId = ___stockCode;
 
         $scope.OnRenew = function () {
 
-            Actions.Renew({stockid: 'STOCKCODE'}).
+            Actions.Renew({stockid: $scope.StockId}).
                 $promise.then(function (data) {
-
                     Links.goHome();
-
                 }, function (error) {
 
-                });
-
+                }
+            );
 
         };
 
 
         $scope.OnReturn = function () {
 
-            Actions.Return({stockid: 'STOCKCODE'}).
+            Actions.Return({stockid: $scope.StockId}).
                 $promise.then(function (data) {
 
                     Links.goHome();
@@ -38,7 +37,7 @@ userControllers.controller('LendingController', ['$scope', 'Codes', 'Links', 'Ac
                 return;
             }
 
-            Actions.Lend({stockid: 'STOCKCODE', membershipcode: $scope.MembershipId}).
+            Actions.Lend({stockid: $scope.StockId, membershipcode: $scope.MembershipId}).
                 $promise.then(function (data) {
 
                     Links.goHome();

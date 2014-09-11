@@ -2,7 +2,9 @@
 angular.module ('Zen.services', [])
     .factory ('Codes', function() {
 
-        var isbnrx = /(?:97(?:8|9)\d{10})|(?:\d{9})(?:\d|x)/gi;
+        var isbnrx = /(?:97(?:8|9)\d{10})|(?:\d{9})(?:\d|x)/gi,
+            stockrx = /\b[a-f0-9]{10}\b/gi;
+
 
         return {
 
@@ -16,7 +18,7 @@ angular.module ('Zen.services', [])
             },
 
             isStockCode : function (v) {
-                return v === 'STOCKCODE' || v === 'CODESTOCK';
+                return stockrx.test(v);
             }
 
 

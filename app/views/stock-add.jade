@@ -9,7 +9,7 @@ block body
   div(ng-controller="StockAddController", ng-cloak)
     div.row
       div.col-md-12
-        h3 Add Stock Item {{StockCode}}
+        h3 Add Stock Item \#{{StockCode}}
     div.row(ng-show="Details === null")
       div.col-md-12
         form(role="form", name="ISBNCapture" ng-submit="OnISBN()")

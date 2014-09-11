@@ -81,7 +81,7 @@ html
               ul.dropdown-menu
                 li(ng-repeat="Search in SearchScopes")
                   a(ng-click="onSearchScope($index)") {{Search.title}}
-            input.form-control(type='text', placeholder='{{SearchScope.prompt}}' ng-model="Spec" autofocus)
+            input#searchbox.form-control(type='text', placeholder='{{SearchScope.prompt}}' ng-model="Spec")
 
 
 
@@ -107,4 +107,14 @@ html
   if (userlevel > 100)
     script(src='scripts/adminservices.js')
   block scripts
+
+  //-
+    Bit of CSS focus trickery.
+    By default, set the focus to the searchbox, unless another text
+    input field exist; in which case set the focus to that one.
+  script.
+    $(document).ready (function () {
+        $('#searchbox').focus();
+        $('input[type=text]:not(input[id="searchbox"])').focus();
+    });
 
