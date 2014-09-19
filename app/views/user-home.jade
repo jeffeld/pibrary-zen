@@ -1,31 +1,53 @@
 extends user-layout
 
-block head
-  link(rel="stylesheet", href="styles/user-home.css")
-
 block body
-  div(ng-controller="HomePageController")
+  if (userlevel >= 100)
 
+    script.
+      ___returnDate = '#{returnDate}'
 
-    //- Recently added items to the library
+    div(ng-controller="AdminHomeController")
 
-    div#recentlyAdded
-      div.row
-        div.col-md-12
-          h4 Recently added to the library
+      div.row.banner
+        div.col-sm-12.col-md-12.col-lg-12
+          div.text-center.alert.alert-info(style="padding-top:8px;padding-bottom:8px;margin-bottom:15px")
+            h3.text-info Today's return date is&nbsp;
+              strong {{ReturnDate | fullDate}}
 
-      div.row
-        div.col.md-3
-          div(ng-switch="RecentlyAdded.length === 0")
-            div.switch-item(ng-switch-when="true")
-              loading.center-block
-            div.switch-item(ng-switch-when="false")
-              div.col-md-3(ng-repeat="item in RecentlyAdded | limitTo : 4")
-                div
-                  a(ng-href="/isbn?sid={{item.isbn}}")
-                    img.center-block(src="images/No%20Image-85x120.gif", alt="No Image")
-                    h5 {{item.search_title | titlecase}}
-                      small &nbsp;{{item.search_author}}
+      div.row.admin-function
+        div.col-md-3.col-sm-3.col-xs-6(ng-repeat="f in Functions")
+          div.center-block.text-center
+            a(ng-href="{{f.link}}")
+              span.glyphicon(ng-class="f.icon")
+              h4 {{f.name}}&nbsp;
+              span.badge(ng-show="f.count() > 0") {{f.count()}}
+
+  else
+
+    div(ng-controller="HomePageController")
+
+      //- Recently added items to the library
+
+      div#recentlyAdded
+        div.row
+          div.col-md-12
+            h4 Recently added to the library
+
+        div.row
+          div.col.md-3
+            div(ng-switch="RecentlyAdded.length === 0")
+              div.switch-item(ng-switch-when="true")
+                loading.center-block
+              div.switch-item(ng-switch-when="false")
+                div.col-md-3(ng-repeat="item in RecentlyAdded | limitTo : 4")
+                  div
+                    a(ng-href="/isbn?sid={{item.isbn}}")
+                      img.center-block(src="images/No%20Image-85x120.gif", alt="No Image")
+                      h5 {{item.search_title | titlecase}}
+                        small &nbsp;{{item.search_author}}
 
 block scripts
-  script(src='scripts/controllers/homepage.js')
+  if (userlevel >= 100)
+    script(src='scripts/controllers/admin-homepage.js')
+  else
+    script(src='scripts/controllers/homepage.js')

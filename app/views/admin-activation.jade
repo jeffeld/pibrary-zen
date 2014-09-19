@@ -1,11 +1,52 @@
 extends user-layout
 
 block head
-  title Activation
+  title Activations
 
 block body
-  h1 This is the activation page
-  p {{Message}}
+  div(ng-controller="ActivationController")
+
+    div.row
+      div.col-md-12
+
+        div(ng-show="Activations === null")
+          loading.center-block
+
+        div(ng-show="Activations.length === 0")
+          p.alert.alert-success There are no pending activations.
+
+        div(ng-show="Activations.length > 0")
+
+          form
+            div.toolbar
+              select.pull-right.form-control(ng-model="SortOrder")
+                option(value="lastname") Last name: A to Z
+                option(value="-lastname") Last name: Z to A
+                option(value="firstname") First name: A to Z
+                option(value="-firstname") First name: Z to A
+                option(value="email") Email: A to Z
+                option(value="-email") Email: Z to A
+                option(value="created") Date created: Oldest to Newest
+                option(value="-created") Date created: Newest to Oldest
+
+          form
+            table.table.table-responsive.table-hover
+              thead
+                tr
+                  th Name
+                  th Email
+                  th.text-center Date Created
+                  th.text-center &nbsp;
+              tbody
+                tr(ng-repeat="a in Activations | orderBy:SortOrder")
+                  td
+                    a(ng-href="{{a.link}}") {{a.firstname}} {{a.lastname}}
+                  td {{a.email}}
+                  td.text-center {{a.created | stdDate}}
+                  td.text-center
+                    span.glyphicon.glyphicon-remove.text-danger(ng-click="OnRemove(a.email)")
+
+
 
 block scripts
   script(src="scripts/controllers/admin-activation.js")

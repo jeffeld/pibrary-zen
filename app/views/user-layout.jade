@@ -47,11 +47,6 @@ html
             a.navbar-brand(href='#{home}') #{brand}
           div.collapse.navbar-collapse
 
-            if (userlevel >= 100)
-              ul.nav.navbar-nav
-                li
-                  a(href="/admin") Admin
-
             ul.nav.navbar-nav.navbar-right
               if (isLoggedIn)
                 li
@@ -101,6 +96,7 @@ html
   script(src="bower_components/angular-strap/dist/angular-strap.tpl.min.js")
   script(src='bower_components/underscore/underscore.js')
   script(src='bower_components/moment/moment.js')
+  script(src='bower_components/webcam-directive/app/scripts/webcam.js')
   script(src='scripts/ritsservices.js')
   script(src='scripts/zenservice.js')
   script(src='#{scriptPath}')

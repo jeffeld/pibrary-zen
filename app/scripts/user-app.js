@@ -7,7 +7,8 @@ var userApp = angular.module ("UserApp",[
     'UserControllers',
     'RITS.services',
     'Zen.services',
-    'mgcrea.ngStrap'
+    'mgcrea.ngStrap',
+    'webcam'
 ]);
 
 userApp.config(['$locationProvider', function ($locationProvider) {
@@ -35,6 +36,13 @@ userApp.filter ('stdDate', function () {
    return function (v) {
        var m = moment (v);
        return m.format('Do MMM YYYY');
+   }
+});
+
+userApp.filter ('fullDate', function () {
+   return function (v) {
+       var m = moment (v);
+       return m.format('dddd Do MMMM YYYY');
    }
 });
 

@@ -1,0 +1,100 @@
+extends user-layout
+block head
+  title Activate
+  script.
+    var ___memberid = '#{memberdbid}';
+  style.
+    #preview {
+      display: inline-block;
+      box-sizing: border-box;
+      margin-bottom: 5px;
+    }
+
+block body
+  div(ng-controller="ActivateController")
+
+    div(ng-show="Member === null")
+      loading
+
+    div.center-block(ng-show="Member !== null")
+
+      div.row
+        div.col-md-12
+          h3 Activate {{Member.firstname | titlecase}} {{Member.lastname | titlecase}}'s Membership
+
+      div.row
+        div.col-md-2
+        div.col-md-8
+          h4 Step {{CurrentStep + 1}} of {{Steps.length}} - {{Steps[CurrentStep].title}}
+        div.col-md-2
+
+      div.row(style="height:300px")
+
+        div.col-md-2
+
+        div.col-md-8
+
+          //- Photo capture
+
+          div(ng-show="CurrentStep === 0")
+            div.alert.alert-warning(role="alert")
+              p
+                strong Note:&nbsp;
+                | A photograph is required to prevent misuse of the membership card.
+            div(ng-show="CameraState === 'preview'")
+              div(width="100%" style="display:inline-block;")
+                img#preview
+                div(width="50px")
+                button.btn.btn-info(ng-click="OnCameraRefresh()")
+                  span.glyphicon.glyphicon-refresh
+
+            div(ng-show="CameraState === 'capture'")
+              webcam
+              button.btn.btn-primary(ng-click="OnCameraClick()")
+                span.glyphicon.glyphicon-camera
+
+          //- Card number assignment
+
+          div(ng-show="CurrentStep === 1")
+            div.alert.alert-warning(role="alert")
+              p
+                | Use a brand new, never before used membership card
+            form(role="form", name="ActivationCapture")
+              div.form-group
+                input#membership.form-control(type="text", ng-model="Details.MembershipId", placeholder="Scan membership card")
+
+          //- Confirmation
+
+          div(ng-show="CurrentStep === 2")
+            //div.alert.alert-info(role="alert")
+            //  p Verify the name, photograph and membership card number.
+            //  p If you need to change any details, use the&nbsp;
+            //    strong Previous
+            //    | &nbsp;and&nbsp;
+            //    strong Next
+            //    | &nbsp;buttons.
+            //  p When you are ready to activate the membership, use the&nbsp;
+            //    strong Activate
+            //    | &nbsp;button.
+            div
+              img.center-block(ng-src="{{ImageDataUrl}}")
+              h4.text-center {{Member.firstname | titlecase}} {{Member.lastname | titlecase}}
+              p.text-center {{Details.MembershipId}}
+            div
+              button.btn.btn-lg.btn-primary(ng-click="OnActivate()", style="width:100%") Activate
+
+        div.col-md-2
+
+    //- Previous and Next bar
+
+    div.row(style="margin-top: 100px")
+      div.col-md-4
+      div.col-md-4
+        button.btn.btn-lg.btn-info.btn-wizard(ng-click="OnPrevious()" ng-disabled="CurrentStep === 0") Previous
+        button.btn.btn-lg.btn-info.btn-wizard.pull-right(ng-click="OnNext()" ng-disabled="(CurrentStep === Steps.length-1) || !Steps[CurrentStep].next()") Next
+      div.col-md-4
+
+block scripts
+  script(src="scripts/controllers/admin-activate.js")
+
+

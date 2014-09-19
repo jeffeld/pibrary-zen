@@ -23,3 +23,40 @@
     border-color: #BCE8F1;
     color: #3A87AD;
 }
+
+.admin-function {
+    margin-top: 5px;
+}
+
+.admin-function .glyphicon {
+    font-size: 42px;
+}
+
+.admin-function a {
+    /*color: #102372;*/
+}
+
+.admin-function a:hover {
+    text-decoration: none;
+}
+
+.admin-function .badge {
+    background-color: #CE0002;
+    position: relative;
+    top: -96px;
+    left: 24px;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.banner {
+    margin-bottom: 12px;
+}
+
+.banner h3 {
+    margin-top: 10px;
+}
+
+.btn-wizard {
+    width: 108px;
+}
