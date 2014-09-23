@@ -1,13 +1,7 @@
 body {
-    padding-top: 40px;
+    /*padding-top: 40px;*/
     padding-bottom: 40px;
-    background-color: #eee;
     color: #555;
-}
-
-h2 {
-    color: #555;
-    text-shadow: 0 0px 0px;
 }
 
 #searchbar {
