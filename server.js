@@ -15,6 +15,9 @@ var express = require('express'),
     membersdb = require('./lib/modules/membersdb')
 ;
 
+var isMembershipNumber = function (value) {
+    return value === "123456789";
+};
 
 /**
  * Main application file
@@ -90,19 +93,20 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
 
-    membersdb.FindByEmail (id, function (data) {
-
-        var user = _.omit (data[0], ['_id', 'password']);
+    var deserialize = function (data) {
+        var user = _.omit (data, ['_id', 'password']);
         user.userlevel = user.userlevel || 0;
         done (null, user);
+    },
+        errorHandler = function (err) {
+            done (err, id);
+        };
 
-    }, function (err) {
-
-       done (err, id);
-
-    });
-
-
+    if (isMembershipNumber(id)) {
+        membersdb.FindByMembershipId (id, deserialize, errorHandler);
+    } else {
+        membersdb.FindByEmail(id, deserialize, errorHandler);
+    }
 
 });
 
@@ -110,50 +114,44 @@ passport.deserializeUser(function(id, done) {
 //   Strategies in passport require a `verify` function, which accept
 //   credentials (in this case, a username and password), and invoke a callback
 //   with a user object.
-passport.use(new LocalStrategy(function(username, password, done) {
+passport.use(new LocalStrategy(function (username, password, done) {
 
-    membersdb.FindByEmail (username, function (data){
+    var compare = function (data) {
 
-
-        if (_.isObject(data) && _.isEmpty(data)) {
-            return done (null, false, {
-                message : 'Unknown username or password'
-            });
-        }
-
-        var user = data[0];
-
-        membersdb.ComparePassword (user._id.toString(), password, function (isSame) {
-            if (isSame) {
-                return done (null, user);
+            if (_.isObject(data) && _.isEmpty(data)) {
+                return done(null, false, {
+                    message: 'Unknown username or password'
+                });
             }
 
-            return done (null, false, {
-                message : 'Unknown username or password'
-            });
+            var user = data;
 
-        }, function () {
-            return done (err);
-        })
+            membersdb.ComparePassword(user._id.toString(), password, function (isSame) {
+                if (isSame) {
+                    return done(null, user);
+                }
 
-    }, function (err) {
-        return done (err);
-    });
+                return done(null, false, {
+                    message: 'Unknown username or password'
+                });
+
+            }, function () {
+                return done(err);
+            })
+
+        },
+        errorHandler = function (err) {
+            return done(err);
+        };
+
+    if (isMembershipNumber(username)) {
+        membersdb.FindByMembershipId (username, compare, errorHandler);
+    } else {
+        membersdb.FindByEmail(username, compare, errorHandler);
+    }
 
 
 
-//    User.findOne({ username: username }, function(err, user) {
-//        if (err) { return done(err); }
-//        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-//        user.comparePassword(password, function(err, isMatch) {
-//            if (err) return done(err);
-//            if(isMatch) {
-//                return done(null, user);
-//            } else {
-//                return done(null, false, { message: 'Invalid password' });
-//            }
-//        });
-//    });
 }));
 
 var app = express();
