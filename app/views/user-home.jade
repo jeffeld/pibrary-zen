@@ -15,7 +15,7 @@ block body
               strong {{ReturnDate | fullDate}}
 
       div.row.admin-function
-        div.col-md-3.col-sm-3.col-xs-6(ng-repeat="f in Functions")
+        div.col-md-2.col-sm-2.col-xs-6(ng-repeat="f in Functions")
           div.center-block.text-center
             a(ng-href="{{f.link}}")
               span.glyphicon(ng-class="f.icon")
