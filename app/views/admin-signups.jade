@@ -5,61 +5,75 @@ block head
 
 block body
   div(ng-controller="AdminSignUpController" ng-cloak)
-    h3 Pending Sign Ups
+    div.row
+      div.col-md-12
+        h3 Pending Sign Ups
 
-    div(ng-show="SignUps.length == 0")
-      p.alert.alert-success There are no pending sign ups
+    div.row(ng-show="SignUps.length == 0")
+      div.col-md-12
+        p.alert.alert-success There are no pending sign ups
 
     div(ng-show="SignUps.length > 0")
-      form
-        select.pull-right(ng-model="SortOrder" value="0")
-          option(value="datetime") Date: Oldest to Newest
-          option(value="-datetime") Date: Newest to Oldest
-          option(value="firstname") First name: A to Z
-          option(value="-firstname") First name: Z to A
-          option(value="lastname") Last name: A to Z
-          option(value="-lastname") Last name: Z to A
-          option(value='email') Email address: A to Z
-          option(value='-email') Email address: Z to A
-        label.pull-right Sort by:&nbsp;
-        br(ng-show="AtLeastOneError")
-        br(ng-show="AtLeastOneError")
+      div.row
+        div.col-md-12
+          form
+            select.pull-right(ng-model="SortOrder" value="0")
+              option(value="datetime") Date: Oldest to Newest
+              option(value="-datetime") Date: Newest to Oldest
+              option(value="firstname") First name: A to Z
+              option(value="-firstname") First name: Z to A
+              option(value="lastname") Last name: A to Z
+              option(value="-lastname") Last name: Z to A
+              option(value='email') Email address: A to Z
+              option(value='-email') Email address: Z to A
+            label.pull-right Sort by:&nbsp;
+            br(ng-show="AtLeastOneError")
+            br(ng-show="AtLeastOneError")
 
-        div.alert.alert-danger(ng-show="AtLeastOneError")
-          strong Please note:
-          span &nbsp;It has not been possible to process some of your requests.
-            | This problem may only be temporary. Please try again shortly.
+            div.alert.alert-danger(ng-show="AtLeastOneError")
+              strong Please note:
+              span &nbsp;It has not been possible to process some of your requests.
+                | This problem may only be temporary. Please try again shortly.
 
-        table.table.table-striped.table-responsive
-          thead
-            tr
-              th
-                input(type="checkbox", ng-model="SelectAll" ng-click="OnSelectAll()")
-              th Name
-              th &nbsp;
-              th.text-center Email Address
-              th.text-center Date
-              th.text-center IP
-          tbody
-            tr(ng-repeat="SignUp in SignUps | orderBy:SortOrder | filter:{processed:'false'}" ng-class="{danger: SignUp.error}")
-              td
-                input(type="checkbox", ng-model="SignUp.selected")
-              td {{SignUp.firstname | titlecase}} {{SignUp.lastname | titlecase}}
-              td
-                span(ng-switch on="SignUp.role.value")
-                  span(ng-switch-when="st") Class {{SignUp.role.misc.name}}
-                  span(ng-switch-when="na") Other - {{SignUp.role.misc | titlecase}}
-                  span(ng-switch-default) {{SignUp.role.option | titlecase}}
-              td.text-center
-                a(href='mailto:{{SignUp.email}}?Subject=Library Sign Up Request') {{SignUp.email | lowercase}}
-              td.text-center
-                span(bs-tooltip='SignUp.datetime | stdDateTime', data-placement='left') {{SignUp.datetime | fromNow}}
-              //td.text-center {{SignUp.datetime | stdDateTime}}
-              //td.text-center {{SignUp.datetime | date:'MMM dd yyyy HH:mm'}}
-              td.text-center {{SignUp.ip}}
-        br
-        button.btn.btn-lg.btn-success(ng-click="OnApprove()" ng-disabled="!CanAct()") Approve
-        button.btn.btn-lg.btn-danger.pull-right(ng-click="OnReject()" ng-disabled="!CanAct()") Reject
+            table.table.table-striped.table-responsive
+              thead
+                tr
+                  th
+                    input(type="checkbox", ng-model="SelectAll" ng-click="OnSelectAll()")
+                  th Name
+                  th &nbsp;
+                  th.text-center Email Address
+                  th.text-center Date
+                  th.text-center IP
+                  if (userlevel > 100)
+                    th &nbsp;
+              tbody
+                tr(ng-repeat="SignUp in SignUps | orderBy:SortOrder | filter:{processed:'false'}" ng-class="{danger: SignUp.error}")
+                  td
+                    input(type="checkbox", ng-model="SignUp.selected")
+                  td {{SignUp.firstname | titlecase}} {{SignUp.lastname | titlecase}}
+                  td
+                    span(ng-switch on="SignUp.role.value")
+                      span(ng-switch-when="st") Class {{SignUp.role.misc.name}}
+                      span(ng-switch-when="na") Other - {{SignUp.role.misc | titlecase}}
+                      span(ng-switch-default) {{SignUp.role.option | titlecase}}
+                  td.text-center
+                    a(href='mailto:{{SignUp.email}}?Subject=Library Sign Up Request') {{SignUp.email | lowercase}}
+                  td.text-center
+                    span(bs-tooltip='SignUp.datetime | stdDateTime', data-placement='left') {{SignUp.datetime | fromNow}}
+                  //td.text-center {{SignUp.datetime | stdDateTime}}
+                  //td.text-center {{SignUp.datetime | date:'MMM dd yyyy HH:mm'}}
+                  td.text-center {{SignUp.ip}}
+                  if (userlevel > 100)
+                    td.text-center
+                      span.glyphicon.glyphicon-remove.text-danger(ng-click="OnDelete(SignUp._id)")
+
+        div.row
+          div.col-md-3
+          div.col-md-6
+            button.btn.btn-lg.btn-success.btn-wizard(ng-click="OnApprove()" ng-disabled="!CanAct()") Approve
+            button.btn.btn-lg.btn-danger.btn-wizard.pull-right(ng-click="OnReject()" ng-disabled="!CanAct()") Reject
+          div.col-md-3
 
 
 block scripts

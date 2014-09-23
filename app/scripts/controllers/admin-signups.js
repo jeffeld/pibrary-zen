@@ -36,14 +36,16 @@ userControllers.controller('AdminSignUpController', ['$scope', 'SignUp',
         $scope.SortOrder = 'datetime';
         $scope.AtLeastOneError = false;
 
-
-        $scope.SignUps = SignUp.query(function (data) {
-            _.each(data, function (v) {
-                v.selected = $scope.SelectAll;
-                v.error = false;
-                v.processed = false;
+        var refresh = function () {
+            SignUp.query(function (data) {
+                $scope.SignUps = data;
+                _.each(data, function (v) {
+                    v.selected = $scope.SelectAll;
+                    v.error = false;
+                    v.processed = false;
+                });
             });
-        });
+        };
 
 
 //        $scope.AtLeastOneSelected = false;
@@ -84,15 +86,7 @@ userControllers.controller('AdminSignUpController', ['$scope', 'SignUp',
 
             });
 
-
-//            _.each ($scope.SignUps, function(v){
-//                SignUps.save ({id : v._id}, function() {
-//                    $scope.SignUps = _.reject ($scope.SignUps, function(z){
-//                        return z._id === v._id;
-//                    });
-//                });
-//            });
-
+            refresh();
 
         };
 
@@ -118,6 +112,18 @@ userControllers.controller('AdminSignUpController', ['$scope', 'SignUp',
 
             });
 
-        }
+            refresh();
+
+        };
+
+        $scope.OnDelete = function (id) {
+
+            SignUp.delete ({id: id, forceDelete: true}).$promise.then (function(data) {
+                refresh ();
+            });
+
+        };
+
+        refresh();
     }
 ]);
