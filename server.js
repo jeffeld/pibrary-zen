@@ -3,7 +3,10 @@
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var express = require('express'),
+var https = require('https'),
+    http = require('http'),
+    fs = require('fs'),
+    express = require('express'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     _ = require ('./app/bower_components/underscore'),
@@ -165,10 +168,40 @@ require('./lib/routes')(app, config);
 // Application Event Management
 require('./lib/appevents');
 
+
+//var app2 = express();
+//app2.get('*', function(req,res) {
+//    if (!req.secure) {
+//        res.redirect(['https://', req.get('Host'), req.url].join(''));
+//    }
+//});
+//
+//http.createServer(app2).listen(8080);
+
+
 // Start server
-app.listen(config.port, function () {
-  console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
-});
+
+if (_.isUndefined(config.ssl)) {
+
+    app.listen(config.port, function () {
+        console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
+    });
+
+} else {
+
+    var options = {
+        key : fs.readFileSync(config.ssl.key),
+        cert: fs.readFileSync(config.ssl.cert),
+        requestCert: false,
+        rejectUnauthorized: false
+    };
+
+    https.createServer(options,app).listen(config.port, function () {
+        console.log('Express HTTPS server listening on port %d in %s mode', config.port, app.get('env'));
+    });
+
+}
+
 
 // Expose app
 exports = module.exports = app;
