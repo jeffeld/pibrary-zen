@@ -1,3 +1,9 @@
+body {
+    font-family: "Myriad Set Pro","Lucida Grande","Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
+    -webkit-font-smoothing: antialiased;
+
+}
+
 .toolbar > .form-control {
     width: auto;
 }
