@@ -110,9 +110,15 @@ userApp.factory('Search', ['$resource', function ($resource) {
 
     var transformISBNResponse = function (data, headers) {
 
-        var j = angular.fromJson(data),
+        var j = {},
             i = {},
             o = {};
+
+        try {
+            j = angular.fromJson(data);
+        } catch(e) {
+            return o;
+        }
 
         if (angular.isDefined(j.data)) {
             i=j.data[0];
