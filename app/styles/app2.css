@@ -1,8 +1,10 @@
 
-h1, h2, h3, h4, h5, h6 {
-    color: #555;
-    text-shadow: 0 0px 0px;
-}
+/*h1, h2, h3, h4, h5, h6 {*/
+    /*color: #555;*/
+    /*text-shadow: 0 0px 0px;*/
+/*}*/
+
+
 
 .side-bar {
     border: 1px solid;
@@ -64,4 +66,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-wizard {
     width: 108px;
+}
+
+.btn-full {
+    width: 100%;
 }
