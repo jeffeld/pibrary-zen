@@ -72,15 +72,21 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
                     // Orac didn't have the details, so direct it to look at it's
                     // external sources of information.
 
-                    Search.isbnFromExternal({key: $scope.ISBN}).
+                    Search.isbnFromExternal({item: $scope.ISBN}).
                         $promise.then(function (result2) {
 
-                            // Orac found the results from one of its external sources.
-                            // They are now cached in its database, and have been returned
-                            // to use here.
+                            if (angular.isDefined(result2.book)) {
 
-                            $scope.Details = result2.book;
-                            $scope.OnAddItem(false);
+                                // Orac found the results from one of its external sources.
+                                // They are now cached in its database, and have been returned
+                                // to use here.
+
+                                $scope.Details = result2.book;
+                                $scope.OnAddItem(false);
+
+                            } else {
+                                $scope.Details = {};
+                            }
 
                         }, function () {
 

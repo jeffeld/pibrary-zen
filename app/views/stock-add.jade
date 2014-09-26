@@ -26,13 +26,9 @@ block body
     div.row(ng-show="Details !== null" ng-cloak)
       div.col-md-3
       div.col-md-6
-        div(ng-show="Details.title === ''")
-          h4.text-center Details for this item could not be found
-          p.text-center Please enter the details for&nbsp;
-            strong {{ISBN}}
-            | &nbsp;below
-        div(ng-show="Details.title !== ''")
-          h4.text-center Please verify the details for {{ISBN | uppercase}}
+        div(ng-show="Details !== ''")
+          h4.text-center Details for {{ISBN}} could not be found
+          p.text-center Please enter the details below
 
         form(role="form", name="DetailCapture", ng-submit="OnDetails()")
           div.form-group
