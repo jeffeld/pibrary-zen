@@ -95,6 +95,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
                             // by the user.
 
                             $scope.Details = {};
+
                         });
                 }
 
