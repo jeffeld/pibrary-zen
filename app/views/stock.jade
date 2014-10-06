@@ -69,7 +69,7 @@ block body
                     span
                       h3 To lend this item
                       span Scan or enter the membership ID
-                      input#memberid.form-control(type="text", placeholder="Membership ID", ng-model="MembershipId", ng-change="OnLend()")
+                      input#memberid.form-control(low, type="text", placeholder="Membership ID", ng-model="MembershipId", ng-change="OnLend()")
                     p
                       small Item will be due back&nbsp;
                         b {{ReturnDate | stdDate}}

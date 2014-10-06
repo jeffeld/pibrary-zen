@@ -20,7 +20,7 @@ block body
         form(role="form", name="ISBNCapture" ng-submit="OnISBN()")
           div.form-group
             input(type="submit", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
-            input#isbnNumber.form-control(type="text" ng-model="ISBN" placeholder="Scan/type the ISBN number")
+            input#isbnNumber.form-control(low, type="text" ng-model="ISBN" placeholder="Scan/type the ISBN number")
       div.col-md-3
 
     div.row(ng-show="Details !== null" ng-cloak)
@@ -32,7 +32,7 @@ block body
 
         form(role="form", name="DetailCapture", ng-submit="OnDetails()")
           div.form-group
-            input#title.form-control(type="text", ng-model="Details.title", placeholder="The item's title")
+            input#title.form-control(autofocus, type="text", ng-model="Details.title", placeholder="The item's title")
           div.form-group
             input#author.form-control(type="text", ng-model="Details.author", placeholder="The author's name")
           div.form-group
