@@ -1,0 +1,48 @@
+extends user-layout
+block head
+  title Generate Stock Codes
+
+
+block body
+  div(ng-controller="StockCodesController")
+    div.row
+      div.col-md-3
+      div.col-md-6.text-center
+        h3 Generate Stock Codes
+        form(role="form", name="CodesMethod", style="margin-bottom: 20px")
+          select.form-control(ng-model="Method" ng-options="m.name for m in Methods")
+            option(value="") -- Choose method --
+
+        form(role="form", name="CodesCalculator")
+          div.form-group(ng-show="Method.value === 'total'")
+            input#total.form-control(type="number", step="1", min="1", max="{{MaxCodes}}" ng-model="Total", placeholder="How many codes to generate (maximum of {{MaxCodes}})")
+
+          div(ng-show="Method.value === 'rcp'")
+            div.form-group
+              input#total.form-control.top-field(type="number", step="1", min="1", max="{{MaxCodes}}" ng-model="Rows", placeholder="How many rows of stickers does each page have?")
+              input#total.form-control.middle-field(type="number", step="1", min="1", max="{{MaxCodes}}" ng-model="Columns", placeholder="How many columns of stickers does each page have?")
+              input#total.form-control.bottom-field(type="number", step="1", min="1", max="{{MaxCodes}}" ng-model="Pages", placeholder="How many pages?")
+
+            div(style="height:50px")
+              h4.text-success(ng-show="isRCPAN()" ng-class="{'text-danger': CalculateRCP() > MaxCodes}") {{Rows}} rows x {{Columns}} columns x {{Pages}} pages =&nbsp;
+                b {{CalculateRCP()}}
+                | &nbsp;codes
+
+          div(ng-show="Method.value === 'cpp'")
+            div.form-group
+              input#total.form-control.top-field(type="number", step="1", min="1", max="{{MaxCodes}}" ng-model="CodesPerPage", placeholder="How many codes does each page have?")
+              input#total.form-control.bottom-field(type="number", step="1", min="1", max="{{MaxCodes}}" ng-model="Pages2", placeholder="How many pages?")
+            div(style="height:50px")
+              h4.text-success(ng-show="isCPPAN()" ng-class="{'text-danger': CalculateCPP() > MaxCodes}") {{CodesPerPage}} x {{Pages2}} pages =&nbsp;
+                b {{CalculateCPP()}}
+                | &nbsp;codes
+
+        div(ng-show="Method != null && Method.name !== ''")
+          //button.btn.btn-primary.btn-full(ng-click="GetCodes()" ng-disabled="!CanSubmit()") Generate Codes
+          a.btn.btn-primary.active(ng-href="{{MakeDownloadLink()}}", role="button") Generate Codes
+
+      div.col-md-3
+
+
+block scripts
+  script(src="scripts/controllers/stockcodes.js")

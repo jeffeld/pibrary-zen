@@ -66,48 +66,69 @@ userControllers.controller('AdminHomeController', ['$scope', '$timeout', 'Counts
         updateCount (getEmailsCount, _.random(30,60));
         updateCount (getOverduesCount, _.random(30,60));
 
-        $scope.Functions = [
+        $scope.Sections = [
             {
-                name : 'Sign-Ups',
-                icon : 'glyphicon-th-list',
-                count : function () {
-                    return $scope.SignUpCount;
-                },
+                name : 'Tasks',
+                functions : [
+                    {
+                        name : 'Overdues',
+                        icon : 'glyphicon-asterisk',
+                        count : function () {
+                            return $scope.OverduesCount;
+                        },
+                        link : '/overdues'
+                    }
+                ]
+            },
+            {
+                name : 'Administration',
+                functions : [
+                    {
+                        name : 'Sign-Ups',
+                        icon : 'glyphicon-th-list',
+                        count : function () {
+                            return $scope.SignUpCount;
+                        },
 
-                link : '/adminsignups'
-            },
-            {
-                name : 'Activations',
-                icon : 'glyphicon-flash',
-                count : function () {
-                    return $scope.ActivationsCount
-                },
-                link : '/adminactivations'
-            },
-            {
-                name : 'Emails',
-                icon : 'glyphicon-envelope',
-                count : function () {
-                    return $scope.EmailsCount;
-                },
-                link : '/adminemails'
-            },
-            {
-                name : 'Overdues',
-                icon : 'glyphicon-asterisk',
-                count : function () {
-                    return $scope.OverduesCount;
-                },
-                link : '/overdues'
+                        link : '/adminsignups'
+                    },
+                    {
+                        name : 'Activations',
+                        icon : 'glyphicon-flash',
+                        count : function () {
+                            return $scope.ActivationsCount
+                        },
+                        link : '/adminactivations'
+                    },
+                    {
+                        name : 'Stock Codes',
+                        icon : 'glyphicon-barcode',
+                        count : 0,
+                        link : '/stockcodes'
+                    },
+                    {
+                        name : 'Emails',
+                        icon : 'glyphicon-envelope',
+                        count : function () {
+                            return $scope.EmailsCount;
+                        },
+                        link : '/adminemails'
+                    }
+
+                ]
             },
             {
                 name : 'Settings',
-                icon : 'glyphicon-cog',
-                count : 0,
-                link : '/settings'
+                functions : [
+                    {
+                        name : 'Settings',
+                        icon : 'glyphicon-cog',
+                        count : 0,
+                        link : '/settings'
+                    }
+
+                ]
             }
-
         ];
-
 
     }]);

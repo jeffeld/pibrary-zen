@@ -14,13 +14,17 @@ block body
             h3.text-info Today's return date is&nbsp;
               strong {{ReturnDate | fullDate}}
 
-      div.row.admin-function
-        div.col-md-2.col-sm-2.col-xs-6(ng-repeat="f in Functions")
-          div.center-block.text-center
-            a(ng-href="{{f.link}}")
-              span.glyphicon(ng-class="f.icon")
-              h4 {{f.name}}&nbsp;
-              span.badge(ng-show="f.count() > 0") {{f.count()}}
+      div.repeat-item(ng-repeat="s in Sections")
+        div.row.admin-function
+          div.col-md-12
+            h3 {{s.name}}
+          div.row.admin-function
+            div.col-md-2.col-sm-2.col-xs-6(ng-repeat="f in s.functions")
+              div.center-block.text-center
+                a(ng-href="{{f.link}}")
+                  span.glyphicon(ng-class="f.icon")
+                  h4 {{f.name}}&nbsp;
+                  span.badge(ng-show="f.count() > 0") {{f.count()}}
 
   else
 

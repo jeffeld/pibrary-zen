@@ -29,6 +29,14 @@ th > a > .glyphicon {
     border-top-right-radius: 0;
 }
 
+.middle-field {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-bottom: -1px;
+}
+
 .btn-action {
     background-color: #3E4650;
 }
