@@ -71,14 +71,16 @@ html
       div#searchbar.container-fluid(class=isUserApp === false ? "searchbar-inverse" : "", ng-controller="SearchController", ng-cloak)
         form(ng-submit="OnSearch()")
           input(type="submit", name="search", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
-          div.input-group
-            div.input-group-btn
-              button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown') {{SearchScope.title}} &nbsp;
-                span.caret
-              ul.dropdown-menu
-                li(ng-repeat="Search in SearchScopes")
-                  a(ng-click="onSearchScope($index)") {{Search.title}}
-            input#searchbox.form-control(type='text', placeholder='{{SearchScope.prompt}}' ng-model="Spec")
+          //-div.input-group
+          //-  div.input-group-btn
+          //-    button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown') {{SearchScope.title}} &nbsp;
+          //-      span.caret
+          //-    ul.dropdown-menu
+          //-      li(ng-repeat="Search in SearchScopes")
+          //-        a(ng-click="onSearchScope($index)") {{Search.title}}
+          //-  input#searchbox.form-control(type='text', placeholder='{{SearchScope.prompt}}' ng-model="Spec")
+          div.form-group
+            input#searchbox.form-control(type='text', placeholder='Search the catalog by title and author' ng-model="Spec", style="display: table-cell")
 
 
 
