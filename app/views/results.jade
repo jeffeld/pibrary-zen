@@ -23,7 +23,7 @@ block body
         div.row.repeat-item(ng-repeat="r in Results")
           div.col-md-12
             div
-              img(src="images/No%20Image-85x120.gif", alt="No Image")
+              img.center-block.cover-image.cover-image-small(ng-src="/covers/{{r.data[0].isbn13}}", alt="No Image")
             div
               a(href="/isbn?sid={{r.isbn}}")
                 h4 {{r.data[0].title | titlecase}}&nbsp;

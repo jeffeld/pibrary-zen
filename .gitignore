@@ -8,3 +8,4 @@ heroku
 dist
 .idea
 certs
+app/cover

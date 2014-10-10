@@ -27,7 +27,7 @@ block body
   div(ng-controller="StockController")
     div.row.item-block
       div.col-md-8
-        img(src="http://placehold.it/227x327&text=No Image Available", alt="No Image")
+        img.center-block.cover-image.cover-image-medium(ng-src="/covers/{{Details.isbn13}}", alt="No Image")
         div
           h3 \#{{StockCode}}
           h4(ng-bind-html="Details.title | titlecase")

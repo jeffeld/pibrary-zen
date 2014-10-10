@@ -113,6 +113,11 @@ userControllers.controller('AdminHomeController', ['$scope', '$timeout', 'Counts
                             return $scope.EmailsCount;
                         },
                         link : '/adminemails'
+                    },
+                    {
+                        name : 'Organisational Units',
+                        icon : 'glyphicon-th',
+                        link : '/orgunits'
                     }
 
                 ]

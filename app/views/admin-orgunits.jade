@@ -1,0 +1,76 @@
+extends user-layout
+block head
+  title Organisational Units
+  style.
+    .short-num {
+       width: 80px;
+    }
+
+block body
+  div(ng-controller="AdminOrgUnitsController")
+    div.row
+      div.col-md-12
+        h3 Organisational Units
+
+        form
+          div.toolbar
+            a.btn.btn-primary(href="/addorgunit")
+              span
+                span.glyphicon.glyphicon-plus-sign
+                span &nbsp; Add New OU
+            select.pull-right.form-control(ng-model="SortOrder")
+              option(value="name") Name: A to Z
+              option(value="-name") Name: Z to A
+              option(value="contact") Contact: A to Z
+              option(value="-contact") Contact: Z to A
+              option(value="created") Created: Newest to Oldest
+              option(value="-created") Created: Oldest to Newest
+
+        form
+          table.table.table-responsive.table-hover
+            thead
+              tr
+                //th
+                //  input(type="checkbox", ng-model="SelectAll" ng-click="OnSelectAll()")
+                th Name
+                th Contact
+                th.text-center Max Loans
+                th.text-center Num Members
+                th Created
+                th Last Updated
+                th &nbsp;
+              tr
+                //th &nbsp;
+                th
+                  input.form-control(low, type="text", ng-model="Spec.name" ng-change="SetFilter('to', Spec.to)")
+                th
+                  input.form-control(type="text", ng-model="Spec.contact" ng-change="SetFilter('contact', Spec.contact)")
+                th.text-center.short-num
+                  input.form-control(type="text", ng-model="Spec.maxLoans")
+                th.text-center.short-num
+                  input.form-control(type="text", ng-model="Spec.members")
+                th
+                  input.form-control(type="text", ng-model="Spec.created", bs-datepicker, data-date-Format="MMM dd yyyy", data-max-Date="today", data-autoclose="true", data-use-Native="true")
+                th
+                  input.form-control(type="text", ng-model="Spec.lastupdated", bs-datepicker, data-date-Format="MMM dd yyyy", data-max-Date="today", data-autoclose="true", data-use-Native="true")
+                th
+                  a(ng-click="OnReset()")
+                    span.glyphicon.glyphicon-remove
+            tbody
+              tr(ng-repeat="ou in OrgUnits | orderBy:SortOrder")
+                td {{ou.name}}
+                td
+                  a(ng-href="mailto:{{ou.email}}") {{ou.contact}}
+                  br
+                  a(ng-href="mailto:{{ou.email}}")
+                    small {{ou.email}}
+                td.text-center.short-num {{ou.maxLoans}}
+                td.text-center.short-num {{ou.members.length}}
+                td
+                  span(bs-tooltip='ou.created | stdDateTime', data-placement='bottom') {{ou.created | fromNow}}
+                td
+                  span(bs-tooltip='ou.lastUpdated | stdDateTime', data-placement='bottom') {{ou.lastUpdated | fromNow}}
+                td &nbsp;
+
+block scripts
+  script(src="scripts/controllers/admin-orgunits.js")

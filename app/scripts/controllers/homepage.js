@@ -20,6 +20,9 @@ userControllers.controller('HomePageController', ['$scope', 'Stats', '$timeout',
     function ($scope, Stats, $timeout) {
 
         $scope.RecentlyAdded = [];
-        $scope.RecentlyAdded = Stats.recentlyAdded();
+        Stats.recentlyAdded().$promise.then(function (data){
+            $scope.RecentlyAdded = _.shuffle(data);
+
+        });
 
     }]);

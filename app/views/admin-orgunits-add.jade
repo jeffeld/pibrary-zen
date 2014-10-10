@@ -1,0 +1,28 @@
+extends user-layout
+block head
+  title Add Organisational Unit
+  style.
+    .short-num {
+      width: 80px;
+    }
+block body
+    div.row(ng-controller="AddOrgUnitController")
+      div.col-md-3
+      div.col-md-6
+        h3.text-center Add New Organisational Unit
+        form(role="form", name="OUCapture", ng-submit="OnDetails()")
+          div.form-group
+            input#ouname.form-control(autofocus, type="text", ng-model="OU.name", placeholder="The name of the Organisational Unit")
+          div.form-group
+            input#oucontact.form-control(type="text", ng-model="OU.contact", placeholder="The name of the Organisational Unit's primary contact")
+          div.form-group
+            input#ouemail.form-control(type="email", ng-model="OU.email", placeholder="The email address of the Organisational Unit's primary contact")
+          div.form-group
+            input#oumaxloans.form-control(type="number", step="1", min="1", max="999", ng-model="OU.maxLoans", placeholder="Number of items that can be loaned to members")
+          div
+            button.btn.btn-primary.btn-full(ng-click="OnAddOU()" ng-disabled="!CanSubmit()") Add OU
+      div.col-md-3
+
+block scripts
+  script(src="scripts/controllers/admin-orgunits.js")
+

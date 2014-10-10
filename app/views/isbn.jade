@@ -10,7 +10,7 @@ block body
   div(ng-controller="ISBNController")
     div.row.item-block
       div.col-md-12
-        img(src="/images/No Image-227x327.gif", alt="No Image")
+        img.cover-image.cover-image-medium(ng-src="/covers/{{isbn13}}")
         div
           // h3 {{Details.title | titlecase}} &nbsp;
           h3(ng-bind-html="Details.title | titlecase")

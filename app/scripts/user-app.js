@@ -219,7 +219,6 @@ userApp.factory('Actions', ['$resource', function ($resource) {
         });
 }]);
 
-
 userApp.directive('loading', function () {
     return {
         restrict: 'E',
@@ -233,7 +232,7 @@ userApp.directive('loading', function () {
         controller: function ($scope, $rootScope) {
         }
     }
-})
+});
 
 var userControllers = angular.module ('UserControllers', []);
 

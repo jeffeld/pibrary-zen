@@ -71,3 +71,26 @@
 .btn-full {
     width: 100%;
 }
+
+.cover-image {
+
+}
+
+.cover-image-small {
+    height:120px;
+    max-width: 85px;
+}
+
+.cover-image-medium {
+    height:327px;
+}
+
+.item-preview {
+    overflow-y: hidden;
+    height: 200px;
+    margin-bottom-bottom: 20px;
+}
+
+.item-preview a:hover{
+    text-decoration: none;
+}

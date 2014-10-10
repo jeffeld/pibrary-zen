@@ -43,12 +43,13 @@ block body
               div.switch-item(ng-switch-when="true")
                 loading.center-block
               div.switch-item(ng-switch-when="false")
-                div.col-md-3(ng-repeat="item in RecentlyAdded | limitTo : 4")
-                  div
-                    a(ng-href="/isbn?sid={{item.isbn}}")
-                      img.center-block(src="images/No%20Image-85x120.gif", alt="No Image")
+                div.col-md-3.col-lg-2(ng-repeat="item in RecentlyAdded | limitTo : 12")
+                  div.item-preview
+                    a.text-center(ng-href="/isbn?sid={{item.isbn}}")
+                      img.center-block.cover-image.cover-image-small(ng-src="/covers/{{item.isbn}}", alt="No Image")
                       h5 {{item.search_title | titlecase}}
-                        small &nbsp;{{item.search_author}}
+                        br
+                        small {{item.search_author}}
 
 block scripts
   if (userlevel >= 100)
