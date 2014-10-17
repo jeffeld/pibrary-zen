@@ -130,7 +130,7 @@ passport.use(new LocalStrategy(function (username, password, done) {
             var user = data;
 
             membersdb.ComparePassword(user._id.toString(), password, function (isSame) {
-                if (isSame) {
+                 if (isSame) {
                     return done(null, user);
                 }
 

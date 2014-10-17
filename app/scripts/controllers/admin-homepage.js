@@ -25,6 +25,12 @@ userApp.factory('Counts', ['$resource', function ($resource) {
                 params: {
                     item: 'overdues'
                 }
+            },
+            resets : {
+                method: 'GET',
+                params: {
+                    item: 'resets'
+                }
             }
         });
 }]);
@@ -55,6 +61,11 @@ userControllers.controller('AdminHomeController', ['$scope', '$timeout', 'Counts
                     $scope.OverduesCount = data.count;
                 });
             },
+            getResetsCount = function () {
+                Counts.resets().$promise.then(function(data){
+                    $scope.ResetsCount = data.count;
+                });
+            },
             updateCount = function (cfn, t) {
                 cfn();
                 var fn = updateCount.bind (this, cfn, t);
@@ -65,6 +76,7 @@ userControllers.controller('AdminHomeController', ['$scope', '$timeout', 'Counts
         updateCount (getActivationsCount, _.random(30,60));
         updateCount (getEmailsCount, _.random(30,60));
         updateCount (getOverduesCount, _.random(30,60));
+        updateCount (getResetsCount, _.random(30,60));
 
         $scope.Sections = [
             {
@@ -118,6 +130,15 @@ userControllers.controller('AdminHomeController', ['$scope', '$timeout', 'Counts
                         name : 'Organisational Units',
                         icon : 'glyphicon-th',
                         link : '/orgunits'
+                    },
+                    {
+                        name : 'Password Resets',
+                        icon : 'glyphicon-link',
+                        count: function () {
+                            return $scope.ResetsCount;
+                        },
+                        link : '/resets',
+                        hideOnZero : true
                     }
 
                 ]
