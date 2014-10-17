@@ -126,18 +126,18 @@ userControllers.controller('AdminHomeController', ['$scope', '$timeout', 'Counts
                         },
                         link : '/adminemails'
                     },
-                    {
-                        name : 'Organisational Units',
-                        icon : 'glyphicon-th',
-                        link : '/orgunits'
-                    },
+//                    {
+//                        name : 'Organisational Units',
+//                        icon : 'glyphicon-th',
+//                        link : '/orgunits'
+//                    },
                     {
                         name : 'Password Resets',
                         icon : 'glyphicon-link',
                         count: function () {
                             return $scope.ResetsCount;
                         },
-                        link : '/resets',
+                        link : '#',
                         hideOnZero : true
                     }
 
