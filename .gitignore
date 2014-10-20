@@ -4,7 +4,7 @@ public
 .sass-cache
 heroku
 /views
-dist
+/dist
 .idea
 certs
 app/cover
