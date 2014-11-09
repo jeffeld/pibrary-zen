@@ -18,8 +18,9 @@ var https = require('https'),
     membersdb = require('./lib/modules/membersdb')
 ;
 
-var isMembershipNumber = function (value) {
-    return value === "123456789";
+var isMembershipNumber = function (v) {
+    var memberrx = /^B{1}\d{6}$/i;
+    return memberrx.test(v);
 };
 
 /**
