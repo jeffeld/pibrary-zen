@@ -52,6 +52,9 @@ block body
         input#firstname.form-control.top-field(type="text", placeholder="Your first name", ng-model="FirstName", maxlength="50", required, autofocus)
         input#lastname.form-control.bottom-field(type="text", placeholder="Your last name", ng-model="LastName", maxlength="50", required)
         hr
+        input#email1.form-control.top-field(type="text", placeholder="Mobile phone number (08nnnnnnnn)", ng-model="Mobile1", required)
+        input#email2.form-control.bottom-field(type="text", placeholder="Confirm mobile phone number (08nnnnnnnn)", ng-model="Mobile2", required)
+        hr
         input#email1.form-control.top-field(type="email", placeholder="Email address", ng-model="Email1", required)
         input#email2.form-control.bottom-field(type="email", placeholder="Confirm email address", ng-model="Email2", required)
         hr
@@ -59,11 +62,11 @@ block body
         input#password2.form-control.bottom-field(type="password", placeholder="Confirm password", ng-model="Password2", required)
         hr
         label I am&nbsp;
-          select#type(ng-model="Type", ng-options="o.option for o in Types")
+          select#type.form-control(ng-model="Type", ng-options="o.option for o in Types")
             option -- Please select --
-        label(ng-show="Type.value==='st'") &nbsp;in class&nbsp;
-          select#classes(ng-model="Class", ng-options="class.name for class in Classes")
-            option -- Please select --
+        //label(ng-show="Type.value==='st'") &nbsp;in class&nbsp;
+        //  select#classes(ng-model="Class", ng-options="class.name for class in Classes")
+        //    option -- Please select --
         span(ng-show="Type.value==='na'") &nbsp;&nbsp;
           input#other(type="text", placeholder="Please describe", ng-model="Other")
         hr
