@@ -1,10 +1,13 @@
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 var nodemailer = require ('nodemailer'),
     mongojs = require('mongojs'),
-    _ = require ('../../app/bower_components/underscore'),
+    _ = require ('./app/bower_components/underscore/underscore'),
     Q = require ('q'),
     moment = require ('moment'),
 
-    config = require ('./config/config'),
+    config = require ('./lib/config/config') || {},
 
     minimist = require ('minimist'),
     argv = minimist(process.argv.slice(2)),
@@ -45,8 +48,8 @@ function send (email) {
 
     var deferred = Q.defer(),
         mo = {
-            to: config.live ? email.to : config.safeRecipient,
-            from: config.from,
+            to: config.emailer.live ? email.to : config.emailer.safeRecipient,
+            from: config.emailer.from,
             subject: email.subject,
             html: email.body
         };
@@ -96,17 +99,16 @@ try {
     // and command line parameters. Check that we have
     // all mandatory settings, otherwise we can't run properly!
 
-    config = _.extend (config, argv);
+    config.emailer = _.extend (config.emailer, argv);
 
     var mandatoryArgs = [
-        'database',
         'user',
         'password',
         'from'
     ];
 
     if (_.some (mandatoryArgs, function (v) {
-        var b = _.isUndefined(config[v]);
+        var b = _.isUndefined(config.emailer[v]);
         if (b) {
             log (['ERROR', 'Missing argument or setting: ' + v].join('\t'));
         }
@@ -115,15 +117,17 @@ try {
         process.exit (-1);
     }
 
-    log (['info', 'Running in ' + (config.live ? 'LIVE' : 'TEST') + ' mode'].join('\t'));
+    config.emailer.live = config.emailer.live || false;
+
+    log (['info', 'Running in ' + (config.emailer.live ? 'LIVE' : 'TEST') + ' mode'].join('\t'));
 
     // Create the mail transporter object.
 
     transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user : config.user,
-            pass : config.password
+            user : config.emailer.user,
+            pass : config.emailer.password
         }
     });
 
