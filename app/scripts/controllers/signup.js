@@ -36,12 +36,8 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
                 value : "st"
             },
             {
-                option: "teaching staff",
+                option: "staff",
                 value : "ts"
-            },
-            {
-                option: "support staff",
-                value: "ss"
             },
             {
                 option : "a parent",
@@ -53,30 +49,7 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
             }
         ];
 
-        $scope.Classes = [
-            {
-                name : '1A'
-            },
-            {
-                name : '2A'
-            },
-            {
-                name : '3A'
-            },
-            {
-                name : '4A'
-            },
-            {
-                name : '5A'
-            },
-            {
-                name : '6A'
-            }
-        ];
-
         $scope.Step = 'signup';
-
-        $scope.Class = {};
 
         $scope.Type = {};
 
@@ -86,9 +59,16 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
         $scope.LastName = '';
         $scope.Email1 = '';
         $scope.Email2 = '';
+        $scope.Mobile1 = '';
+        $scope.Mobile2 = '';
         $scope.Password1 = '';
         $scope.Password2 = '';
         $scope.Other = '';
+
+        $scope.IsValidMobileNumber = function (v) {
+            var rx = /^08\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d$/;
+            return rx.test(v);
+        }
 
         $scope.CanSubmit = function () {
 
@@ -118,11 +98,6 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
                 return false;
             }
 
-            // If they're a student, must have said which class they are in
-
-            if (isStudent($scope.Type.value) && _.isEmpty($scope.Class)) {
-                return false;
-            }
 
             // If they've chosen Other, then a description must be supplied
 
@@ -135,7 +110,7 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
             // only kicks in when the submit button is pressed; but we want to control the disabled
             // state of the button explicitly.
 
-            var mustHaveLengths = [$scope.FirstName, $scope.LastName, $scope.Email1, $scope.Password1];
+            var mustHaveLengths = [$scope.FirstName, $scope.LastName, $scope.Email1, $scope.Password1, $scope.Mobile1];
             if (! formService.hasNonZeroLength(mustHaveLengths)) {
                 return false;
             }
@@ -149,6 +124,14 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
                 return false;
             }
 
+            if (!$scope.IsValidMobileNumber($scope.Mobile1) || ($scope.Mobile1 !== $scope.Mobile2)) {
+                return false;
+            }
+
+            if ($scope.Mobile1 !== $scope.Mobile2) {
+                return false;
+            }
+
 
             return true;
         };
@@ -157,8 +140,6 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
 
             if (isOther($scope.Type.value)) {
                 $scope.Type.misc = $scope.Other
-            } else if (isStudent($scope.Type.value)) {
-                $scope.Type.misc = $scope.Class.name;
             }
 
             var data = {
@@ -168,6 +149,8 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
                 password2 : $scope.Password2,
                 email1 : $scope.Email1,
                 email2 : $scope.Email2,
+                mobile1: $scope.Mobile1,
+                mobile2: $scope.Mobile2,
                 role : $scope.Type
             };
 
