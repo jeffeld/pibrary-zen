@@ -18,7 +18,7 @@ ritsServices.factory ('formService', function($rootScope) {
                 return false;
             }
 
-            if (p.search(/[a-zA-z]/) === -1) {
+            if (p.search(/(?=.*[a-z])(?=.*[A-Z])/) === -1) {
                 return false;
             }
 

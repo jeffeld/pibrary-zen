@@ -65,6 +65,8 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
         $scope.Password2 = '';
         $scope.Other = '';
 
+        $scope.ShowPassword = false;
+
         $scope.IsValidMobileNumber = function (v) {
             var rx = /^08\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d$/;
             return rx.test(v);
@@ -120,6 +122,10 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
                 return false;
             }
 
+            if (! formService.isValidPassword($scope.Password1)) {
+                return false;
+            }
+
             if ($scope.Password1 !== $scope.Password2) {
                 return false;
             }
@@ -172,17 +178,73 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
 
         $scope.OnTryAgain = function () {
             modal.modal('hide');
-        }
+        };
 
         $scope.OnContinueAfterEmailError = function () {
             $scope.Email1 = $scope.Email2 = '';
             $('#email1').focus();
             $scope.OnTryAgain();
-        }
+        };
 
         $scope.OnSuccess = function () {
             modal.modal('hide');
             $window.location.href = '/home';
+        };
+
+        $scope.isBadEmail = function () {
+
+            if (!angular.isDefined($scope.Email1) || (!angular.isDefined($scope.Email2))) {
+                return false;
+            }
+
+            if ($scope.Email1.length === 0 || $scope.Email2.length === 0) {
+                return false;
+            }
+
+            return $scope.Email1 !== $scope.Email2;
+        };
+
+        $scope.isBadMobile = function () {
+
+            if (!angular.isDefined($scope.Mobile1) || (!angular.isDefined($scope.Mobile2))) {
+                return false;
+            }
+
+            if ($scope.Mobile1.length === 0 || $scope.Mobile2.length === 0) {
+                return false;
+            }
+
+
+            if (! $scope.IsValidMobileNumber($scope.Mobile1) || ! $scope.IsValidMobileNumber($scope.Mobile2)) {
+                return true;
+            }
+
+            return $scope.Mobile1 !== $scope.Mobile2;
+
+        }
+
+        $scope.isBadPassword = function () {
+
+            if (!angular.isDefined($scope.Password1) || (!angular.isDefined($scope.Password2))) {
+                return false;
+            }
+
+            if ($scope.Password1.length === 0 || $scope.Password2.length === 0) {
+                return false;
+            }
+
+            if (! formService.isValidPassword($scope.Password1)) {
+                return true;
+            }
+
+            return $scope.Password1 !== $scope.Password2;
+
+
+
+        }
+
+        $scope.ShowHidePassword = function () {
+            $scope.ShowPassword = !$scope.ShowPassword;
         }
 
     }

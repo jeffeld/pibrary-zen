@@ -49,31 +49,43 @@ block body
     div
       form.form-signin(role="form" name="SignUpForm" ng-submit="OnSubmit()")
         h2.form-signin-heading Please sign up
-        input#firstname.form-control.top-field(type="text", placeholder="Your first name", ng-model="FirstName", maxlength="50", required, autofocus)
-        input#lastname.form-control.bottom-field(type="text", placeholder="Your last name", ng-model="LastName", maxlength="50", required)
-        hr
-        input#email1.form-control.top-field(type="text", placeholder="Mobile phone number (08nnnnnnnn)", ng-model="Mobile1", required)
-        input#email2.form-control.bottom-field(type="text", placeholder="Confirm mobile phone number (08nnnnnnnn)", ng-model="Mobile2", required)
-        hr
-        input#email1.form-control.top-field(type="email", placeholder="Email address", ng-model="Email1", required)
-        input#email2.form-control.bottom-field(type="email", placeholder="Confirm email address", ng-model="Email2", required)
-        hr
-        input#password1.form-control.top-field(type="password", placeholder="Password (min 8, max 20 characters)", ng-model="Password1", maxlength="20", minlength="8", required)
-        input#password2.form-control.bottom-field(type="password", placeholder="Confirm password", ng-model="Password2", required)
-        hr
-        label I am&nbsp;
-          select#type.form-control(ng-model="Type", ng-options="o.option for o in Types")
-            option -- Please select --
-        //label(ng-show="Type.value==='st'") &nbsp;in class&nbsp;
-        //  select#classes(ng-model="Class", ng-options="class.name for class in Classes")
-        //    option -- Please select --
+        div#name-group.form-group
+          input#firstname.form-control.top-field(type="text", placeholder="Your first name", ng-model="FirstName", maxlength="50", required, autofocus)
+          input#lastname.form-control.bottom-field(type="text", placeholder="Your last name", ng-model="LastName", maxlength="50", required)
+        div#mobile-group.form-group(ng-class="{'has-error': isBadMobile()}")
+          input#email1.form-control.top-field(type="text",  placeholder="Mobile phone number (08nnnnnnnn)", ng-model="Mobile1", required)
+          input#email2.form-control.bottom-field(type="text", placeholder="Confirm mobile phone number", ng-model="Mobile2", required)
+        div#email-group.form-group(ng-class="{'has-error': isBadEmail()}")
+          input#email1.form-control.top-field(type="email", placeholder="Email address", ng-model="Email1", required)
+          input#email2.form-control.bottom-field(type="email", placeholder="Confirm email address", ng-model="Email2", required)
+        p Your password must be between 8 and 20 characters long and contain:
+          ul
+            li at least one uppercase letter
+            li at least one lowercase letter
+            li at least one number
+            li at least one character from the set:&nbsp;
+              strong ! @ # $ % ^ & * ( ) _ +
+        div(ng-show="ShowPassword")
+          div#password-group.form-group(ng-class="{'has-error': isBadPassword()}")
+            input#password1.form-control.top-field(type="text", placeholder="Password", ng-model="Password1", maxlength="20", minlength="8", required)
+            input#password2.form-control.bottom-field(type="text", placeholder="Confirm password", ng-model="Password2", required)
+            a(ng-click="ShowHidePassword()")
+              small Hide password
+        div(ng-show="!ShowPassword")
+          div#password-group.form-group(ng-class="{'has-error': isBadPassword()}")
+            input.form-control.top-field(type="password", placeholder="Password", ng-model="Password1", maxlength="20", minlength="8", required)
+            input.form-control.bottom-field(type="password", placeholder="Confirm password", ng-model="Password2", required)
+            a(ng-click="ShowHidePassword()")
+              small Show password
+        div.form-group
+          label(for="RoleType") I am&nbsp;
+            select#RoleType.form-control(ng-model="Type", ng-options="o.option for o in Types")
+              option -- Please select --
         span(ng-show="Type.value==='na'") &nbsp;&nbsp;
           input#other(type="text", placeholder="Please describe", ng-model="Other")
-        hr
         label.checkbox &nbsp;I have read and agree to the &nbsp;
           a Terms & Conditions
           input#agreetnc.checkbox-inline(type="checkbox", ng-checked="AgreeTnC" ng-model="AgreeTnC")
-        hr
         button#submit.btn.btn-lg.btn-primary.btn-block(type="submit" ng-disabled="!CanSubmit()") Register now
 
 block scripts
