@@ -54,6 +54,8 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
         $scope.Type = {};
 
         $scope.AgreeTnC = false;
+        $scope.AgreeRespect = false;
+        $scope.AgreePhoto = false;
 
         $scope.FirstName = '';
         $scope.LastName = '';
@@ -84,6 +86,14 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
             // Must have agreed to T&C's
 
             if (! $scope.AgreeTnC) {
+                return false;
+            }
+
+            if (! $scope.AgreeRespect) {
+                return false;
+            }
+
+            if (! $scope.AgreePhoto) {
                 return false;
             }
 

@@ -83,9 +83,14 @@ block body
               option -- Please select --
         span(ng-show="Type.value==='na'") &nbsp;&nbsp;
           input#other(type="text", placeholder="Please describe", ng-model="Other")
+        label.checkbox &nbsp;I will respect the Library's property
+          input#respect.checkbox-inline(type="checkbox", ng-checked="AgreeRespect", ng-model="AgreeRespect")
+        label.checkbox &nbsp;I consent to having my photograph taken&nbsp;
+          small.text-muted (This will not be shared with any other party)
+          input#photo.checkbox-inline(type="checkbox", ng-checked="AgreePhoto", ng-model="AgreePhoto")
         label.checkbox &nbsp;I have read and agree to the &nbsp;
-          a Terms & Conditions
-          input#agreetnc.checkbox-inline(type="checkbox", ng-checked="AgreeTnC" ng-model="AgreeTnC")
+          a Full Terms & Conditions
+          input#agreetnc.checkbox-inline(type="checkbox", ng-checked="AgreeTnC", ng-model="AgreeTnC")
         button#submit.btn.btn-lg.btn-primary.btn-block(type="submit" ng-disabled="!CanSubmit()") Register now
 
 block scripts
