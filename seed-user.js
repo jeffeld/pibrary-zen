@@ -1,5 +1,8 @@
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 var mongojs = require('mongojs'),
-    _ = require ('../../app/bower_components/underscore'),
+    _ = require ('./app/bower_components/underscore'),
     Q = require ('q'),
     moment = require ('moment'),
 
@@ -7,14 +10,11 @@ var mongojs = require('mongojs'),
     argv = minimist(process.argv.slice(2)),
 
 
-    config = {
-        database: 'library-dev'
-    },
+    config = require('./lib/config/config'),
 
     db = mongojs.connect(config.database, ['signups', 'members'])
 
 ;
-
 
 function log (m) {
     console.log ([moment().format('HH:mm:ss'), m].join('\t'));
@@ -108,6 +108,8 @@ function seed (index) {
 
     var promises = [], p;
 
+    console.log (['Seed-user running against the ', config.database, ' database'].join(''));
+
     if (_.isUndefined(argv.seed)) {
 
         // List signups
@@ -117,7 +119,8 @@ function seed (index) {
             var n = 1;
 
             _.each (signups, function (su) {
-                console.log ([n, ') ', su.firstname, ' ', su.lastname, ' (', su.email, ') '].join(''))
+                console.log ([n, ') ', su.firstname, ' ', su.lastname, ' (', su.email, ') '].join(''));
+                n++;
             });
 
         });
