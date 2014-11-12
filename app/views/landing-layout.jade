@@ -11,23 +11,23 @@ html(ng-app="LandingApp")
 
     block background
 
-    div.container
-      div.site-wrapper(style="position: fixed; z-index: 10;")
-        div.site-wrapper-inner
-          div.cover-container
-            div.masthead.clearfix
-              div.inner
-                h2.masthead-brand #{brand}
-                ul.nav.masthead-nav
-                  li
-                    a(href="/home") Home
-                  li
-                    a(href="/signup") Sign Up
-                  li
-                    a(href="/login") Login
+    //div.container
+    div.site-wrapper(style="position: fixed; z-index: 10;")
+      div.site-wrapper-inner
+        div.cover-container
+          div.masthead.clearfix
+            div.inner.cover
+              h2.masthead-brand #{brand}
+              ul.nav.masthead-nav
+                li
+                  a(href="/home") Home
+                li
+                  a(href="/signup") Sign Up
+                li
+                  a(href="/login") Login
 
 
-            block body
+          block body
 
     script.
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

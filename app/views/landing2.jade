@@ -5,16 +5,19 @@ block head
   link(rel="stylesheet" href="styles/landingpage.css")
 
 block background
-  img.img-responsive(ng-src="images/landingpage/default.jpg", style="position: fixed")
+  //img.img-responsive(ng-src="images/landingpage/default.jpg", style="position: fixed")
 
 block body
 
+  div.background-image-overlay
   div(ng-controller="LandingController")
     div.inner.cover
-      h1.cover-heading Welcome to The Library
-      p.lead Located in X20, the library is open every lunchtime. Come in and join up, or start searching for books right away
+      h1.cover-heading #{landing.heading}
+      p.lead1 #{landing.p1}
+      p.lead #{landing.p2}
+      p.lead.small #{landing.p3}
       p.lead
-        a.btn.btn-lg.btn-success(href="/home") Learn More
+        a.btn.btn-lg.btn-success(href="/home") See More&hellip;
 
     div.mastfoot
       blockquote &quot;{{Quote.quote}}&quot;

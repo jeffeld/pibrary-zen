@@ -1,11 +1,23 @@
 body {
     text-shadow: 0 1px 3px rgba(0,0,0,.5);
+
 }
 
 
 blockquote {
     border-left: none;
     font-style: italic;
+}
+
+.background-image-overlay {
+    display:block;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    background:url(/images/landingpage/background-image-overlay.png) repeat;
 }
 
 
@@ -21,5 +33,7 @@ blockquote {
     font-weight: bold;
 }
 
-
+.lead1 {
+    font-size: 1.8em;
+}
 
