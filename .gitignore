@@ -8,3 +8,4 @@ heroku
 .idea
 certs
 app/cover
+lib/config/local.js
