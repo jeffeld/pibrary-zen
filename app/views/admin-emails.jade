@@ -74,7 +74,8 @@ block body
                 span.glyphicon.glyphicon-eye-open
 
       button.btn.btn-lg.btn-primary(ng-click="OnResend()", ng-disabled="! AtLeastOneSelected()") Resend
-      button.btn.btn-lg.btn-danger.pull-right(ng-click="OnDelete()", ng-disabled="! AtLeastOneSelected()") Delete
+      if userlevel === 1000
+        button.btn.btn-lg.btn-danger.pull-right(ng-click="OnDelete()", ng-disabled="! AtLeastOneSelected()") Delete
 
 
 
