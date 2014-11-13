@@ -36,15 +36,17 @@ block body
                   th Name
                   th Email
                   th.text-center Date Created
-                  th.text-center &nbsp;
+                  if userlevel === 1000
+                    th.text-center &nbsp;
               tbody
                 tr(ng-repeat="a in Activations | orderBy:SortOrder")
                   td
                     a(ng-href="{{a.link}}") {{a.firstname}} {{a.lastname}}
                   td {{a.email}}
                   td.text-center {{a.created | stdDate}}
-                  td.text-center
-                    span.glyphicon.glyphicon-remove.text-danger(ng-click="OnRemove(a.email)")
+                  if userlevel === 1000
+                    td.text-center
+                      span.glyphicon.glyphicon-remove.text-danger(ng-click="OnRemove(a.email)")
 
 
 
