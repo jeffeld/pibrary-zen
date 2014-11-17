@@ -1,8 +1,34 @@
 extends user-layout
 block head
-  title Member Details
+  title #{memberid} Member Details
   link(rel="stylesheet", href="styles/member.css")
+
+  script.
+    var ___mid = 'B198725';
+
 block body
-  h1 Member Details
+  div(ng-controller="MemberController")
+    div.row.item-block
+      div.col-md-12
+        img.member-image.member-image-medium(ng-src='/api/member/{{MembershipId}}/photo', alt="Member Photo")
+        div
+          h3 {{Details.firstname | titlecase}} {{Details.lastname | titlecase}} &nbsp;
+            small {{Details.membershipCode}}
+          h3
+            span.label.label-success {{Details.status | titlecase}}
+
+          p
+            small
+              strong Member since:&nbsp;
+              span {{Details.activated | stdDate}} ({{Details.activated | fromNow}})
+            br
+            small
+              strong Last logged in:&nbsp;
+              span {{Details.lastLoggedIn| stdDate}} ({{Details.lastLoggedIn | fromNow}})
+            br
+            small
+              strong Logged in:&nbsp;
+              span {{Details.numVisits}} times
+
 block scripts
   script(src="scripts/controllers/member.js")
