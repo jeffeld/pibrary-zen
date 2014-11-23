@@ -1,3 +1,11 @@
+html {
+  transition: background-image 2s ease-in-out;
+  background-repeat: no-repeat;
+  background-position:  center center;
+  background-attachment:  fixed;
+}
+
+
 body {
     text-shadow: 0 1px 3px rgba(0,0,0,.5);
 
@@ -17,9 +25,29 @@ blockquote {
     width:100%;
     height:100%;
     z-index:-1;
+
     background:url(/images/background-image-overlay.png) repeat;
 }
 
+
+.bg1 {
+  transition: background-image 1s ease-in-out;
+  background-image: url(/images/landingpage/cover1.jpg);
+}
+.bg2 {
+  transition: background-image 1s ease-in-out;
+  background-image: url(/images/landingpage/cover2.jpg);
+}
+
+.bg3 {
+  transition: background-image 1s ease-in-out;
+  background-image: url(/images/landingpage/cover3.jpg);
+}
+
+
+.bq {
+  transition: opacity 1s ease-in-out;
+}
 
 /*
  * Cover
