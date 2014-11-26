@@ -43,6 +43,7 @@ block body
                   th Name
                   th &nbsp;
                   th.text-center Email Address
+                  th.text-center Mobile No.
                   th.text-center Date
                   th.text-center IP
                   if (userlevel > 100)
@@ -54,11 +55,13 @@ block body
                   td {{SignUp.firstname | titlecase}} {{SignUp.lastname | titlecase}}
                   td
                     span(ng-switch on="SignUp.role.value")
-                      span(ng-switch-when="st") Class {{SignUp.role.misc.name}}
+                      //-span(ng-switch-when="st") Class {{SignUp.role.misc.name}}
                       span(ng-switch-when="na") Other - {{SignUp.role.misc | titlecase}}
                       span(ng-switch-default) {{SignUp.role.option | titlecase}}
                   td.text-center
                     a(href='mailto:{{SignUp.email}}?Subject=Library Sign Up Request') {{SignUp.email | lowercase}}
+                  td.text-center
+                    span {{SignUp.mobile}}
                   td.text-center
                     span(bs-tooltip='SignUp.datetime | stdDateTime', data-placement='left') {{SignUp.datetime | fromNow}}
                   //td.text-center {{SignUp.datetime | stdDateTime}}
