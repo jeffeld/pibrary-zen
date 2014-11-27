@@ -1,6 +1,20 @@
 doctype html
 html(ng-app="LandingApp")
   head
+
+    script.
+      var images = new Array();
+      function preload() {
+          for (i = 0; i < preload.arguments.length; i++) {
+              images[i] = new Image();
+              images[i].src = preload.arguments[i];
+          }
+      }
+      preload("images/landingpage/cover1.jpg",
+              "images/landingpage/cover2.jpg",
+              "images/landingpage/cover3.jpg"
+      );
+
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
