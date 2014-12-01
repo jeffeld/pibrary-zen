@@ -18,5 +18,9 @@ userControllers.controller('StockController', ['$scope', '$sce', 'Codes', 'Searc
             }, function () {
                 Links.go('/500');
             });
+
+        $scope.IsOnLoan = function () {
+            return angular.isDefined ($scope.Details.loan);
+        }
     }
 ]);

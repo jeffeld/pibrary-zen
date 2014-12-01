@@ -10,7 +10,7 @@ userControllers.controller('LendingController', ['$scope', 'Codes', 'Links', 'Ac
                 $promise.then(function (data) {
                     Links.goHome();
                 }, function (error) {
-
+                    Links.go('/500');
                 }
             );
 
@@ -25,6 +25,8 @@ userControllers.controller('LendingController', ['$scope', 'Codes', 'Links', 'Ac
                     Links.goHome();
 
                 }, function (error) {
+
+                    Links.go('/500');
 
                 });
 
@@ -43,7 +45,7 @@ userControllers.controller('LendingController', ['$scope', 'Codes', 'Links', 'Ac
                     Links.goHome();
 
                 }, function (error) {
-
+                    Links.go('/500');
                 });
 
 

@@ -2,7 +2,7 @@
 angular.module ('Zen.services', [])
     .factory ('Codes', function() {
 
-        var isbnrx = /(?:97(?:8|9)\d{10})|(?:\d{9})(?:\d|x)/gi,
+        var isbnrx = /^(?:(?:97[89]\d{10})|(?:\d{9}[\dx]))$/gi,
             stockrx = /\b[a-f0-9]{10}\b/gi,
             memberrx = /^B{1}\d{6}$/i;
 

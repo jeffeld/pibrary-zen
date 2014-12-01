@@ -1,6 +1,7 @@
 extends user-layout
 block head
   title #{memberid} Member Details
+  //link(rel="stylesheet", href="styles/search.css")
   link(rel="stylesheet", href="styles/member.css")
 
   script.
@@ -12,14 +13,21 @@ block body
       div.col-md-12
         img.member-image.member-image-medium(ng-src='/api/member/{{MembershipId}}/photo', alt="Member Photo")
         div
-          h3 {{Details.firstname | titlecase}} {{Details.lastname | titlecase}} &nbsp;
-            small {{Details.membershipCode}}
+          h2 {{Details.firstname | titlecase}} {{Details.lastname | titlecase}} &nbsp;
+            small {{Details.membershipCode}} {{Details.role.option | titlecase}}
+
           h3
-            span.label.label-success {{Details.status | titlecase}}
+            span(ng-switch="Details.status")
+              span.label.label-success(ng-switch-when='active') {{Details.status | titlecase}}
+              span.label.label-default(ng-switch-when='closed') {{Details.status | titlecase}}
+              span.label.label-warning(ng-switch-when='pending') {{Details.status | titlecase}}
+              span.label.label-danger(ng-switch-when='suspended') {{Details.status | titlecase}}
+              span.label.label-warning(ng-switch-when='forcepwd') {{Details.status | titlecase}}
+              span.label.label-primary(ng-switch-default) {{Details.status | titlecase}}
 
           p
             small
-              strong Member since:&nbsp;
+              strong Joined:&nbsp;
               span {{Details.activated | stdDate}} ({{Details.activated | fromNow}})
             br
             small
@@ -28,7 +36,72 @@ block body
             br
             small
               strong Logged in:&nbsp;
-              span {{Details.numVisits}} times
+              ng-pluralize(count="Details.numLoans", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numLoans}} times'}")
+
+            br
+            small
+              strong Borrowed:&nbsp;
+              ng-pluralize(count="Details.numLoans", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numLoans}} times'}")
+
+
+          p
+            small
+              strong Email address:&nbsp;
+              a(ng-href="mailto:{{Details.email}}")
+                span {{Details.email | lowercase}}
+            br
+            small
+              strong Mobile:&nbsp;
+              span {{Details.mobile}}
+
+          if userlevel >= 100
+            p
+              small
+                strong User level:&nbsp;
+                span {{Details.userlevel}}
+
+    div.row
+      div.col-md-12
+        br
+        h3 On Loan&nbsp;
+         span.badge {{Details.currentLoans.length}}
+    div(ng-show="Details.currentLoans.length > 0")
+      div.search-block
+        div.row.search-block(ng-repeat="loan in Details.currentLoans")
+          div.col-md-12
+            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image")
+            div
+              h4 {{loan.title | titlecase}}&nbsp;
+                small {{loan.author}}
+              p
+                small
+                  strong Stock code:&nbsp;
+                  a(ng-href="/stock?sid={{loan.stockCode}}") {{loan.stockCode}}
+              p Loaned on {{loan.loanDate | stdDate}}
+                span(ng-show="! loan.isOverdue") , due for return {{loan.returnDate | stdDate}} ({{loan.returnDate | fromNow}})
+                span.text-danger(ng-show="loan.isOverdue") &nbsp;and became overdue&nbsp;
+                  b {{loan.returnDate | fromNow}}
+
+
+    div(ng-show="Details.loanHistory.length > 0")
+      div.row
+        div.col-md-12
+          h3 Loan History&nbsp;
+            span.badge {{Details.loanHistory.length}}
+      div.search-block
+        div.row(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate'")
+          div.col-md-12
+            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image", style="width:85px")
+            div
+              h4 {{loan.title | titlecase}}&nbsp;
+                small {{loan.author}}
+              p
+                small
+                  strong Stock code:&nbsp;
+                  a(ng-href="/stock?sid={{loan.stockCode}}") {{loan.stockCode}}
+
+              p Loaned on {{loan.loanDate | stdDate}}
+                span &nbsp;and returned on {{loan.actualReturnDate | stdDate}}
 
 block scripts
   script(src="scripts/controllers/member.js")

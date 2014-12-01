@@ -18,7 +18,7 @@ block body
       div.col-md-3
       div.col-md-6
         form(role="form", name="ISBNCapture" ng-submit="OnISBN()")
-          div.form-group
+          div.form-group(ng-class="{'has-error': IsBadISBN(ISBN)}")
             input(type="submit", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
             input#isbnNumber.form-control(low, type="text" ng-model="ISBN" placeholder="Scan/type the ISBN number")
       div.col-md-3

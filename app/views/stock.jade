@@ -40,6 +40,11 @@ block body
           p
             small(bs-tooltip='Details.added | stdDateTime', data-placement='bottom') Item add to library {{Details.added | fromNow}}
 
+          p(ng-show="Details.numLoans > 0")
+            small Loaned
+              ng-pluralize(count="Details.numLoans", when="{'1': 'once on the', 'other': ' {{Details.numLoans}} times and last loaned on the'}")
+              span(ng-show="Details.numLoans > 0") &nbsp;{{Details.lastLoan | stdDate}} ({{Details.lastLoan | fromNow}})
+
           //-
           //- Useful admin only function to look at the raw data used to format this page
           //-
@@ -49,12 +54,17 @@ block body
               small
                 a(ng-href="/api/search/isbn/{{Details.isbn13}}", target="_Blank") View raw data
 
+          p(ng-show="IsOnLoan()")
+            small On loan to&nbsp;
+              a(ng-href="/member?sid={{Details.loan.membershipCode}}") {{Details.loan.membershipCode}}
+              span &nbsp;and due for return on {{Details.loan.returnDate | stdDate}} ({{Details.loan.returnDate | fromNow}})
+
 
       //-
       //- Only show on the admin pages.
       //-
 
-      if (userlevel > 100)
+      if (userlevel >= 100)
         div(ng-controller="LendingController")
           if (!details.onLoan)
 
@@ -65,14 +75,15 @@ block body
             div.col-md-4
               div.side-bar.side-bar-lending
                 div.input-group
-                  form
-                    span
-                      h3 To lend this item
-                      span Scan or enter the membership ID
-                      input#memberid.form-control(low, type="text", placeholder="Membership ID", ng-model="MembershipId", ng-change="OnLend()")
-                    p
-                      small Item will be due back&nbsp;
-                        b {{ReturnDate | stdDate}}
+                  form.center-block(ng-submit="OnLend()")
+                    h3 To lend this item
+                    span Scan or enter the membership ID
+                    input(type="submit", name="search", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
+                    div.formgroup
+                      input#memberid.form-control(low, type="text", placeholder="Membership ID", ng-model="MembershipId")
+                  p
+                    small Item will be due back&nbsp;
+                      b {{ReturnDate | stdDate}}
 
           else
 

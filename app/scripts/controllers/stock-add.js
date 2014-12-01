@@ -4,6 +4,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
 
         $scope.StockCode = ___id;
         $scope.Details = null;
+        $scope.ISBN = '';
 
         $scope.OnAddItem = function (manualEntry) {
 
@@ -107,7 +108,20 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
             });
 
 
-        }
+        };
+
+        $scope.IsBadISBN = function (v) {
+
+           if (v.length === 10 || v.length === 13) {
+               return !Codes.isISBN(v);
+           }
+
+           if (v.length > 13) {
+               return true;
+           }
+
+           return false;
+        };
 
     }
 ]);
