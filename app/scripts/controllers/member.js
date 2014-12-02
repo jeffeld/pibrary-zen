@@ -13,12 +13,25 @@ userApp.factory('MemberDetails', ['$resource', function ($resource) {
 
 
 
-userControllers.controller('MemberController', ['$scope', 'MemberDetails',
-    function ($scope, MemberDetails) {
+userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Links',
+    function ($scope, MemberDetails, Links) {
 
         $scope.MembershipId = ___mid;
 
-        $scope.Details = MemberDetails.getDetails({id: $scope.MembershipId});
+        MemberDetails.getDetails({id: $scope.MembershipId}).$promise.then (function (data){
+
+            $scope.Details = data;
+
+        }, function (err) {
+
+            if (err.status === 404) {
+                Links.go('/404');
+            } else {
+                Links.go('/500');
+            }
+
+        });
+//        $scope.Details = MemberDetails.getDetails({id: $scope.MembershipId});
 
     }
 ]);

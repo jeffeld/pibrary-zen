@@ -5,7 +5,7 @@ block head
   link(rel="stylesheet", href="styles/member.css")
 
   script.
-    var ___mid = 'B198725';
+    var ___mid = '#{memberid}';
 
 block body
   div(ng-controller="MemberController")
@@ -36,7 +36,7 @@ block body
             br
             small
               strong Logged in:&nbsp;
-              ng-pluralize(count="Details.numLoans", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numLoans}} times'}")
+              ng-pluralize(count="Details.numVisits", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numVisits}} times'}")
 
             br
             small

@@ -51,9 +51,12 @@ function addMember (mi) {
         salt : mi.salt
     };
 
-    newMember.created = Date.now();
+    newMember.created = new Date;
+    newMember.activated = new Date;
     newMember.status = 'active';
     newMember.userlevel = 1000;
+    newMember.numLoans = 0;
+    newMember.numVisits = 0;
 
     db.members.insert (newMember, function (err, data) {
         if (err) {
