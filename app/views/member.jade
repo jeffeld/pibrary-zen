@@ -30,24 +30,24 @@ block body
               strong Joined:&nbsp;
               span {{Details.activated | stdDate}} ({{Details.activated | fromNow}})
             br
-            small
-              strong Last logged in:&nbsp;
-              span {{Details.lastLoggedIn| stdDate}} ({{Details.lastLoggedIn | fromNow}})
-            br
-            small
-              strong Logged in:&nbsp;
-              ng-pluralize(count="Details.numVisits", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numVisits}} times'}")
-
-            br
-            small
-              strong Borrowed:&nbsp;
-              ng-pluralize(count="Details.numLoans", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numLoans}} times'}")
-
+            div(ng-show="hasLoggedIn")
+              small
+                strong Last logged in:&nbsp;
+                span {{Details.lastLoggedIn| stdDate}} ({{Details.lastLoggedIn | fromNow}})
+              br
+              small
+                strong Logged in:&nbsp;
+                ng-pluralize(count="Details.numVisits", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numVisits}} times'}")
+              br
+            div(ng-show="hasBorrowed")
+              small
+                strong Borrowed:&nbsp;
+                ng-pluralize(count="Details.numLoans", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numLoans}} times'}")
 
           p
             small
               strong Email address:&nbsp;
-              a(ng-href="mailto:{{Details.email}}")
+              a(ng-href="mailto:{{Details.email}}" target="_blank")
                 span {{Details.email | lowercase}}
             br
             small
@@ -60,12 +60,13 @@ block body
                 strong User level:&nbsp;
                 span {{Details.userlevel}}
 
-    div.row
-      div.col-md-12
-        br
-        h3 On Loan&nbsp;
-         span.badge {{Details.currentLoans.length}}
     div(ng-show="Details.currentLoans.length > 0")
+      div.row
+        div.col-md-12
+          br
+          h3 On Loan&nbsp;
+           span.badge {{Details.currentLoans.length}}
+
       div.search-block
         div.row.search-block(ng-repeat="loan in Details.currentLoans")
           div.col-md-12

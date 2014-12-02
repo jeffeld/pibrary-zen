@@ -22,6 +22,15 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
 
             $scope.Details = data;
 
+            if (angular.isDefined(data.lastLoggedIn)) {
+                $scope.hasLoggedIn = true;
+            }
+
+            if (angular.isDefined(data.numLoans)) {
+                $scope.hasBorrowed = true;
+            }
+
+
         }, function (err) {
 
             if (err.status === 404) {
