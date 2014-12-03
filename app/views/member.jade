@@ -90,7 +90,7 @@ block body
           h3 Loan History&nbsp;
             span.badge {{Details.loanHistory.length}}
       div.search-block
-        div.row(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate'")
+        div.row(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate' | limitTo:HistoryLimit")
           div.col-md-12
             img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image", style="width:85px")
             div
@@ -103,6 +103,6 @@ block body
 
               p Loaned on {{loan.loanDate | stdDate}}
                 span &nbsp;and returned on {{loan.actualReturnDate | stdDate}}
-
+        button.btn.btn-link(ng-show="HistoryLimit < Details.loanHistory.length" ng-click="OnSeeAllHistory()") See all {{Details.loanHistory.length}}
 block scripts
   script(src="scripts/controllers/member.js")

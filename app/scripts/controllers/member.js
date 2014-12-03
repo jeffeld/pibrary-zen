@@ -40,7 +40,13 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
             }
 
         });
-//        $scope.Details = MemberDetails.getDetails({id: $scope.MembershipId});
+
+        $scope.HistoryLimit = 3;
+
+        $scope.OnSeeAllHistory = function () {
+            $scope.HistoryLimit = $scope.Details.loanHistory.length;
+        }
+
 
     }
 ]);
