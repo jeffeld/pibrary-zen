@@ -60,15 +60,38 @@ block body
                 strong User level:&nbsp;
                 span {{Details.userlevel}}
 
-    div(ng-show="Details.currentLoans.length > 0")
+    div(ng-show="Overdues.length > 0")
+      div.row
+        div.col-md-12
+          br
+          h3 Overdue&nbsp;
+            span.badge.badge-danger {{Overdues.length}}
+
+      div.search-block
+        div.row.search-block(ng-repeat="loan in Overdues")
+          div.col-md-12
+            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image")
+            div
+              h4 {{loan.title | titlecase}}&nbsp;
+                small {{loan.author}}
+              p
+                small
+                  strong Stock code:&nbsp;
+                  a(ng-href="/stock?sid={{loan.stockCode}}") {{loan.stockCode}}
+              p Loaned on {{loan.loanDate | stdDate}}
+                span(ng-show="! loan.isOverdue") , due for return {{loan.returnDate | stdDate}} ({{loan.returnDate | fromNow}})
+                span.text-danger(ng-show="loan.isOverdue") &nbsp;and became overdue&nbsp;
+                  b {{loan.returnDate | fromNow}}
+
+    div(ng-show="Loans.length > 0")
       div.row
         div.col-md-12
           br
           h3 On Loan&nbsp;
-           span.badge {{Details.currentLoans.length}}
+            span.badge.badge-success {{Loans.length}}
 
       div.search-block
-        div.row.search-block(ng-repeat="loan in Details.currentLoans")
+        div.row.search-block(ng-repeat="loan in Loans")
           div.col-md-12
             img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image")
             div
@@ -88,7 +111,7 @@ block body
       div.row
         div.col-md-12
           h3 Loan History&nbsp;
-            span.badge {{Details.loanHistory.length}}
+            span.badge.badge-primary {{Details.loanHistory.length}}
       div.search-block
         div.row(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate' | limitTo:HistoryLimit")
           div.col-md-12

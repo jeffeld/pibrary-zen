@@ -10,11 +10,10 @@ userApp.factory('MemberDetails', ['$resource', function ($resource) {
     })
 }]);
 
-
-
-
 userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Links',
     function ($scope, MemberDetails, Links) {
+
+        var today = new Date();
 
         $scope.MembershipId = ___mid;
 
@@ -29,6 +28,16 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
             if (angular.isDefined(data.numLoans)) {
                 $scope.hasBorrowed = true;
             }
+
+            document.title = $scope.Details.firstname + ' ' + $scope.Details.lastname + '\'s Account';
+
+            $scope.Loans = _.filter ($scope.Details.currentLoans, function (v) {
+                return new Date(v.returnDate) >= today;
+            });
+
+            $scope.Overdues = _.filter ($scope.Details.currentLoans, function (v) {
+                return new Date(v.returnDate) < today;
+            });
 
 
         }, function (err) {
@@ -45,7 +54,7 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
 
         $scope.OnSeeAllHistory = function () {
             $scope.HistoryLimit = $scope.Details.loanHistory.length;
-        }
+        };
 
 
     }
