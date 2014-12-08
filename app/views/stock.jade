@@ -72,18 +72,18 @@ block body
             //- The item can be loaned out
             //
 
-            div.col-md-4
-              div.side-bar.side-bar-lending
-                div.input-group
-                  form.center-block(ng-submit="OnLend()")
-                    h3 To lend this item
-                    span Scan or enter the membership ID
-                    input(type="submit", name="search", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
-                    div.formgroup
-                      input#memberid.form-control(low, type="text", placeholder="Membership ID", ng-model="MembershipId")
-                  p
-                    small Item will be due back&nbsp;
-                      b {{ReturnDate | stdDate}}
+            //div.col-md-4
+            //  div.side-bar.side-bar-lending
+            //    div.input-group
+            //      form.center-block(ng-submit="OnLend()")
+            //        h3 To lend this item
+            //        span Scan or enter the membership ID
+            //        input(type="submit", name="search", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
+            //        div.formgroup
+            //          input#memberid.form-control(low, type="text", placeholder="Membership ID", ng-model="MembershipId")
+            //      p
+            //        small Item will be due back&nbsp;
+            //          b {{ReturnDate | stdDate}}
 
           else
 
@@ -96,12 +96,13 @@ block body
                 h3 To return this item
                 span Touch or click the Return button
                 button#return.btn.btn-primary.form-control(type="button", ng-click="OnReturn()") Return
-                h3 To renew this item
-                span Touch or click the Renew button
-                button#renew.btn.btn-info.form-control(type="button", ng-click="OnRenew()") Renew
-                span
-                  small Item will be due back&nbsp;
-                    b {{ReturnDate | stdDate}}
+                // TODO: TO BE REINSTATED WHEN RENEWALS ARE WORKING
+                //h3 To renew this item
+                //span Touch or click the Renew button
+                //button#renew.btn.btn-info.form-control(type="button", ng-click="OnRenew()") Renew
+                //span
+                //  small Item will be due back&nbsp;
+                //    b {{ReturnDate | stdDate}}
 
 block scripts
   script(src="scripts/controllers/stock.js")

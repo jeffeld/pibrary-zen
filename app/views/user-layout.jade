@@ -49,8 +49,9 @@ html
 
             ul.nav.navbar-nav.navbar-right
               if (isLoggedIn)
-                li
-                  a(href='/myaccount') #{firstname}'s Account
+                // TODO: Reinstate when a user can update their own account!
+                //li
+                //  a(href='/myaccount') #{firstname}'s Account
                 li
                   a(href='/logout') Log out
               else

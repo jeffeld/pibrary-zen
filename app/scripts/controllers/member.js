@@ -56,7 +56,50 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
             $scope.HistoryLimit = $scope.Details.loanHistory.length;
         };
 
-
     }
 ]);
 
+userControllers.controller('LendingController', ['$scope', '$window', 'Links', 'Actions',
+    function ($scope, $window, Links, Actions) {
+
+        $scope.ReturnDate = ___returnDate;
+
+        $scope.OnLoan = function (membershipCode, stockCode) {
+
+            Actions.Lend({stockid: stockCode, membershipcode: membershipCode}).
+                $promise.then(function (data) {
+
+                    $window.location.reload();
+
+                }, function (error) {
+
+                    // Did we get a forbidden? Lets see why...
+
+                    if (error && error.status === 403 && angular.isArray(error.data)) {
+
+                        $scope.LoanReasons = {};
+
+                        _.each (error.data, function (reason) {
+                            $scope.LoanReasons[reason] = true;
+                        });
+
+                        var modal = $('#loanProblem');
+                        modal.modal();
+
+
+                    } else {
+
+                        Links.go('/500');
+
+                    }
+
+
+
+                });
+
+        }
+
+
+
+    }
+]);

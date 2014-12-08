@@ -4,13 +4,28 @@ block head
   //link(rel="stylesheet", href="styles/search.css")
   link(rel="stylesheet", href="styles/member.css")
 
+  style.
+    #stockcode {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+      width: 120px;
+      display: inline;
+    }
+    #seeall {
+      padding-left: 0px;
+    }
+
+
   script.
-    var ___mid = '#{memberid}';
+    var ___mid = '#{memberid}',
+        ___returnDate = '#{returnDate}';
+
 
 block body
   div(ng-controller="MemberController")
     div.row.item-block
-      div.col-md-12
+      div.col-md-9
         img.member-image.member-image-medium(ng-src='/api/member/{{MembershipId}}/photo', alt="Member Photo")
         div
           h2 {{Details.firstname | titlecase}} {{Details.lastname | titlecase}} &nbsp;
@@ -43,6 +58,11 @@ block body
               small
                 strong Borrowed:&nbsp;
                 ng-pluralize(count="Details.numLoans", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numLoans}} times'}")
+                br
+                strong Maximum items:&nbsp;
+                span(ng="Details.maxItems > 0") {{Details.maxItems}}
+                span(ng="Details.maxItems === -1") &infin;
+
 
           p
             small
@@ -60,17 +80,58 @@ block body
                 strong User level:&nbsp;
                 span {{Details.userlevel}}
 
+      //-
+      //- The loan entry box
+      //-
+
+      div.col-md-3(ng-controller="LendingController")
+        div.side-bar.side-bar-lending
+          form.center-block(ng-submit="OnLoan(MembershipId, StockCodeToLend)")
+            h3 To loan an item
+            span Scan or enter the stock ID
+            input#lend(type="submit", name="lend", style="position: absolute; left: -9999px; width: 1px; height: 1px;")
+            div.formgroup
+              input#stockcode.form-control(low, type="text", placeholder="Stock Code", ng-model="StockCodeToLend")
+            p
+              small Item will be due back&nbsp;
+                b {{ReturnDate | stdDate}}
+
+        div#loanProblem.modal.fade
+          div.modal-dialog
+            div.modal-content
+              div.modal-header
+                button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+                h4.modal-title Warning - Please review this loan
+              div.modal-body
+                p This loan has been stopped for the following reasons:
+                ul
+                  li(ng-show="LoanReasons.maxLoans") {{Details.firstname}} already has the maximum number of items on loan
+                  li(ng-show="LoanReasons.status") {{Details.firstname}}'s account is not Active
+                  li(ng-show="LoanReasons.overdues") {{Details.firstname}} has items that are overdue
+                p You should review these reasons, and decide whethe or not the loan should proceed.
+              div.modal-footer
+                button.btn.btn-danger(type="button" ng-click="OnOverride()") Override and loan
+                button.btn.btn-success(type="button" ng-click="OnLoanCancel()") Do not loan
+
+
+
+
+
+    //-
+    //- Show overdues as a priority (and a seperate list from the loans)
+    //-
+
     div(ng-show="Overdues.length > 0")
       div.row
         div.col-md-12
           br
-          h3 Overdue&nbsp;
+          h3.text-danger Overdue&nbsp;
             span.badge.badge-danger {{Overdues.length}}
 
       div.search-block
         div.row.search-block(ng-repeat="loan in Overdues")
           div.col-md-12
-            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image")
+            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image", style="width:85px")
             div
               h4 {{loan.title | titlecase}}&nbsp;
                 small {{loan.author}}
@@ -82,18 +143,22 @@ block body
                 span(ng-show="! loan.isOverdue") , due for return {{loan.returnDate | stdDate}} ({{loan.returnDate | fromNow}})
                 span.text-danger(ng-show="loan.isOverdue") &nbsp;and became overdue&nbsp;
                   b {{loan.returnDate | fromNow}}
+
+    //-
+    //- Show current loans
+    //-
 
     div(ng-show="Loans.length > 0")
       div.row
         div.col-md-12
           br
-          h3 On Loan&nbsp;
+          h3.text-success On Loan&nbsp;
             span.badge.badge-success {{Loans.length}}
 
       div.search-block
-        div.row.search-block(ng-repeat="loan in Loans")
+        div.row.search-block(ng-repeat="loan in Loans | orderBy:'-loanDate'")
           div.col-md-12
-            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image")
+            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image", style="width:85px")
             div
               h4 {{loan.title | titlecase}}&nbsp;
                 small {{loan.author}}
@@ -106,11 +171,14 @@ block body
                 span.text-danger(ng-show="loan.isOverdue") &nbsp;and became overdue&nbsp;
                   b {{loan.returnDate | fromNow}}
 
+    //-
+    //- Show the loan history. Initially limit it to 3 books to prevent long render time.
+    //-
 
     div(ng-show="Details.loanHistory.length > 0")
       div.row
         div.col-md-12
-          h3 Loan History&nbsp;
+          h3.text-primary Loan History&nbsp;
             span.badge.badge-primary {{Details.loanHistory.length}}
       div.search-block
         div.row(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate' | limitTo:HistoryLimit")
@@ -126,6 +194,11 @@ block body
 
               p Loaned on {{loan.loanDate | stdDate}}
                 span &nbsp;and returned on {{loan.actualReturnDate | stdDate}}
-        button.btn.btn-link(ng-show="HistoryLimit < Details.loanHistory.length" ng-click="OnSeeAllHistory()") See all {{Details.loanHistory.length}}
+        button#seeall.btn.btn-link(ng-show="HistoryLimit < Details.loanHistory.length" ng-click="OnSeeAllHistory()") See all {{Details.loanHistory.length}}
+
+
+
+
+
 block scripts
   script(src="scripts/controllers/member.js")
