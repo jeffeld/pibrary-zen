@@ -60,8 +60,8 @@ block body
                 ng-pluralize(count="Details.numLoans", when="{'0': 'Never', '1': 'Once', 'other': ' {{Details.numLoans}} times'}")
                 br
                 strong Maximum items:&nbsp;
-                span(ng="Details.maxLoans > 0") {{Details.maxLoans}}
-                span(ng="Details.maxLoans === -1") &infin;
+                span(ng-show="Details.maxLoans > 0") {{Details.maxLoans}}
+                span(ng-show="Details.maxLoans === -1") &infin;
 
 
           p
