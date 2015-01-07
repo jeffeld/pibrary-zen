@@ -62,6 +62,7 @@
 
 .member-image-medium {
     width: 320px;
+    border-radius: 4px;
 }
 
 .badge {
