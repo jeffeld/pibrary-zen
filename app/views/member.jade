@@ -110,12 +110,8 @@ block body
                   li(ng-show="LoanReasons.overdues") {{Details.firstname}} has items that are overdue
                 p You should review these reasons, and decide whethe or not the loan should proceed.
               div.modal-footer
-                button.btn.btn-danger(type="button" ng-click="OnOverride()") Override and loan
+                button.btn.btn-danger(type="button" ng-click="OnOverride(MembershipId, StockCodeToLend)") Override and loan
                 button.btn.btn-success(type="button" ng-click="OnLoanCancel()") Do not loan
-
-
-
-
 
     //-
     //- Show overdues as a priority (and a seperate list from the loans)

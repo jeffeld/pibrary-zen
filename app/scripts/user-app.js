@@ -215,6 +215,13 @@ userApp.factory('Actions', ['$resource', function ($resource) {
                 params: {
                     action: 'renew'
                 }
+            },
+            ForceLend: {
+                method: 'PUT',
+                isArray: false,
+                params: {
+                    action: 'force'
+                }
             }
         });
 }]);

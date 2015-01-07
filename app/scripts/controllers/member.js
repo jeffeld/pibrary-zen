@@ -97,9 +97,19 @@ userControllers.controller('LendingController', ['$scope', '$window', 'Links', '
 
                 });
 
-        }
+        };
 
+        $scope.OnOverride = function (membershipCode, stockCode) {
 
+            Actions.ForceLend({stockid: stockCode, membershipcode: membershipCode}).
+                $promise.then(function (data) {
+                    $window.location.reload();
+                }, function (error) {
+                    Links.go('/500');
+                }
+            );
+
+        };
 
     }
 ]);
