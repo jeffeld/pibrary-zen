@@ -1,0 +1,43 @@
+extends user-layout
+
+block head
+  title Overdues
+  link(rel="stylesheet", href="styles/search.css")
+
+block body
+
+
+  div(ng-controller="OverduesController")
+    div.row
+      div.col-md-12
+        h4 Overdues
+        form
+          div.toolbar
+            select.pull-right.form-control(ng-model="SortOrder")
+              option(value="memberName") Member name: A to Z
+              option(value="-memberName") Member name: Z to A
+              option(value="-returnDate") Return date: Least to Most
+              option(value="returnDate") Return date: Most to Least
+
+    div.search-block
+      div.row.repeat-item(ng-repeat="od in Overdues | orderBy:SortOrder")
+        div.col-md-12
+          div
+            img.center-block.cover-image.cover-image-small(ng-src="/covers/{{od.isbn}}", alt="No Image")
+          div
+            a(href="/stock?sid={{od.stockCode}}")
+              h4 {{od.title | titlecase}}&nbsp;
+                small {{od.author}}
+            p On loan to&nbsp;
+              a(ng-href="/member?sid={{od.membershipCode}}")
+                span(ng-show="od.memberName") {{od.memberName}}
+                span(ng-show="!od.memberName") {{od.membershipCode}}
+            p.text-danger Overdue {{od.returnDate | fromNow}}&nbsp;
+              small
+                span.text-muted (lent: {{od.loanDate | stdDate}})
+
+
+
+
+block scripts
+  script(src="scripts/controllers/overdues.js")
