@@ -41,7 +41,7 @@ block body
             small(bs-tooltip='Details.added | stdDateTime', data-placement='bottom') Item add to library {{Details.added | fromNow}}
 
           p(ng-show="Details.numLoans > 0")
-            small Loaned
+            small Loaned&nbsp;
               ng-pluralize(count="Details.numLoans", when="{'1': 'once on the', 'other': ' {{Details.numLoans}} times and last loaned on the'}")
               span(ng-show="Details.numLoans > 0") &nbsp;{{Details.lastLoan | stdDate}} ({{Details.lastLoan | fromNow}})
 
