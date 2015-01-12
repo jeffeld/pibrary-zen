@@ -40,6 +40,10 @@ angular.module ('Zen.services', [])
 
         goHome: function () {
             $window.location.href = "/home";
+        },
+
+        goBack: function () {
+            $window.history.back();
         }
     }
 }])
