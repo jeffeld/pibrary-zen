@@ -22,7 +22,7 @@ userControllers.controller('LendingController', ['$scope', 'Codes', 'Links', 'Ac
             Actions.Return({stockid: $scope.StockId}).
                 $promise.then(function (data) {
 
-                    Links.goHome();
+                    Links.goBack();
 
                 }, function (error) {
 
@@ -42,7 +42,7 @@ userControllers.controller('LendingController', ['$scope', 'Codes', 'Links', 'Ac
             Actions.Lend({stockid: $scope.StockId, membershipcode: $scope.MembershipId}).
                 $promise.then(function (data) {
 
-                    Links.goHome();
+                    Links.goBack();
 
                 }, function (error) {
                     Links.go('/500');
