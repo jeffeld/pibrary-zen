@@ -23,7 +23,7 @@ block head
 
 
 block body
-  div(ng-controller="MemberController")
+  div(ng-controller="MemberController", ng-cloak)
     div.row.item-block
       div.col-md-9
         img.member-image.member-image-medium(ng-src='/api/member/{{MembershipId}}/photo', alt="Member Photo")
