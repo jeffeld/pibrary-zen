@@ -41,7 +41,7 @@ block body
               tbody
                 tr(ng-repeat="a in Activations | orderBy:SortOrder")
                   td
-                    a(ng-href="{{a.link}}") {{a.firstname}} {{a.lastname}}
+                    a(ng-href="{{a.link}}") {{a.firstname | titlecase}} {{a.lastname | titlecase}}
                   td {{a.email}}
                   td.text-center {{a.created | stdDate}}
                   if userlevel === 1000
