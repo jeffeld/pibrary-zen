@@ -49,15 +49,19 @@ block body
           //- Useful admin only function to look at the raw data used to format this page
           //-
 
-          if (userlevel > 100)
+          if (userlevel >= 100)
             p
               small
                 a(ng-href="/api/search/isbn/{{Details.isbn13}}", target="_Blank") View raw data
 
-          p(ng-show="IsOnLoan()")
-            small On loan to&nbsp;
-              a(ng-href="/member?sid={{Details.loan.membershipCode}}") {{Details.loan.membershipCode}}
-              span &nbsp;and due for return on {{Details.loan.returnDate | stdDate}} ({{Details.loan.returnDate | fromNow}})
+            p(ng-show="IsOnLoan()")
+              small On loan to&nbsp;
+                a(ng-href="/member?sid={{Details.loan.membershipCode}}") {{Details.loan.membershipCode}}
+                span &nbsp;and due for return on {{Details.loan.returnDate | stdDate}} ({{Details.loan.returnDate | fromNow}})
+
+          if (userlevel < 100)
+            p(ng-show="IsOnLoan()")
+              small Is currently on loan and due for return on {{Details.loan.returnDate | stdDate}} ({{Details.loan.returnDate | fromNow}})
 
 
       //-
