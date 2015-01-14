@@ -28,10 +28,13 @@ angular.module ('Zen.services', [])
 })
     .factory ('Links', ['$window', function ($window) {
 
+    var _home = '/home';
+
     return {
-        make: function (path, id) {
+        make: function (path, id, params) {
             // return (path + '/' + id);
-            return (path + "?sid=" + id);
+            params = params || '';
+            return (path + "?sid=" + id + params);
         },
 
         go: function (path, message) {
@@ -39,11 +42,15 @@ angular.module ('Zen.services', [])
         },
 
         goHome: function () {
-            $window.location.href = "/home";
+            $window.location.href = _home;
         },
 
         goBack: function () {
             $window.history.back();
+        },
+
+        home: function () {
+            return _home;
         }
     }
 }])

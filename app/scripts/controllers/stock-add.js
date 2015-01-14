@@ -3,6 +3,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
     function ($scope, $q, $log, Codes, ISBN, Stock, formService, Links, Search) {
 
         $scope.StockCode = ___id;
+        $scope.ReturnUrl = Codes.isMembershipCode(___ret) ? Links.make ('/member', ___ret, '&loan=' + $scope.StockCode) : Links.home();
         $scope.Details = null;
         $scope.ISBN = '';
 
@@ -10,7 +11,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
 
             var addStockItem = function () {
                 Stock.add({stockid: $scope.StockCode, isbn: $scope.ISBN}).$promise.then(function () {
-                    Links.goHome();
+                    Links.go($scope.ReturnUrl);
                 }, function () {
                     Links.go('/500');
                 });

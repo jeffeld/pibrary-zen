@@ -16,6 +16,7 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
         var today = new Date();
 
         $scope.MembershipId = ___mid;
+        $scope.StockCodeToLoan = ___stockCode;
 
         MemberDetails.getDetails({id: $scope.MembershipId}).$promise.then (function (data){
 
@@ -59,32 +60,44 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
     }
 ]);
 
-userControllers.controller('LendingController', ['$scope', '$window', 'Links', 'Actions',
-    function ($scope, $window, Links, Actions) {
+userControllers.controller('LendingController', ['$scope', '$window', 'Links', 'Actions', 'Codes',
+    function ($scope, $window, Links, Actions, Codes) {
 
         $scope.ReturnDate = ___returnDate;
+        $scope.AutoLoan = ___stockCode;
+        $scope.MembershipId = ___mid;
 
         $scope.OnLoan = function (membershipCode, stockCode) {
 
             Actions.Lend({stockid: stockCode, membershipcode: membershipCode}).
                 $promise.then(function (data) {
 
-                    $window.location.reload();
+                    // $window.location.reload();
+                    Links.go (Links.make('/member', membershipCode));
 
                 }, function (error) {
 
                     // Did we get a forbidden? Lets see why...
 
-                    if (error && error.status === 403 && angular.isArray(error.data)) {
+                    if (error) {
 
-                        $scope.LoanReasons = {};
+                        if (error.status === 403 && angular.isArray(error.data)) {
 
-                        _.each (error.data, function (reason) {
-                            $scope.LoanReasons[reason] = true;
-                        });
+                            $scope.LoanReasons = {};
 
-                        var modal = $('#loanProblem');
-                        modal.modal();
+                            _.each(error.data, function (reason) {
+                                $scope.LoanReasons[reason] = true;
+                            });
+
+                            var modal = $('#loanProblem');
+                            modal.modal();
+
+                        } else if (error.status === 404) {
+
+                            var url = [Links.make ('/stock', stockCode), "&ret=", membershipCode].join('');
+                            Links.go (url);
+
+                        }
 
 
                     } else {
@@ -103,13 +116,17 @@ userControllers.controller('LendingController', ['$scope', '$window', 'Links', '
 
             Actions.ForceLend({stockid: stockCode, membershipcode: membershipCode}).
                 $promise.then(function (data) {
-                    $window.location.reload();
+                    Links.go (Links.make('/member', membershipCode));
                 }, function (error) {
                     Links.go('/500');
                 }
             );
 
         };
+
+        if (Codes.isStockCode($scope.AutoLoan)) {
+            $scope.OnLoan ($scope.MembershipId, $scope.AutoLoan);
+        }
 
     }
 ]);

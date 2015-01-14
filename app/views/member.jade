@@ -19,7 +19,8 @@ block head
 
   script.
     var ___mid = '#{memberid}',
-        ___returnDate = '#{returnDate}';
+        ___returnDate = '#{returnDate}',
+        ___stockCode = '#{stockCode}';
 
 
 block body
@@ -174,10 +175,12 @@ block body
     div(ng-show="Details.loanHistory.length > 0")
       div.row
         div.col-md-12
+          br
           h3.text-primary Loan History&nbsp;
             span.badge.badge-primary {{Details.loanHistory.length}}
+
       div.search-block
-        div.row(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate' | limitTo:HistoryLimit")
+        div.row.search-block(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate' | limitTo:HistoryLimit")
           div.col-md-12
             img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image", style="width:85px")
             div
