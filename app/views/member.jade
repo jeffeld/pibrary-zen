@@ -15,6 +15,9 @@ block head
     #seeall {
       padding-left: 0px;
     }
+    .glyphicon {
+      top: 3px
+    }
 
 
   script.
@@ -176,10 +179,14 @@ block body
       div.row
         div.col-md-12
           br
-          h3.text-primary Loan History&nbsp;
+          h3.text-primary
+            a(ng-click="OnToggleShowHistory()")
+              span.glyphicon.glyphicon-chevron-down(ng-show="!ShowHistory")
+              span.glyphicon.glyphicon-chevron-up(ng-show="ShowHistory")
+            span &nbsp;Loan History&nbsp;
             span.badge.badge-primary {{Details.loanHistory.length}}
 
-      div.search-block
+      div.search-block(ng-show="ShowHistory")
         div.row.search-block(ng-repeat="loan in Details.loanHistory | orderBy:'-loanDate' | limitTo:HistoryLimit")
           div.col-md-12
             img.center-block.cover-image.cover-image-small(ng-src="/covers/{{loan.isbn}}", alt="No Image", style="width:85px")

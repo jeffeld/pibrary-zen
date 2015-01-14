@@ -51,6 +51,11 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
 
         });
 
+        $scope.OnToggleShowHistory = function () {
+            $scope.ShowHistory = !$scope.ShowHistory;
+        };
+
+        $scope.ShowHistory = false;
         $scope.HistoryLimit = 3;
 
         $scope.OnSeeAllHistory = function () {
