@@ -28,7 +28,11 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
     function ($scope, $timeout, $window, formService, SignUp) {
 
         var modal = {},
-            modalOptions = {};
+            modalOptions = {},
+            uc = /[A-Z]+/,
+            lc = /[a-z]+/,
+            nc = /[0-9]+/,
+            sc = /[\!\@\#\$\%\^\&\*\(\)\_\+]+/;
 
         $scope.Types = [
             {
@@ -68,6 +72,13 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
         $scope.Other = '';
 
         $scope.ShowPassword = false;
+        $scope.Password = {
+            HasValidLength : false,
+            HasAtLeastOneUppercase : false,
+            HasAtLeastOneLowercase : false,
+            HasAtLeastOneNumber : false,
+            HasAtLeastOneSymbol : false
+        };
 
         $scope.IsValidMobileNumber = function (v) {
             var rx = /^08\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d\s*\d$/;
@@ -251,11 +262,23 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
 
 
 
-        }
+        };
 
         $scope.ShowHidePassword = function () {
             $scope.ShowPassword = !$scope.ShowPassword;
-        }
+        };
+
+        $scope.OnPasswordChange = function () {
+
+            var v = angular.isDefined ($scope.Password1) ? $scope.Password1 : '';
+
+            $scope.Password.HasValidLength = (v.length >= 8 && v.length <= 20);
+            $scope.Password.HasAtLeastOneUppercase = uc.test(v);
+            $scope.Password.HasAtLeastOneLowercase = lc.test(v);
+            $scope.Password.HasAtLeastOneNumber = nc.test(v);
+            $scope.Password.HasAtLeastOneSymbol = sc.test(v);
+
+        };
 
     }
 ]);
