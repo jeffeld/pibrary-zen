@@ -65,6 +65,10 @@
     border-radius: 4px;
 }
 
+.member-image-small {
+    width: 160px;
+}
+
 .badge {
     background-color: #999;
     position: relative;

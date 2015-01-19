@@ -247,27 +247,25 @@ var userControllers = angular.module ('UserControllers', []);
 userControllers.controller('SearchController', ['$scope', '$window', '$location',
     function ($scope, $window, $location) {
 
+        var memprefix = /^m\:/i;
+
         $scope.SearchScopes = [
 //            {
 //                title : "All",
 //                prompt: "Search all indexes..."
 //            },
+//            {
+//                title: "Title",
+//                prompt: "Search by title only"
+//            },
             {
-                title: "Title",
-                prompt: "Search by title only"
+                title: "Auto",
+                prompt: "Automatic searching"
             },
             {
-                title: "Author",
-                prompt: "Search by author only"
-            },
-            {
-                title: "Publisher",
-                prompt: "Search by publisher only"
-            },
-            {
-                title: "Tags",
-                prompt: "Search by tags and keywords"
-            },
+                title: "Members",
+                prompt: "Search only for members by name, email address or mobile phone number"
+            }
         ];
 
         $scope.SearchScope = $scope.SearchScopes[0];
@@ -277,8 +275,9 @@ userControllers.controller('SearchController', ['$scope', '$window', '$location'
 
 
         $scope.onSearchScope = function(v) {
-            $scope.SearchScope = $scope.SearchScopes[v];
-        }
+            $scope.SearchScope = _.findWhere($scope.SearchScopes, {title: v});
+            $('#searchbox').focus();
+        };
 
         $scope.OnSearch = function () {
 
@@ -286,7 +285,22 @@ userControllers.controller('SearchController', ['$scope', '$window', '$location'
                 return;
             }
 
+            if (memprefix.test($scope.Spec)) {
+                $scope.Spec = $scope.Spec.substring (2);
+            }
+
+
             $window.location.href ='/search?idx=' + $scope.SearchScope.title.toLowerCase() + '&q=' + $scope.Spec;
+
+        };
+
+        $scope.OnSearchChange = function () {
+
+            if (memprefix.test($scope.Spec)) {
+                $scope.SearchScope = _.findWhere($scope.SearchScopes, {title: 'Members'});
+            } else {
+                $scope.SearchScope = _.findWhere($scope.SearchScopes, {title: 'Auto'});
+            }
 
         }
 

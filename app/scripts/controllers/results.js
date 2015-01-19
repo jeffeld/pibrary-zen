@@ -28,11 +28,23 @@ userControllers.controller('ResultsController', ['$scope', '$window', 'Search', 
 
         } else {
 
-            $scope.Results = Search.query({
+            Search.query({
                 q: $scope.Search.q,
                 idx: $scope.Search.idx
-            }, function (data) {
-                // $scope.Results = data.data;
+            }).$promise.then (function (data) {
+
+                $scope.Results = data;
+
+                if (data.length > 0) {
+
+                    if (data[0].hasOwnProperty('isbn')) {
+                        $scope.ResultsType = 'books';
+                    } else if (data[0].hasOwnProperty('membershipCode')) {
+                        $scope.ResultsType = 'members';
+                    }
+
+                }
+
             });
 
         }

@@ -3,6 +3,7 @@ extends user-layout
 block head
   title Search Results
   link(rel="stylesheet", href="styles/search.css")
+  link(rel="stylesheet", href="styles/member.css")
 
 block body
 
@@ -19,7 +20,8 @@ block body
             i.text-primary {{Search.q}}
             //span(ng-show="Search.idx !== 'all'") &nbsp;in&nbsp;
             //  i {{Search.idx | titlecase}}
-      div.search-block
+
+      div.search-block(ng-show="ResultsType === 'books'")
         div.row.repeat-item(ng-repeat="r in Results")
           div.col-md-12
             div
@@ -30,6 +32,17 @@ block body
                   small {{r.data[0].author_data[0].name}}
               p(ng-show="r.data[0].summary.length > 0") {{r.data[0].summary | limitTo : 150}}
                 span(ng-show="r.data[0].summary.length > 150") ...
+
+      div.search-block(ng-show="ResultsType === 'members'")
+        div.row.repeat-item(ng-repeat="r in Results")
+          div.col-md-12
+            div
+              img.member-image.member-image-small(ng-src='/api/member/{{r.membershipCode}}/photo', alt="Member Photo")
+            div
+              a(href="/member?sid={{r.membershipCode}}")
+                h4 {{r.firstname | titlecase}} {{r.lastname | titlecase}}&nbsp;
+                  small {{r.membershipCode}}
+
 
     div(ng-show="Results.length === 0")
       div.row
