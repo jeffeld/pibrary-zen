@@ -15,6 +15,10 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
 
         var today = new Date();
 
+        if (___mid === '') {
+            Links.go ('/404');
+        }
+
         $scope.MembershipId = ___mid;
         $scope.StockCodeToLoan = ___stockCode;
 
