@@ -10,8 +10,8 @@ userApp.factory('MemberDetails', ['$resource', function ($resource) {
     })
 }]);
 
-userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Links',
-    function ($scope, MemberDetails, Links) {
+userControllers.controller('MemberController', ['$scope', '$filter', 'MemberDetails', 'Links',
+    function ($scope, $filter, MemberDetails, Links) {
 
         var today = new Date();
 
@@ -34,7 +34,7 @@ userControllers.controller('MemberController', ['$scope', 'MemberDetails', 'Link
                 $scope.hasBorrowed = true;
             }
 
-            document.title = $scope.Details.firstname + ' ' + $scope.Details.lastname + '\'s Account';
+            document.title = $filter('titlecase')($scope.Details.firstname) + ' ' + $filter('titlecase')($scope.Details.lastname) + '\'s Account';
 
             $scope.Loans = _.filter ($scope.Details.currentLoans, function (v) {
                 return new Date(v.returnDate) >= today;
