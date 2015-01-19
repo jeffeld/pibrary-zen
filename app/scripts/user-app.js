@@ -296,10 +296,12 @@ userControllers.controller('SearchController', ['$scope', '$window', '$location'
 
         $scope.OnSearchChange = function () {
 
+            var currentScope = $scope.SearchScope;
+
             if (memprefix.test($scope.Spec)) {
                 $scope.SearchScope = _.findWhere($scope.SearchScopes, {title: 'Members'});
             } else {
-                $scope.SearchScope = _.findWhere($scope.SearchScopes, {title: 'Auto'});
+                $scope.SearchScope = currentScope;
             }
 
         }
