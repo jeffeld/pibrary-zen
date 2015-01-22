@@ -26,7 +26,7 @@ block head
 block body
   div(ng-cloak ng-controller="StockController")
     div.row.item-block
-      div.col-md-8
+      div.col-md-8.col-lg-9
         img.center-block.cover-image.cover-image-medium(ng-src="/covers/{{Details.isbn13}}", alt="No Image")
         div
           h3 \#{{StockCode}}
@@ -95,7 +95,7 @@ block body
             //- The item is on loan and can either be returned or renewed
             //
 
-            div.col-md-4
+            div.col-md-4.col-lg-3
               div.side-bar.side-bar-returning
                 h3 To return this item
                 span Touch or click the Return button
