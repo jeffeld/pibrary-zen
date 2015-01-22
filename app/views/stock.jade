@@ -24,7 +24,7 @@ block head
         ___returnDate = '#{details.returnDate}';
 
 block body
-  div(ng-controller="StockController")
+  div(ng-cloak ng-controller="StockController")
     div.row.item-block
       div.col-md-8
         img.center-block.cover-image.cover-image-medium(ng-src="/covers/{{Details.isbn13}}", alt="No Image")
@@ -110,5 +110,5 @@ block body
 
 block scripts
   script(src="scripts/controllers/stock.js")
-  if (userlevel > 100)
+  if (userlevel >= 100)
     script(src="scripts/controllers/lending.js")
