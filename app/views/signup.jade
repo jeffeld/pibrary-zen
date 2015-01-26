@@ -61,16 +61,16 @@ block body
         p Your password must:
           ul
             li be between 8 and 20 characters long
-              span.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasValidLength")
+              span#lenok.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasValidLength")
             li have at least one uppercase letter&nbsp;
-              span.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneUppercase")
+              span#has1uc.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneUppercase")
             li have at least one lowercase letter&nbsp;
-              span.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneLowercase")
+              span#has1lc.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneLowercase")
             li have at least one number&nbsp;
-              span.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneNumber")
+              span#has1n.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneNumber")
             li have at least one character from the set:&nbsp;
               strong ! @ # $ % ^ & * ( ) _ +&nbsp;
-              span.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneSymbol")
+              span#has1s.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneSymbol")
 
         div(ng-show="ShowPassword")
           div#password-group.form-group(ng-class="{'has-error': isBadPassword()}")
@@ -80,8 +80,8 @@ block body
               small Hide password
         div(ng-show="!ShowPassword")
           div#password-group.form-group(ng-class="{'has-error': isBadPassword()}")
-            input.form-control.top-field(type="password", placeholder="Password", ng-model="Password1", maxlength="20", minlength="8", required, ng-change="OnPasswordChange();")
-            input.form-control.bottom-field(type="password", placeholder="Confirm password", ng-model="Password2", required)
+            input#hpassword1.form-control.top-field(type="password", placeholder="Password", ng-model="Password1", maxlength="20", minlength="8", required, ng-change="OnPasswordChange();")
+            input#hpassword2.form-control.bottom-field(type="password", placeholder="Confirm password", ng-model="Password2", required)
             a(ng-click="ShowHidePassword()")
               small Show password
         div.form-group
