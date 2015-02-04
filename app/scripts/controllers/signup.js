@@ -34,6 +34,8 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
             nc = /[0-9]+/,
             sc = /[\!\@\#\$\%\^\&\*\(\)\_\+]+/;
 
+
+
         $scope.Types = [
             {
                 option: "a student",
@@ -165,6 +167,8 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
 
         $scope.OnSubmit = function () {
 
+            $scope.Step = 'waiting';
+
             if (isOther($scope.Type.value)) {
                 $scope.Type.misc = $scope.Other
             }
@@ -182,23 +186,27 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
             };
 
             SignUp.save({}, data, function (data, headers) {
-                    modal = $('#success');
-                    modal.modal()
+                    //modal = $('#success');
+                    // modal.modal()
+                    $scope.Step = 'success';
                 },
                 function (err) {
                     if (err.status === 400) {
-                        modal = $('#error-email');
-                        modal.modal (modalOptions)
+                        //modal = $('#error-email');
+                        // modal.modal (modalOptions)
+                        $scope.Step = 'error-email';
                     } else {
-                        modal = $('#error');
-                        modal.modal (modalOptions);
+                        //modal = $('#error');
+                        //modal.modal (modalOptions);
+                        $scope.Step = 'error';
                     }
                 });
 
         };
 
         $scope.OnTryAgain = function () {
-            modal.modal('hide');
+            // modal.modal('hide');
+            $scope.Step = "signup";
         };
 
         $scope.OnContinueAfterEmailError = function () {
@@ -208,7 +216,7 @@ userControllers.controller('SignUpController', ['$scope', '$timeout', '$window',
         };
 
         $scope.OnSuccess = function () {
-            modal.modal('hide');
+            // modal.modal('hide');
             $window.location.href = '/home';
         };
 

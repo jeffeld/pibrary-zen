@@ -15,32 +15,36 @@ var
   agreePhoto = element(by.model('AgreePhoto')),
   agreeTnC = element(by.model('AgreeTnC')),
 
-  registerNow = element(by.buttonText('Register now'))
+  registerNow = element(by.buttonText('Register now')),
+
+  signup = element(by.id('signup')),
+  success = element(by.id('success')),
+  errorEmail = element(by.id('error-email')),
+
+  successContinue = element(by.id('success-continue')),
+  errorEmailContinue = element(by.id('error-email-continue'))
 ;
 
+expect(firstName !== null);
+expect(lastName !== null);
+expect(mobile1 !== null);
+expect(mobile2 !== null);
+expect(email1 !== null);
+expect(email2 !== null);
+expect(password1 !== null);
+expect(password2 !== null);
+expect(registerNow !== null);
+expect(agreeRespect !== null);
+expect(agreePhoto !== null);
+expect(agreeTnC !== null);
 
 describe('Sign Up page', function() {
 
-  it('should sign up a user', function() {
+
+  var fillOut = function () {
 
     browser.get('/signup');
-
     expect(browser.getTitle()).toEqual('Sign Up');
-
-    expect(firstName !== null);
-    expect(lastName !== null);
-    expect(mobile1 !== null);
-    expect(mobile2 !== null);
-    expect(email1 !== null);
-    expect(email2 !== null);
-    expect(password1 !== null);
-    expect(password2 !== null);
-    expect(registerNow !== null);
-    expect(agreeRespect !== null);
-    expect(agreePhoto !== null);
-     expect(agreeTnC !== null);
-
-    // First we'll do a normal, straight forward sign up
 
     firstName.sendKeys('Harry');
     expect (registerNow.isEnabled()).toBeFalsy();
@@ -73,7 +77,39 @@ describe('Sign Up page', function() {
 
     expect (registerNow.isEnabled()).toBeTruthy();
 
+  };
+
+  it('should sign up a user', function() {
+
+    fillOut();
+    registerNow.click();
+    expect (success.isDisplayed()).toBeTruthy();
+    successContinue.click();
+    expect(browser.getTitle()).toEqual('Library Home');
+
   });
+
+  it('should detect a duplicate email address', function () {
+
+    fillOut();
+    registerNow.click();
+    expect (errorEmail.isDisplayed()).toBeTruthy();
+
+    errorEmailContinue.click();
+    expect (signup.isDisplayed()).toBeTruthy();
+
+    email1.getText().then (function (v) {
+      expect(v.length).toBe(0)
+    });
+
+    email2.getText().then (function (v) {
+      expect(v.length).toBe(0)
+    });
+
+
+  });
+
+
 
 
 

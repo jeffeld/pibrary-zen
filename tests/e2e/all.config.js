@@ -2,6 +2,18 @@
  * Created by jeff on 26/01/15.
  */
 
+var database = 'library-dev',
+    mongojs = require('mongojs'),
+    db = mongojs.connect(database, ['signups', 'members']);
+
+function resetDatabase () {
+
+  console.log ("Resetting database!");
+
+  db.signups.remove({});
+  db.members.remove({membershipCode: {$regex: /[0-9a-f]{8}\-/}});
+
+}
 
 
 module.exports = {
@@ -26,8 +38,14 @@ module.exports = {
 
   suites: {
     // login: ['login/**/*-tests.js'],
-    prime: ['prime/**/*-tests.js'],
+    // prime: ['prime/**/*-tests.js'],
     signup: ['signup/**/*-tests.js']
+  },
+
+  beforeLaunch: function() {
+
+    resetDatabase();
+
   }
 
 };

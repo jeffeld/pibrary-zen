@@ -7,54 +7,51 @@ block head
 block body
   div(ng-controller="SignUpController" ng-cloak)
 
-    div#error-email.modal.fade
-      div.modal-dialog
-        div.modal-content
-          div.modal-header
-            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
-            h4.modal-title Sorry {{FirstName | titlecase}}, there's a problem
-          div.modal-body
-            p
-              | The email address&nbsp;
-              strong {{Email1 | lowercase}}
-              | &nbsp;has already been used.
-            p Please supply a different email address and try again.
-          div.modal-footer
-            button.btn.btn-primary(type="button" ng-click="OnContinueAfterEmailError()") Continue...
+    div#waiting(ng-show="Step==='waiting'")
+      loading
 
-    div#error.modal.fade
-      div.modal-dialog
-        div.modal-content
-          div.modal-header
-            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
-            h4.modal-title Sorry {{FirstName | titlecase}}, there seems to be a problem
-          div.modal-body
-            p Your request to sign up couldn't be processed right now. The problem may only be temporary.
-            p Please try again later.
-          div.modal-footer
-            button.btn.btn-primary(type="button" ng-click="OnTryAgain()") Continue...
+    div#error-email(ng-show="Step==='error-email'")
+      div.row
+        div.col-xs-1.col-sm-2.col-md-3.col-lg-4
+        div.col-xs-10.col-sm-8.col-md-6.col-lg-4
+          h4 Sorry {{FirstName | titlecase}}, there's a problem
+          p The email address&nbsp;
+            strong {{Email1 | lowercase}}
+            | &nbsp;has already been used.
+          p Please supply a different email address and try again.
 
-    div#success.modal.fade
-      div.modal-dialog
-        div.modal-content
-          div.modal-header
-            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
-            h4.modal-title Thank you {{FirstName | titlecase}}
-          div.modal-body
-            p Your request to join has been received and will be reviewed.
-            p Once it has been approved, you will receive an email at {{Email1}} with further instructions.
-          div.modal-footer
-            button.btn.btn-primary(type="button" ng-click="OnSuccess()") Continue...
+          button#error-email-continue.btn.btn-primary.btn-block(type="button" ng-click="OnContinueAfterEmailError()") Continue...
+        div.col-xs-1.col-sm-2.col-md-3.col-lg-4
 
-    div
+    div#error(ng-show="Step==='error'")
+      div.row
+        div.col-xs-1.col-sm-2.col-md-3.col-lg-4
+        div.col-xs-10.col-sm-8.col-md-6.col-lg-4
+          h4 Sorry {{FirstName | titlecase}}, there seems to be a problem
+          p Your request to sign up couldn't be processed right now. The problem may only be temporary.
+          p Please try again later.
+          button#error-continue.btn.btn-primary.btn-block(type="button" ng-click="OnTryAgain()") Continue...
+        div.col-xs-1.col-sm-2.col-md-3.col-lg-4
+
+    div#success(ng-show="Step==='success'")
+      div.row
+        div.col-xs-1.col-sm-2.col-md-3.col-lg-4
+        div.col-xs-10.col-sm-8.col-md-6.col-lg-4
+          h4 Thank you {{FirstName | titlecase}}
+          p Your request to join has been received and will be reviewed.
+          p Once it has been approved, you will receive an email at {{Email1}} with further instructions.
+          button#success-continue.btn.btn-primary.btn-block(type="button" ng-click="OnSuccess()") Continue...
+        div.col-xs-1.col-sm-2.col-md-3.col-lg-4
+
+    div#signup(ng-show="Step==='signup'")
       form.form-signin(role="form" name="SignUpForm" ng-submit="OnSubmit()")
         h2.form-signin-heading Please fill out all the boxes
         div#name-group.form-group
           input#firstname.form-control.top-field(type="text", placeholder="Your first name", ng-model="FirstName", maxlength="50", required, autofocus)
           input#lastname.form-control.bottom-field(type="text", placeholder="Your last name", ng-model="LastName", maxlength="50", required)
         div#mobile-group.form-group(ng-class="{'has-error': isBadMobile()}")
-          input#email1.form-control.top-field(type="text",  placeholder="Mobile phone number (08nnnnnnnn)", ng-model="Mobile1", required)
-          input#email2.form-control.bottom-field(type="text", placeholder="Confirm mobile phone number", ng-model="Mobile2", required)
+          input#mobile1.form-control.top-field(type="text",  placeholder="Mobile phone number (08nnnnnnnn)", ng-model="Mobile1", required)
+          input#mobile2.form-control.bottom-field(type="text", placeholder="Confirm mobile phone number", ng-model="Mobile2", required)
         div#email-group.form-group(ng-class="{'has-error': isBadEmail()}")
           input#email1.form-control.top-field(type="email", placeholder="Email address", ng-model="Email1", required)
           input#email2.form-control.bottom-field(type="email", placeholder="Confirm email address", ng-model="Email2", required)
@@ -62,9 +59,9 @@ block body
           ul
             li be between 8 and 20 characters long
               span#lenok.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasValidLength")
-            li have at least one uppercase letter&nbsp;
+            li have at least one uppercase letter (A..Z)&nbsp;
               span#has1uc.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneUppercase")
-            li have at least one lowercase letter&nbsp;
+            li have at least one lowercase letter (a..z)&nbsp;
               span#has1lc.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneLowercase")
             li have at least one number&nbsp;
               span#has1n.glyphicon.glyphicon-ok.text-success(ng-show="Password.HasAtLeastOneNumber")
