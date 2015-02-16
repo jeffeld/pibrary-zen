@@ -1,118 +1,150 @@
 var
-  firstName = element(by.model('FirstName')),
-  lastName = element(by.model('LastName')),
+  _ = require('../../../app/bower_components/underscore'),
+  bootstrap = require('../common/bootstrap'),
+  page = require ('../common/signup'),
 
-  mobile1 = element(by.model('Mobile1')),
-  mobile2 = element(by.model('Mobile2')),
+  signups = [
+    {
+      firstName : 'Harry',
+      lastName : 'Sullivan',
+      mobile: '0871234567',
+      email: 'harry@unit.com',
+      password: 'HarrySullivan1#',
+      role: 'a student'
+    },
+    {
+      firstName : 'Sarah-Jane',
+      lastName : 'Smith',
+      mobile: '0879876543',
+      email: 'sarahjane@unit.com',
+      password: 'sarahJane1#',
+      role: 'staff'
+    },
+    {
+      firstName : 'Jo',
+      lastName : 'Grant',
+      mobile: '0872143658',
+      email: 'jo@unit.com',
+      password: 'JoGrant1#',
+      role: 'a parent'
+    },
+    {
+      firstName : 'Liz',
+      lastName : 'Shaw',
+      mobile: '0871112234',
+      email: 'liz@unit.com',
+      password: 'LizShaw1#',
+      role: 'none of the above',
+      other: 'a scientist'
+    }
 
-  email1 = element(by.model('Email1')),
-  email2 = element(by.model('Email2')),
+  ]
 
-  password1 = element(by.id('hpassword1')),
-  password2 = element(by.id('hpassword2')),
-
-  agreeRespect = element(by.model('AgreeRespect')),
-  agreePhoto = element(by.model('AgreePhoto')),
-  agreeTnC = element(by.model('AgreeTnC')),
-
-  registerNow = element(by.buttonText('Register now')),
-
-  signup = element(by.id('signup')),
-  success = element(by.id('success')),
-  errorEmail = element(by.id('error-email')),
-
-  successContinue = element(by.id('success-continue')),
-  errorEmailContinue = element(by.id('error-email-continue'))
 ;
 
-expect(firstName !== null);
-expect(lastName !== null);
-expect(mobile1 !== null);
-expect(mobile2 !== null);
-expect(email1 !== null);
-expect(email2 !== null);
-expect(password1 !== null);
-expect(password2 !== null);
-expect(registerNow !== null);
-expect(agreeRespect !== null);
-expect(agreePhoto !== null);
-expect(agreeTnC !== null);
 
 describe('Sign Up page', function() {
 
+  _.each (signups, function (su) {
+    it('should sign up ' + su.firstName + ' ' + su.lastName, function () {
 
-  var fillOut = function () {
+      page.fillOut(su);
 
-    browser.get('/signup');
-    expect(browser.getTitle()).toEqual('Sign Up');
+      if (su.hasOwnProperty('other')) {
+        expect(page.other().isDisplayed()).toBeTruthy();
+      }
 
-    firstName.sendKeys('Harry');
-    expect (registerNow.isEnabled()).toBeFalsy();
-    lastName.sendKeys('Sullivan');
-    expect (registerNow.isEnabled()).toBeFalsy();
+      page.registerNow().click();
+      expect(page.success().isDisplayed()).toBeTruthy();
+      page.successContinue().click();
+      expect(browser.getTitle()).toEqual('Library Home');
 
-    mobile1.sendKeys('0871234567');
-    expect (registerNow.isEnabled()).toBeFalsy();
-    mobile2.sendKeys('0871234567');
-    expect (registerNow.isEnabled()).toBeFalsy();
-
-    email1.sendKeys('harry@sullivan.com');
-    expect (registerNow.isEnabled()).toBeFalsy();
-    email2.sendKeys('harry@sullivan.com');
-    expect (registerNow.isEnabled()).toBeFalsy();
-
-    password1.sendKeys('HarrySullivan1*');
-    expect (registerNow.isEnabled()).toBeFalsy();
-    password2.sendKeys('HarrySullivan1*');
-    expect (registerNow.isEnabled()).toBeFalsy();
-
-    element(by.cssContainingText('option', 'a student')).click();
-    expect (registerNow.isEnabled()).toBeFalsy();
-
-    agreeRespect.click();
-    expect (registerNow.isEnabled()).toBeFalsy();
-    agreePhoto.click();
-    expect (registerNow.isEnabled()).toBeFalsy();
-    agreeTnC.click();
-
-    expect (registerNow.isEnabled()).toBeTruthy();
-
-  };
-
-  it('should sign up a user', function() {
-
-    fillOut();
-    registerNow.click();
-    expect (success.isDisplayed()).toBeTruthy();
-    successContinue.click();
-    expect(browser.getTitle()).toEqual('Library Home');
-
+    });
   });
+
 
   it('should detect a duplicate email address', function () {
 
-    fillOut();
-    registerNow.click();
-    expect (errorEmail.isDisplayed()).toBeTruthy();
+    page.fillOut(signups[0]);
+    page.registerNow().click();
+    expect (page.errorEmail().isDisplayed()).toBeTruthy();
 
-    errorEmailContinue.click();
-    expect (signup.isDisplayed()).toBeTruthy();
+    page.errorEmailContinue().click();
+    expect (page.signup().isDisplayed()).toBeTruthy();
 
-    email1.getText().then (function (v) {
+    page.email1().getText().then (function (v) {
       expect(v.length).toBe(0)
     });
 
-    email2.getText().then (function (v) {
+    page.email2().getText().then (function (v) {
       expect(v.length).toBe(0)
     });
 
 
   });
 
+  it('should detect email address group has an error', function () {
 
+    var
+      e1 = page.email1(),
+      e2 = page.email2(),
+      eg = page.emailGroup();
 
+    e1.sendKeys(signups[0].email);
+    e2.sendKeys(signups[1].email);
 
+    expect(page.hasClass(eg, bootstrap.classes.hasError)).toBeTruthy();
 
+    e2.clear();
+    e2.sendKeys(signups[0].email);
+
+    expect(page.hasClass(eg, bootstrap.classes.hasError)).not.toBeTruthy();
+
+  });
+
+  it ('should detect mobile number group has an error', function () {
+
+    var
+      m1 = page.mobile1(),
+      m2 = page.mobile2(),
+      mg = page.mobileGroup();
+
+    m1.clear();
+    m2.clear();
+
+    m1.sendKeys(signups[0].mobile);
+    m2.sendKeys(signups[1].mobile);
+
+    expect(page.hasClass(mg, bootstrap.classes.hasError)).toBeTruthy();
+
+    m2.clear();
+    m2.sendKeys(signups[0].mobile);
+
+    expect(page.hasClass(mg, bootstrap.classes.hasError)).not.toBeTruthy();
+
+  });
+
+  it ('should detect password group has an error', function () {
+
+    var
+      p1 = page.hiddenPassword1(),
+      p2 = page.hiddenPassword2(),
+      pg = page.passwordGroup();
+
+    p1.clear();
+    p2.clear();
+
+    p1.sendKeys(signups[0].password);
+    p2.sendKeys(signups[1].password);
+
+    expect(page.hasClass(pg, bootstrap.classes.hasError)).toBeTruthy();
+
+    p2.clear();
+    p2.sendKeys(signups[0].password);
+
+    expect(page.hasClass(pg, bootstrap.classes.hasError)).not.toBeTruthy();
+
+  });
 
 
 });

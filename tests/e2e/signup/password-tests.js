@@ -1,22 +1,13 @@
 var
+  page = require ('../common/signup'),
 
-  password1 = element(by.id('hpassword1')),
-  password2 = element(by.id('hpassword2')),
-
-  has1uc = element(by.id('has1uc')),
-  has1lc = element(by.id('has1lc')),
-  has1n = element(by.id('has1n')),
-  has1s = element(by.id('has1s')),
-  lenok = element(by.id('lenok')),
+  _ = require('../../../app/bower_components/underscore'),
 
   specialChars = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'],
-
   nonSpecialChars = [':', ';', '.', '-'],
-
   upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   lowerChars = 'abcdefghijklmnopqrstuvwxyz',
   digits = '0123456789',
-
   accentedUpperCase = 'ÁÉÍÓÚ',
   accentedLowerCase = 'áéíóú',
 
@@ -27,9 +18,9 @@ var
     var n = -1;
     for (n = 0; n < chars.length; n++) {
       expect(ele.isDisplayed()).toBeFalsy();
-      password1.sendKeys (chars[n]);
+      page.hiddenPassword1().sendKeys (chars[n]);
       expect(ele.isDisplayed()).toBeTruthy();
-      password1.clear();
+      page.hiddenPassword1().clear();
     }
   },
 
@@ -37,72 +28,72 @@ var
     var n = -1;
     for (n = 0; n < chars.length; n++) {
       expect(ele.isDisplayed()).toBeFalsy();
-      password1.sendKeys (chars[n]);
+      page.hiddenPassword1().sendKeys (chars[n]);
       expect(ele.isDisplayed()).toBeFalsy();
-      password1.clear();
+      page.hiddenPassword1().clear();
     }
   }
 ;
 
 
-describe('Sign Up page password tests', function() {
+describe('Test password validation', function() {
 
-  browser.get('/signup');
+  page.load();
 
   it('should recognise uppercase characters', function() {
-    password1.clear();
-    testChars (upperChars, has1uc);
+    page.hiddenPassword1().clear();
+    testChars (upperChars, page.has1uc());
   });
 
   it('should recognise lowercase characters', function() {
-    password1.clear();
-    testChars (lowerChars, has1lc);
+    page.hiddenPassword1().clear();
+    testChars (lowerChars, page.has1lc());
   });
 
   it('should recognise digits', function() {
-    password1.clear();
-    testChars (digits, has1n);
+    page.hiddenPassword1().clear();
+    testChars (digits, page.has1n());
   });
 
   it('should recognise special characters', function() {
-    password1.clear();
-    testChars (specialChars, has1s);
+    page.hiddenPassword1().clear();
+    testChars (specialChars, page.has1s());
   });
 
   it('should not recognise upper case accented characters', function() {
-    password1.clear();
-    testNonRecognisedChars(accentedUpperCase, has1uc);
+    page.hiddenPassword1().clear();
+    testNonRecognisedChars(accentedUpperCase, page.has1uc());
   });
 
   it('should not recognise lower case accented characters', function() {
-    password1.clear();
-    testNonRecognisedChars(accentedLowerCase, has1uc);
+    page.hiddenPassword1().clear();
+    testNonRecognisedChars(accentedLowerCase, page.has1uc());
   });
 
 
   it('should not recognise special characters', function () {
-    password1.clear();
-    testNonRecognisedChars(nonSpecialChars, has1s);
+    page.hiddenPassword1().clear();
+    testNonRecognisedChars(nonSpecialChars, page.has1s());
   });
 
   it('check lengths', function() {
     var n = -1;
 
     // Check that the length ok indicator is not displayed...
-    password1.clear();
+    page.hiddenPassword1().clear();
     for (n = 1; n < passwordMinLength; n++) {
-      password1.sendKeys('A');
-      expect(lenok.isDisplayed()).toBeFalsy();
+      page.hiddenPassword1().sendKeys('A');
+      expect(page.lenok().isDisplayed()).toBeFalsy();
     }
 
     // ...until we get to the minimum length. Then...
-    password1.sendKeys('A');
-    expect(lenok.isDisplayed()).toBeTruthy();
+    page.hiddenPassword1().sendKeys('A');
+    expect(page.lenok().isDisplayed()).toBeTruthy();
 
     // ...check the indicator is displayed until we get to the maximum length...
     for (n = passwordMinLength + 1; n <= passwordMaxLength; n++) {
-      password1.sendKeys('A');
-      expect(lenok.isDisplayed()).toBeTruthy();
+      page.hiddenPassword1().sendKeys('A');
+      expect(page.lenok().isDisplayed()).toBeTruthy();
     }
 
     // We don't check the indicator disappears over the max length,

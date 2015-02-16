@@ -37,9 +37,11 @@ module.exports = {
   ],
 
   suites: {
-    // login: ['login/**/*-tests.js'],
+    //login: ['login/**/*-tests.js'],
     // prime: ['prime/**/*-tests.js'],
-    signup: ['signup/**/*-tests.js']
+    signup: ['signup/**/password-tests.js']
+    // complete: ['complete/**/e2e.js']
+
   },
 
   beforeLaunch: function() {
