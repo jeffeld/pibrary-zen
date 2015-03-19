@@ -15,7 +15,7 @@ block body
         h3.text-center Add Stock Item \#{{StockCode}}
       div.col-md-3
 
-    div.row(ng-show="Details === null")
+    div.row(ng-show="Mode === 'input' && Details === null")
       div.col-md-3
       div.col-md-6
         form(role="form", name="ISBNCapture" ng-submit="OnISBN()")
@@ -24,7 +24,13 @@ block body
             input#isbnNumber.form-control(low, type="text" ng-model="ISBN" placeholder="Scan/type the ISBN number")
       div.col-md-3
 
-    div.row(ng-show="Details !== null" ng-cloak)
+    div.row(ng-show="Mode === 'waiting'")
+      div.col-md-3
+      div.col-md-6
+        loading.center-block
+      div.col-md-3
+
+    div.row(ng-show="Mode === 'input' && Details !== null" ng-cloak)
       div.col-md-3
       div.col-md-6
         div(ng-show="Details !== ''")

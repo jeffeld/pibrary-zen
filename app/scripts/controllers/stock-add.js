@@ -7,9 +7,12 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
         $scope.Details = null;
         $scope.ISBN = '';
 
+        $scope.Mode = 'input';
+
         $scope.OnAddItem = function (manualEntry) {
 
             var addStockItem = function () {
+                $scope.Mode = 'waiting  '
                 Stock.add({stockid: $scope.StockCode, isbn: $scope.ISBN}).$promise.then(function () {
                     Links.go($scope.ReturnUrl);
                 }, function () {
@@ -59,6 +62,8 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
 
             // First we see if Orac has the ISBN details cached...
 
+            $scope.Mode = 'waiting';
+
             Search.isbn({item: $scope.ISBN}).
                 $promise.then(function (result) {
 
@@ -87,6 +92,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
                                 $scope.OnAddItem(false);
 
                             } else {
+                                $scope.Mode = 'input';
                                 $scope.Details = {};
                             }
 
@@ -96,6 +102,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
                             // object to empty. This will trigger manual entry
                             // by the user.
 
+                            $scope.Mode = 'input';
                             $scope.Details = {};
 
                         });
@@ -105,6 +112,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
 
                 // Failure, so just supply an empty object triggering manual entry
 
+                $scope.Mode = 'input';
                 $scope.Details = {};
             });
 
