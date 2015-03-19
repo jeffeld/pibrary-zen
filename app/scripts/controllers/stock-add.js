@@ -12,7 +12,7 @@ userControllers.controller('StockAddController', ['$scope', '$q', '$log', 'Codes
         $scope.OnAddItem = function (manualEntry) {
 
             var addStockItem = function () {
-                $scope.Mode = 'waiting  '
+                $scope.Mode = 'waiting';
                 Stock.add({stockid: $scope.StockCode, isbn: $scope.ISBN}).$promise.then(function () {
                     Links.go($scope.ReturnUrl);
                 }, function () {
