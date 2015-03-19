@@ -163,7 +163,8 @@ userApp.factory('Search', ['$resource', function ($resource) {
                 params: {
                     index: 'isbn'
                 },
-                transformResponse : transformISBNResponse
+                transformResponse : transformISBNResponse,
+                timeout: 10*1000
             },
             stock: {
                 method: 'GET',
