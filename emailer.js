@@ -12,7 +12,7 @@ var nodemailer = require ('nodemailer'),
     minimist = require ('minimist'),
     argv = minimist(process.argv.slice(2)),
 
-    db = mongojs.connect(config.database, ['emails']),
+    db = mongojs(config.database, ['emails']),
     transporter = {}
 ;
 

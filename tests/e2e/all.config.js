@@ -4,7 +4,7 @@
 
 var database = 'library-dev',
     mongojs = require('mongojs'),
-    db = mongojs.connect(database, ['signups', 'members']);
+    db = mongojs(database, ['signups', 'members']);
 
 function resetDatabase () {
 

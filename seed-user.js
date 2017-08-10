@@ -12,7 +12,7 @@ var mongojs = require('mongojs'),
 
     config = require('./lib/config/config'),
 
-    db = mongojs.connect(config.database, ['signups', 'members'])
+    db = mongojs(config.database, ['signups', 'members'])
 
 ;
 

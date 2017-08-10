@@ -12,7 +12,7 @@ var https = require('https'),
     _ = require ('./app/bower_components/underscore'),
 //    monogodb = require('mongodb'),
 //    mongoose = require('mongoose'),
-    bcrypt = require('bcrypt'),
+    bcrypt = require('bcrypt-nodejs'),
     SALT_WORK_FACTOR = 10,
     mongojs = require ('mongojs'),
     membersdb = require('./lib/modules/membersdb')
@@ -32,7 +32,7 @@ var isMembershipNumber = function (v) {
 var config = require('./lib/config/config');
 
 // Ensure all the required indexes are created
-var db = mongojs.connect(config.database, ["signups"]);
+var db = mongojs(config.database, ["signups"]);
 db.signups.ensureIndex({email : 1}, {unique : true});
 
 
