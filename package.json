@@ -2,6 +2,7 @@
   "name": "zen",
   "version": "0.0.0",
   "dependencies": {
+    "aws-sdk": "^2.96.0",
     "bcrypt-nodejs": "0.0.3",
     "express": "^3.4.8",
     "jade": "^1.7.0",
