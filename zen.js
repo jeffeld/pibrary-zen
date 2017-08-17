@@ -160,16 +160,19 @@ passport.use(new LocalStrategy(function (username, password, done) {
 }));
 
 var app = express();
-// app.use (sslRedirect());
 
-app.configure('production', () => {
-  app.use((req, res, next) => {
-    if (req.header['x-forwarded-proto'] !== 'https')
-      res.redirect(`https://${req.header('host')}${req.url}`);
-    else
-      next();
-  })
-});
+// Using npm install git://github.com/paulomcnally/node-heroku-ssl-redirect.git#express3x --save
+// See https://github.com/nodenica/node-heroku-ssl-redirect/issues/1
+app.use (sslRedirect());
+
+// app.configure('production', () => {
+//   app.use((req, res, next) => {
+//     if (req.header['x-forwarded-proto'] !== 'https')
+//       res.redirect(`https://${req.header('host')}${req.url}`);
+//     else
+//       next();
+//   })
+// });
 
 
 
