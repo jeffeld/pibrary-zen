@@ -160,7 +160,17 @@ passport.use(new LocalStrategy(function (username, password, done) {
 }));
 
 var app = express();
-app.use (sslRedirect());
+// app.use (sslRedirect());
+
+app.configure('production', () => {
+  app.use((req, res, next) => {
+    if (req.header['x-forwarded-proto'] !== 'https')
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    else
+      next();
+  })
+});
+
 
 
 // Express settings
