@@ -15,7 +15,8 @@ var https = require('https'),
     bcrypt = require('bcrypt-nodejs'),
     SALT_WORK_FACTOR = 10,
     mongojs = require ('mongojs'),
-    membersdb = require('./lib/modules/membersdb')
+    membersdb = require('./lib/modules/membersdb'),
+    sslRedirect = require ('heroku-ssl-redirect')
 ;
 
 var isMembershipNumber = function (v) {
@@ -26,6 +27,8 @@ var isMembershipNumber = function (v) {
 /**
  * Main application file
  */
+
+app.use (sslRedirect());
 
 // Application Config
 
