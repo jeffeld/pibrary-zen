@@ -28,8 +28,6 @@ var isMembershipNumber = function (v) {
  * Main application file
  */
 
-app.use (sslRedirect());
-
 // Application Config
 
 var config = require('./lib/config/config');
@@ -162,6 +160,8 @@ passport.use(new LocalStrategy(function (username, password, done) {
 }));
 
 var app = express();
+app.use (sslRedirect());
+
 
 // Express settings
 require('./lib/config/express')(app);
