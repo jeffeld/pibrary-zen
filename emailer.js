@@ -7,13 +7,38 @@ var nodemailer = require ('nodemailer'),
     Q = require ('q'),
     moment = require ('moment'),
 
-    config = require ('./lib/config/config') || {},
+    // config = require ('./lib/config/config') || {},
 
     minimist = require ('minimist'),
     argv = minimist(process.argv.slice(2)),
 
-    db = mongojs(config.database, ['emails']),
-    transporter = {}
+
+    transporter = {},
+
+
+    config = {
+        database: process.env.MONGODB,
+        emailer: {
+            user : process.env.GMAIL_USER_ID, // 'gmail user id',
+            password : process.env.GMAIL_PASSWORD, // 'password'
+
+            // How you want your from line to appear in the emails
+
+            from: process.env.GMAIL_FROM, // 'Pipers Hill Library <phcollibrary@gmail.com>',
+
+            // The email account to send all emails to (regardless of intended recipient) when testing (i.e. live === false)
+
+            safeRecipient: process.env.SAFE_EMAIL_RECIPIENT, // 'test-recipient@gmail.com',
+
+            // Default to testing mode. Either set this to true in local.js or specify --live on the command line
+
+            live : false
+
+        }
+    },
+
+    db = mongojs(config.database, ['emails'])
+
 ;
 
 function log (m) {
@@ -99,23 +124,23 @@ try {
     // and command line parameters. Check that we have
     // all mandatory settings, otherwise we can't run properly!
 
-    config.emailer = _.extend (config.emailer, argv);
-
-    var mandatoryArgs = [
-        'user',
-        'password',
-        'from'
-    ];
-
-    if (_.some (mandatoryArgs, function (v) {
-        var b = _.isUndefined(config.emailer[v]);
-        if (b) {
-            log (['ERROR', 'Missing argument or setting: ' + v].join('\t'));
-        }
-        return b
-    })) {
-        process.exit (-1);
-    }
+    // config.emailer = _.extend (config.emailer, argv);
+    //
+    // var mandatoryArgs = [
+    //     'user',
+    //     'password',
+    //     'from'
+    // ];
+    //
+    // if (_.some (mandatoryArgs, function (v) {
+    //     var b = _.isUndefined(config.emailer[v]);
+    //     if (b) {
+    //         log (['ERROR', 'Missing argument or setting: ' + v].join('\t'));
+    //     }
+    //     return b
+    // })) {
+    //     process.exit (-1);
+    // }
 
     config.emailer.live = config.emailer.live || false;
 
