@@ -64,7 +64,6 @@
   },
   "scripts": {
     "start": "node zen.js",
-    "email": "node emailer.js",
-    "heroku-postbuild": "chmod a+x emailer"
+    "email": "node emailer.js"
   }
 }
