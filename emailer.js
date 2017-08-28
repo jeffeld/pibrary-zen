@@ -2,45 +2,37 @@
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var nodemailer = require ('nodemailer'),
-    mongojs = require('mongojs'),
-    _ = require ('./app/bower_components/underscore/underscore'),
-    Q = require ('q'),
-    moment = require ('moment'),
+const nodemailer  = require('nodemailer');
+const mongojs     = require('mongojs');
+const _           = require('./app/bower_components/underscore/underscore');
+const Q           = require('q');
+const moment      = require('moment');
+const minimist    = require('minimist');
+const argv        = minimist(process.argv.slice(2));
+const config = {
+    database: process.env.MONGODB,
+    emailer: {
+        user: process.env.GMAIL_USER_ID,
+        password: process.env.GMAIL_PASSWORD,
 
-    // config = require ('./lib/config/config') || {},
+        // How you want your from line to appear in the emails
 
-    minimist = require ('minimist'),
-    argv = minimist(process.argv.slice(2)),
+        from: process.env.GMAIL_FROM, // 'Pipers Hill Library <phcollibrary@gmail.com>',
 
+        // The email account to send all emails to (regardless of intended recipient) when testing (i.e. live === false)
 
-    transporter = {},
+        safeRecipient: process.env.SAFE_EMAIL_RECIPIENT, // 'test-recipient@gmail.com',
 
+        // Default to testing mode. Either set this to true in local.js or specify --live on the command line
 
-    config = {
-        database: process.env.MONGODB,
-        emailer: {
-            user : process.env.GMAIL_USER_ID, // 'gmail user id',
-            password : process.env.GMAIL_PASSWORD, // 'password'
+        live: true, // process.env.NODE_ENV === "production",
 
-            // How you want your from line to appear in the emails
+    }
+};
 
-            from: process.env.GMAIL_FROM, // 'Pipers Hill Library <phcollibrary@gmail.com>',
+const db = mongojs(config.database, ['emails']);
 
-            // The email account to send all emails to (regardless of intended recipient) when testing (i.e. live === false)
-
-            safeRecipient: process.env.SAFE_EMAIL_RECIPIENT, // 'test-recipient@gmail.com',
-
-            // Default to testing mode. Either set this to true in local.js or specify --live on the command line
-
-            live : false
-
-        }
-    },
-
-    db = mongojs(config.database, ['emails'])
-
-;
+let transporter = {};
 
 function log (m) {
     console.log ([moment().format('HH:mm:ss'), m].join('\t'));
@@ -143,7 +135,7 @@ try {
     //     process.exit (-1);
     // }
 
-    config.emailer.live = config.emailer.live || false;
+    // config.emailer.live = config.emailer.live || false;
 
     log (['info', 'Running in ' + (config.emailer.live ? 'LIVE' : 'TEST') + ' mode'].join('\t'));
 
