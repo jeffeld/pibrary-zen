@@ -46,7 +46,7 @@ block body
               div.switch-item(ng-switch-when="true")
                 loading.center-block
               div.switch-item(ng-switch-when="false")
-                div.col-md-3.col-lg-2(ng-repeat="item in RecentlyAdded | limitTo : 12")
+                div.col-xs-6.col-sm-6.col-md-3.col-lg-2(ng-repeat="item in RecentlyAdded | limitTo : 12")
                   div.item-preview
                     a.text-center(ng-href="/isbn?sid={{item.isbn}}")
                       img.center-block.cover-image.cover-image-small(ng-src="/covers/{{item.isbn}}", alt="No Image")
