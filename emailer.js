@@ -1,4 +1,11 @@
-#!/app/.heroku/node/bin/node
+
+// Using GMail? Keeps erroring and you've enabled Less Secure Apps? Then...
+// In addition to enabling Allow less secure apps, you might also need to navigate to
+// https://accounts.google.com/DisplayUnlockCaptcha and click continue.
+
+// This instructs Google not to require a captcha.
+// Taken from this article: https://stackoverflow.com/questions/26196467/sending-email-via-node-js-using-nodemailer-is-not-working
+
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -29,6 +36,16 @@ const config = {
 
     }
 };
+
+const AWS = require ('aws-sdk');
+
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+
+    region: process.env.AWS_SES_REGION
+});
+
 
 const db = mongojs(config.database, ['emails']);
 
@@ -74,6 +91,7 @@ function send (email) {
 
     transporter.sendMail (mo, function (err, response) {
         if (err) {
+            log(["error", err.message].join('\t'));
             deferred.reject (err);
         } else {
             deferred.resolve (response);
@@ -91,23 +109,34 @@ function updateEmail (email, data, status) {
 
     log ([status, email.to, email.subject].join('\t'));
 
-    var ts = new Date();
-    db.emails.update ({_id: email._id}, {
+    db.emails.update(
+        {_id: email._id},
+        // {_id: db.ObjectId("59a3c7f593c0f400117af19a")},
+        {
 
-        $set: {
-            status: status,
-            lastUpdated: ts
-        },
-
-        $push: {
-            activity: {
-                date: ts,
+            $set: {
                 status: status,
-                data: data
+                lastUpdated:
+                    new Date()
             }
-        }
+            ,
 
-    });
+            $push: {
+                activity: {
+                    date: ts,
+                    status:
+                    status,
+                    data:
+                    data
+                }
+            }
+
+        }
+    )
+    ;
+
+    // log (wr);
+
 
 }
 
@@ -142,11 +171,17 @@ try {
     // Create the mail transporter object.
 
     transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user : config.emailer.user,
-            pass : config.emailer.password
-        }
+        // service: 'Gmail',
+        // auth: {
+        //     user : config.emailer.user,
+        //     pass : config.emailer.password
+        // }
+
+        SES: new AWS.SES({
+            apiVersion: '2010-12-01'
+        })
+
+
     });
 
     // Get all pending emails, iterate through them and send
