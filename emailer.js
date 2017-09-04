@@ -109,33 +109,40 @@ function updateEmail (email, data, status) {
 
     log ([status, email.to, email.subject].join('\t'));
 
-    db.emails.update(
-        {_id: email._id},
-        // {_id: db.ObjectId("59a3c7f593c0f400117af19a")},
-        {
+    const now = new Date();
 
-            $set: {
-                status: status,
-                lastUpdated:
-                    new Date()
-            }
-            ,
+    try {
+        const x = mongojs(config.database, ['emails']);
+        const rc = x.emails.updateOne(
+            {_id: email._id},
+            // {_id: db.ObjectId("59a3c7f593c0f400117af19a")},
+            {
 
-            $push: {
-                activity: {
-                    date: ts,
-                    status:
-                    status,
-                    data:
-                    data
+                $set: {
+                    status: status,
+                    lastUpdated: now
+
                 }
-            }
+                ,
 
-        }
-    )
-    ;
+                $push: {
+                    activity: {
+                        date: now,
+                        status:
+                        status,
+                        data:
+                        data
+                    }
+                }
 
-    // log (wr);
+            });
+
+        log (rc);
+
+    }
+    catch (e) {
+        log (e)
+    }
 
 
 }
