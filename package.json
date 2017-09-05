@@ -4,6 +4,7 @@
   "dependencies": {
     "aws-sdk": "^2.96.0",
     "bcrypt-nodejs": "0.0.3",
+    "commander": "^2.11.0",
     "express": "^3.4.8",
     "heroku-ssl-redirect": "git://github.com/paulomcnally/node-heroku-ssl-redirect.git#express3x",
     "jade": "^1.7.0",
